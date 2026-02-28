@@ -1,45 +1,57 @@
 const express = require('express');
 const router = express.Router();
-
-// Mock data for now - will connect to blockchain later
-const agents = [];
-
-// Get all agents
-router.get('/', (req, res) => {
-  res.json({
-    agents,
-    total: agents.length
-  });
-});
+const blockchain = require('../services/blockchain');
 
 // Get agent by ID
-router.get('/:id', (req, res) => {
-  const agent = agents.find(a => a.id === req.params.id);
-  if (!agent) {
-    return res.status(404).json({ error: 'Agent not found' });
+router.get('/:tokenId', async (req, res) => {
+  try {
+    const { tokenId } = req.params;
+    const agent = await blockchain.getAgent(tokenId);
+    res.json({
+      success: true,
+      data: agent
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
   }
-  res.json(agent);
 });
 
-// Register new agent (mock)
-router.post('/', (req, res) => {
-  const { name, capabilities } = req.body;
-  
-  if (!name) {
-    return res.status(400).json({ error: 'Name is required' });
+// Get agent by wallet
+router.get('/wallet/:wallet', async (req, res) => {
+  try {
+    const { wallet } = req.params;
+    const agent = await blockchain.getAgentByWallet(wallet);
+    res.json({
+      success: true,
+      data: agent
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
   }
-  
-  const agent = {
-    id: Date.now().toString(),
-    name,
-    capabilities: capabilities || [],
-    state: 'Active',
-    reputationScore: 50.00,
-    createdAt: new Date().toISOString()
-  };
-  
-  agents.push(agent);
-  res.status(201).json(agent);
+});
+
+// Get agents by registrant
+router.get('/registrant/:address', async (req, res) => {
+  try {
+    const { address } = req.params;
+    // This would query the blockchain for all agents by registrant
+    res.json({
+      success: true,
+      data: [],
+      message: 'Query not yet implemented'
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
 });
 
 module.exports = router;
