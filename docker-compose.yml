@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      target: backend
+    container_name: coidea-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    env_file:
+      - backend/.env
+    networks:
+      - coidea-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      target: frontend
+    container_name: coidea-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - coidea-network
+    restart: unless-stopped
+
+  # Optional: Add database
+  # mysql:
+  #   image: mysql:8.0
+  #   container_name: coidea-mysql
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: rootpassword
+  #     MYSQL_DATABASE: coidea
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - mysql-data:/var/lib/mysql
+  #   networks:
+  #     - coidea-network
+
+networks:
+  coidea-network:
+    driver: bridge
+
+# volumes:
+#   mysql-data:
