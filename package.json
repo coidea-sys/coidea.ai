@@ -1,39 +1,30 @@
 {
   "name": "coidea.ai",
   "version": "0.1.0",
-  "description": "AI与Human深度混合协作社区",
+  "description": "AI与Human深度混合协作社区 | AI-Human Hybrid Collaboration Community",
   "main": "backend/index.js",
   "scripts": {
     "start": "node backend/index.js",
     "dev": "nodemon backend/index.js",
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "contract:compile": "hardhat compile",
     "contract:test": "hardhat test",
+    "contract:deploy": "hardhat run scripts/deploy.js",
     "contract:deploy:testnet": "hardhat run scripts/deploy.js --network amoy",
-    "contract:deploy:mainnet": "hardhat run scripts/deploy.js --network polygon"
+    "contract:verify": "hardhat verify",
+    "lint": "eslint .",
+    "format:check": "prettier --check .",
+    "format:write": "prettier --write ."
   },
-  "keywords": [
-    "AI",
-    "Web4",
-    "DAO",
-    "Agent",
-    "Collaboration"
-  ],
+  "keywords": ["AI", "Web4", "DAO", "Agent", "Collaboration", "ERC8004"],
   "author": "Danny & Kimi Claw",
   "license": "MIT",
   "dependencies": {
-    "@openzeppelin/contracts": "^5.0.0",
-    "bcryptjs": "^2.4.3",
+    "express": "^4.18.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "ethers": "^6.9.0",
-    "express": "^4.18.2",
-    "ipfs-http-client": "^60.0.1",
-    "jsonwebtoken": "^9.0.2",
-    "multer": "^1.4.5-lts.1",
-    "uuid": "^9.0.1",
-    "web3": "^4.3.0",
-    "winston": "^3.11.0"
+    "ethers": "^6.9.0"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
