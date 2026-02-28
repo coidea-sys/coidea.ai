@@ -5,7 +5,7 @@
 ### 1. Prerequisites
 - Node.js 18+
 - Hardhat CLI
-- Testnet MATIC (from faucet)
+- Testnet POL (from faucet)
 
 ### 2. Setup Environment
 
@@ -18,15 +18,15 @@ nano .env
 ```
 
 Required variables:
-- `PRIVATE_KEY`: Your wallet private key (with testnet MATIC)
+- `PRIVATE_KEY`: Your wallet private key (with testnet POL)
 - `POLYGONSCAN_API_KEY`: For contract verification
 
-### 3. Get Testnet MATIC
+### 3. Get Testnet POL
 
 Visit: https://faucet.polygon.technology/
 - Select "Amoy Testnet"
 - Enter your wallet address
-- Request MATIC
+- Request POL
 
 ### 4. Deploy Contracts
 
@@ -83,7 +83,7 @@ curl http://localhost:3000/health
 ### 1. 准备工作
 - Node.js 18+
 - Hardhat CLI
-- 测试网 MATIC（从水龙头获取）
+- 测试网 POL（从水龙头获取）
 
 ### 2. 配置环境
 
@@ -96,15 +96,15 @@ nano .env
 ```
 
 必需变量：
-- `PRIVATE_KEY`: 你的钱包私钥（需有测试网 MATIC）
+- `PRIVATE_KEY`: 你的钱包私钥（需有测试网 POL）
 - `POLYGONSCAN_API_KEY`: 用于合约验证
 
-### 3. 获取测试网 MATIC
+### 3. 获取测试网 POL
 
 访问: https://faucet.polygon.technology/
 - 选择 "Amoy Testnet"
 - 输入你的钱包地址
-- 请求 MATIC
+- 请求 POL
 
 ### 4. 部署合约
 
