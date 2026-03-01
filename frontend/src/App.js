@@ -5,6 +5,7 @@ import { ToastProvider, useToast } from './hooks/useToast';
 import { ThemeProvider } from './contexts/ThemeContext';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import ThemeToggle from './components/common/ThemeToggle';
+import NetworkSwitch from './components/common/NetworkSwitch';
 import WalletConnect from './components/WalletConnect';
 import AgentCard from './components/AgentCard';
 import TaskCard from './components/TaskCard';
@@ -22,6 +23,7 @@ function App() {
   const { success, error: showError } = useToast();
   const [account, setAccount] = useState('');
   const [signer, setSigner] = useState(null);
+  const [currentNetwork, setCurrentNetwork] = useState('polygon');
   const [tasks, setTasks] = useState([]);
   const [agents, setAgents] = useState([]);
   const [activeTab, setActiveTab] = useState('tasks');
@@ -185,6 +187,10 @@ function App() {
               <span className="tx-status pending">⏳ Creating task...</span>
             )}
             <ThemeToggle />
+            <NetworkSwitch 
+              currentNetwork={currentNetwork} 
+              onSwitch={setCurrentNetwork} 
+            />
             <Suspense fallback={<span>🔔</span>}>
               <NotificationCenter socket={null} userId={account} />
             </Suspense>

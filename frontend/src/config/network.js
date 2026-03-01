@@ -57,7 +57,7 @@ const NETWORKS = {
 };
 
 // 当前环境
-const CURRENT_NETWORK = process.env.REACT_APP_NETWORK || 'localhost';
+const CURRENT_NETWORK = process.env.REACT_APP_NETWORK || 'polygon';
 
 export const getNetworkConfig = () => NETWORKS[CURRENT_NETWORK];
 
