@@ -2,26 +2,41 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const ThemeContext = createContext(null);
 
+export const THEMES = {
+  DARK: 'dark',
+  LIGHT: 'light',
+  ORGANIC: 'organic'
+};
+
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
-    // 从 localStorage 读取或默认 dark
-    return localStorage.getItem('coidea-theme') || 'dark';
+    return localStorage.getItem('coidea-theme') || THEMES.ORGANIC;
   });
 
   useEffect(() => {
-    // 应用主题到 document
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('coidea-theme', theme);
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  const setDark = () => setTheme(THEMES.DARK);
+  const setLight = () => setTheme(THEMES.LIGHT);
+  const setOrganic = () => setTheme(THEMES.ORGANIC);
+  const cycleTheme = () => {
+    const themes = [THEMES.DARK, THEMES.LIGHT, THEMES.ORGANIC];
+    const currentIndex = themes.indexOf(theme);
+    const nextIndex = (currentIndex + 1) % themes.length;
+    setTheme(themes[nextIndex]);
   };
 
   const value = {
     theme,
-    isDark: theme === 'dark',
-    toggleTheme
+    isDark: theme === THEMES.DARK,
+    isLight: theme === THEMES.LIGHT,
+    isOrganic: theme === THEMES.ORGANIC,
+    setDark,
+    setLight,
+    setOrganic,
+    cycleTheme
   };
 
   return (
