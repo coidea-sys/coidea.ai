@@ -37,7 +37,7 @@ module.exports = {
     },
     // Polygon 主网 - 生产环境
     polygon: {
-      url: process.env.POLYGON_MAINNET_RPC || 'https://polygon-rpc.com',
+      url: process.env.POLYGON_MAINNET_RPC || 'https://polygon-mainnet.g.alchemy.com/v2/demo',
       accounts: process.env.MAINNET_PRIVATE_KEY && process.env.MAINNET_PRIVATE_KEY !== 'your_mainnet_private_key_here' ? [process.env.MAINNET_PRIVATE_KEY] : [],
       chainId: 137,
       gasPrice: 'auto'
