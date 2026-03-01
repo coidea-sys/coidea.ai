@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { ethers } from 'ethers';
-import { ToastProvider } from './hooks/useToast';
+import { ToastProvider, useToast } from './hooks/useToast';
 import WalletConnect from './components/WalletConnect';
 import AgentCard from './components/AgentCard';
 import TaskCard from './components/TaskCard';
@@ -12,6 +12,7 @@ import { getNetworkConfig } from './config/network';
 import TaskRegistryABI from './abis/TaskRegistry.json';
 
 function App() {
+  const { success, error: showError } = useToast();
   const [account, setAccount] = useState('');
   const [signer, setSigner] = useState(null);
   const [tasks, setTasks] = useState([]);
@@ -20,7 +21,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
-  const [txStatus, setTxStatus] = useState(null);
+  const [isCreating, setIsCreating] = useState(false);
 
   const config = getNetworkConfig();
 
@@ -86,11 +87,11 @@ function App() {
 
   const handleCreateTask = async (taskData) => {
     if (!signer) {
-      alert('Please connect wallet first');
+      showError('Please connect wallet first');
       return;
     }
 
-    setTxStatus('pending');
+    setIsCreating(true);
 
     try {
       const taskRegistry = new ethers.Contract(
@@ -99,7 +100,6 @@ function App() {
         signer
       );
 
-      // 转换责任模型
       const liabilityModelMap = {
         'Standard': 0,
         'Limited': 1,
@@ -107,7 +107,6 @@ function App() {
         'Bonded': 3
       };
 
-      // 转换任务类型
       const taskTypeMap = {
         'Coding': 0,
         'Design': 1,
@@ -119,27 +118,12 @@ function App() {
       };
 
       const reward = ethers.parseEther(taskData.reward.toString());
-      const liabilityAmount = taskData.liabilityModel !== 'Standard' 
+      const liabilityAmount = taskData.liabilityModel !== 'Standard'
         ? ethers.parseEther((taskData.liabilityAmount || (taskData.reward * 1.2)).toString())
         : 0;
 
-      // 计算需要发送的 ETH
       const totalValue = reward + (taskData.liabilityModel === 'Bonded' ? liabilityAmount : 0n);
 
-      console.log('Creating task with params:', {
-        title: taskData.title,
-        description: taskData.description,
-        taskType: taskTypeMap[taskData.taskType],
-        reward: reward.toString(),
-        deadline: taskData.deadlineDays * 24 * 60 * 60,
-        skills: taskData.requiredSkills || [],
-        minReputation: taskData.minReputation || 0,
-        liabilityModel: liabilityModelMap[taskData.liabilityModel],
-        liabilityAmount: liabilityAmount.toString(),
-        value: totalValue.toString()
-      });
-
-      // 调用合约
       const tx = await taskRegistry.createTask(
         taskData.title,
         taskData.description,
@@ -153,12 +137,8 @@ function App() {
         { value: totalValue }
       );
 
-      console.log('Transaction sent:', tx.hash);
-      
       const receipt = await tx.wait();
-      console.log('Transaction confirmed:', receipt);
 
-      // 解析事件获取任务 ID
       const event = receipt.logs.find(log => {
         try {
           const parsed = taskRegistry.interface.parseLog(log);
@@ -171,11 +151,21 @@ function App() {
       if (event) {
         const parsedEvent = taskRegistry.interface.parseLog(event);
         const taskId = parsedEvent.args[0];
-        console.log('Task created with ID:', taskId.toString());
+        success(`Task created successfully! ID: ${taskId.toString()}`);
+      } else {
+        success('Task created successfully!');
       }
 
-      setTxStatus('success');
-      
+      await fetchData(signer);
+      setShowCreateModal(false);
+
+    } catch (err) {
+      console.error('Create task error:', err);
+      showError(err.message || 'Failed to create task');
+    } finally {
+      setIsCreating(false);
+    }
+  };
       // 刷新任务列表
       await fetchData(signer);
       
@@ -212,7 +202,7 @@ function App() {
             )}
             <WalletConnect onConnect={handleConnect} />
             {account && (
-              <button 
+              <button
                 className="btn btn-secondary profile-btn"
                 onClick={() => setShowProfile(true)}
               >
@@ -221,28 +211,28 @@ function App() {
             )}
           </div>
         </div>
-        
+
         {account && (
           <nav className="main-nav">
-            <button 
+            <button
               className={`nav-btn ${activeTab === 'tasks' ? 'active' : ''}`}
               onClick={() => setActiveTab('tasks')}
             >
               📋 Tasks
             </button>
-            <button 
+            <button
               className={`nav-btn ${activeTab === 'agents' ? 'active' : ''}`}
               onClick={() => setActiveTab('agents')}
             >
               🤖 Agents
             </button>
-            <button 
+            <button
               className={`nav-btn ${activeTab === 'community' ? 'active' : ''}`}
               onClick={() => setActiveTab('community')}
             >
               🌐 Community
             </button>
-            <button 
+            <button
               className={`nav-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
               onClick={() => setActiveTab('dashboard')}
             >
