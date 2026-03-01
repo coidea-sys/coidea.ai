@@ -54,8 +54,6 @@ const NetworkSwitch = ({ currentNetwork, onSwitch }) => {
     }
   };
 
-  const current = NETWORKS.find(n => n.id === currentNetwork);
-
   return (
     <div className="network-switch">
       <select 
