@@ -81,7 +81,6 @@ export function useCommunity(signer) {
     try {
       // 由于合约没有枚举所有帖子的方法，我们使用事件日志
       // 实际项目中应该使用后端索引
-      const provider = signer.provider;
       const filter = contract.filters.ForumPostCreated();
       const events = await contract.queryFilter(filter, -1000); // 最近1000个区块
       

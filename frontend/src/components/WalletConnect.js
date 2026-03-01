@@ -4,7 +4,7 @@ import { getNetworkConfig, isLocal } from '../config/network';
 
 function WalletConnect({ onConnect }) {
   const [account, setAccount] = useState('');
-  const [signer, setSigner] = useState(null);
+  const [, setSigner] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [chainId, setChainId] = useState(null);
   const [networkName, setNetworkName] = useState('');

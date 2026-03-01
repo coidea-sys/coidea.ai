@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { ethers } from 'ethers';
 
 const POST_TYPES = [
   { value: 0, label: '💬 Discussion', color: '#4CAF50' },

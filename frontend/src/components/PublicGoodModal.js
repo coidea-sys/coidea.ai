@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { ethers } from 'ethers';
 
 function PublicGoodModal({ isOpen, onClose, onSubmit }) {
   const [title, setTitle] = useState('');
