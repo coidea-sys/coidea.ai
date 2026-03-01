@@ -318,7 +318,7 @@ function App() {
             )}
 
             {activeTab === 'community' && (
-              <Community signer={signer} />
+              <Community signer={signer} account={account} />
             )}
 
             {activeTab === 'dashboard' && (
