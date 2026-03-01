@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { ethers } from 'ethers';
+import { ToastProvider } from './hooks/useToast';
 import WalletConnect from './components/WalletConnect';
 import AgentCard from './components/AgentCard';
 import TaskCard from './components/TaskCard';
@@ -375,4 +376,12 @@ function App() {
   );
 }
 
-export default App;
+function AppWithProvider() {
+  return (
+    <ToastProvider>
+      <App />
+    </ToastProvider>
+  );
+}
+
+export default AppWithProvider;
