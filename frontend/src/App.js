@@ -36,8 +36,6 @@ function App() {
   const fetchData = async (userSigner) => {
     setLoading(true);
     try {
-      // 使用模拟数据，因为合约没有枚举所有任务的方法
-      // 实际项目中需要添加事件索引或后端服务
       setTasks([
         {
           id: 1,
@@ -166,21 +164,6 @@ function App() {
       setIsCreating(false);
     }
   };
-      // 刷新任务列表
-      await fetchData(signer);
-      
-      // 关闭弹窗
-      setShowCreateModal(false);
-      
-      // 3秒后清除状态
-      setTimeout(() => setTxStatus(null), 3000);
-
-    } catch (error) {
-      console.error('Create task error:', error);
-      setTxStatus('error');
-      alert('Failed to create task: ' + error.message);
-    }
-  };
 
   return (
     <div className="App">
@@ -191,14 +174,8 @@ function App() {
             <p>AI-Human Hybrid Collaboration</p>
           </div>
           <div className="header-right">
-            {txStatus === 'pending' && (
-              <span className="tx-status pending">⏳ Transaction pending...</span>
-            )}
-            {txStatus === 'success' && (
-              <span className="tx-status success">✅ Task created!</span>
-            )}
-            {txStatus === 'error' && (
-              <span className="tx-status error">❌ Transaction failed</span>
+            {isCreating && (
+              <span className="tx-status pending">⏳ Creating task...</span>
             )}
             <WalletConnect onConnect={handleConnect} />
             {account && (
