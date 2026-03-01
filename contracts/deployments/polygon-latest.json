@@ -1,0 +1,19 @@
+{
+  "network": "polygon",
+  "chainId": 137,
+  "deployer": "0x0FB4eb50E6d70bF1Ed107CeDF18eEe1906f9464d",
+  "contracts": {
+    "LiabilityPreset": "0xBE8EFdb2709687CE6128D629F868f28ECcaF1493",
+    "AIAgentRegistry": "0xdb36268016302Ca6abcBcD45CB206e88Ee358fD6",
+    "TaskRegistry": "0x3970FAf7708E18BD737C1f7fAD5c770FCD519Db5",
+    "X402Payment": "0x97738aE517ECDeD0cdfFB2aD7FB90Dfac803efbe",
+    "CommunityGovernance": "0x6AA35Fee046412830E371111Ddb15B74A145dF01"
+  },
+  "presets": {
+    "STANDARD": "0xa3fb30056d2c05f0b310151a52bfffabfc375a5f39efdcc17184b34cb3f5d9e1",
+    "LIMITED": "0x2a9f784d89f900f485f2f888a68d66d840fa9cea3b9dea64f2903dbbf89b7675",
+    "INSURED": "0x0e23468e1abbcbb31d08ab18aa8df8953b5acd751a0c4725ae27b44d0e8c2f93",
+    "BONDED": "0x9d9297abed392649589abfa441f0a17b4903c1bc2fbed7231ca3434e0532e837"
+  },
+  "deployedAt": "2026-03-01T21:22:41.096Z"
+}

@@ -39,21 +39,21 @@ const NETWORKS = {
   polygon: {
     name: 'Polygon Mainnet',
     chainId: 137,
-    rpc: 'https://polygon-rpc.com',
+    rpc: 'https://polygon-mainnet.g.alchemy.com/v2/5G_UIjfuIOv5Eyk5yL4w5',
     contracts: {
-      AIAgentRegistry: process.env.REACT_APP_POLYGON_AI_AGENT_REGISTRY_ADDRESS,
-      HumanLevelNFT: process.env.REACT_APP_POLYGON_HUMAN_LEVEL_NFT_ADDRESS,
-      TaskRegistry: process.env.REACT_APP_POLYGON_TASK_REGISTRY_ADDRESS,
-      X402Payment: process.env.REACT_APP_POLYGON_X402_PAYMENT_ADDRESS,
-      LiabilityPreset: process.env.REACT_APP_POLYGON_LIABILITY_PRESET_ADDRESS,
+      AIAgentRegistry: '0xdb36268016302Ca6abcBcD45CB206e88Ee358fD6',
+      TaskRegistry: '0x3970FAf7708E18BD737C1f7fAD5c770FCD519Db5',
+      X402Payment: '0x97738aE517ECDeD0cdfFB2aD7FB90Dfac803efbe',
+      CommunityGovernance: '0x6AA35Fee046412830E371111Ddb15B74A145dF01',
+      LiabilityPreset: '0xBE8EFdb2709687CE6128D629F868f28ECcaF1493',
     },
     liabilityPresets: {
-      STANDARD: process.env.REACT_APP_POLYGON_PRESET_STANDARD,
-      LIMITED: process.env.REACT_APP_POLYGON_PRESET_LIMITED,
-      INSURED: process.env.REACT_APP_POLYGON_PRESET_INSURED,
-      BONDED: process.env.REACT_APP_POLYGON_PRESET_BONDED,
+      STANDARD: '0xa3fb30056d2c05f0b310151a52bfffabfc375a5f39efdcc17184b34cb3f5d9e1',
+      LIMITED: '0x2a9f784d89f900f485f2f888a68d66d840fa9cea3b9dea64f2903dbbf89b7675',
+      INSURED: '0x0e23468e1abbcbb31d08ab18aa8df8953b5acd751a0c4725ae27b44d0e8c2f93',
+      BONDED: '0x9d9297abed392649589abfa441f0a17b4903c1bc2fbed7231ca3434e0532e837'
     }
-  }
+  },
 };
 
 // 当前环境
