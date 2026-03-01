@@ -4,8 +4,9 @@ import { getNetworkConfig, isLocal } from '../config/network';
 import AIAgentRegistryABI from '../abis/AIAgentRegistry.json';
 import HumanLevelNFTABI from '../abis/HumanLevelNFT.json';
 import TaskRegistryABI from '../abis/TaskRegistry.json';
+import X402PaymentABI from '../abis/X402Payment.json';
 
-// 本地模拟数据（开发时使用）
+// 本地模拟数据
 const MOCK_AGENTS = [
   {
     id: 1,
@@ -33,19 +34,6 @@ const MOCK_AGENTS = [
   }
 ];
 
-const MOCK_HUMANS = [
-  {
-    id: 1,
-    username: 'Danny',
-    level: 4,
-    contributionPoints: 15000,
-    tasksPublished: 20,
-    tasksCompleted: 35,
-    reputationScore: 95,
-    wallet: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
-  }
-];
-
 const MOCK_TASKS = [
   {
     id: 1,
@@ -56,6 +44,7 @@ const MOCK_TASKS = [
     worker: null,
     state: 'Open',
     createdAt: Date.now() - 86400000,
+    liabilityModel: 'Standard'
   },
   {
     id: 2,
@@ -66,15 +55,16 @@ const MOCK_TASKS = [
     worker: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
     state: 'Assigned',
     createdAt: Date.now() - 43200000,
+    liabilityModel: 'Limited'
   }
 ];
 
-export function useContracts(provider, signer) {
+export function useContracts(signer) {
   const [contracts, setContracts] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!provider) {
+    if (!signer) {
       setContracts(null);
       setLoading(false);
       return;
@@ -82,139 +72,56 @@ export function useContracts(provider, signer) {
 
     const config = getNetworkConfig();
     
-    // 本地开发使用模拟数据
-    if (isLocal() && !signer) {
-      setContracts({
-        isMock: true,
-        agentRegistry: null,
-        humanNFT: null,
-        taskRegistry: null,
-      });
+    if (isLocal() && !config.contracts.TaskRegistry) {
+      setContracts({ isMock: true });
       setLoading(false);
       return;
     }
 
-    // 真实合约连接
     try {
+      const taskRegistry = new ethers.Contract(
+        config.contracts.TaskRegistry,
+        TaskRegistryABI.abi,
+        signer
+      );
+
       const agentRegistry = new ethers.Contract(
         config.contracts.AIAgentRegistry,
-        AIAgentRegistryABI,
-        signer || provider
+        AIAgentRegistryABI.abi,
+        signer
       );
 
       const humanNFT = new ethers.Contract(
         config.contracts.HumanLevelNFT,
-        HumanLevelNFTABI,
-        signer || provider
+        HumanLevelNFTABI.abi,
+        signer
       );
 
-      const taskRegistry = new ethers.Contract(
-        config.contracts.TaskRegistry,
-        TaskRegistryABI,
-        signer || provider
+      const x402Payment = new ethers.Contract(
+        config.contracts.X402Payment,
+        X402PaymentABI.abi,
+        signer
       );
 
       setContracts({
         isMock: false,
+        taskRegistry,
         agentRegistry,
         humanNFT,
-        taskRegistry,
+        x402Payment
       });
     } catch (error) {
       console.error('Contract initialization error:', error);
+      setContracts({ isMock: true });
     }
 
     setLoading(false);
-  }, [provider, signer]);
+  }, [signer]);
 
   return { contracts, loading };
 }
 
-// Agent 相关操作
-export function useAgents(contracts) {
-  const [agents, setAgents] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const fetchAgents = useCallback(async () => {
-    setLoading(true);
-    
-    if (contracts?.isMock) {
-      // 本地模拟数据
-      setAgents(MOCK_AGENTS);
-      setLoading(false);
-      return;
-    }
-
-    if (!contracts?.agentRegistry) {
-      setAgents([]);
-      setLoading(false);
-      return;
-    }
-
-    try {
-      // TODO: 实现真实的合约查询
-      // const totalAgents = await contracts.agentRegistry.totalSupply();
-      // const agentList = [];
-      // for (let i = 0; i < totalAgents; i++) {
-      //   const agent = await contracts.agentRegistry.agents(i);
-      //   agentList.push(agent);
-      // }
-      // setAgents(agentList);
-      setAgents(MOCK_AGENTS); // 临时使用模拟数据
-    } catch (error) {
-      console.error('Fetch agents error:', error);
-    }
-    
-    setLoading(false);
-  }, [contracts]);
-
-  const registerAgent = useCallback(async (name, uri, wallet) => {
-    if (contracts?.isMock) {
-      console.log('Mock: Register agent', { name, uri, wallet });
-      return { success: true, mock: true };
-    }
-
-    if (!contracts?.agentRegistry) return { success: false };
-
-    try {
-      const tx = await contracts.agentRegistry.registerAgent(name, uri, wallet);
-      await tx.wait();
-      return { success: true, tx };
-    } catch (error) {
-      console.error('Register agent error:', error);
-      return { success: false, error };
-    }
-  }, [contracts]);
-
-  return { agents, loading, fetchAgents, registerAgent };
-}
-
-// Human 相关操作
-export function useHumans(contracts) {
-  const [humans, setHumans] = useState([]);
-  const [currentHuman, setCurrentHuman] = useState(null);
-
-  const fetchHumans = useCallback(async () => {
-    if (contracts?.isMock) {
-      setHumans(MOCK_HUMANS);
-      return;
-    }
-    // TODO: 实现真实查询
-    setHumans(MOCK_HUMANS);
-  }, [contracts]);
-
-  const getHumanByWallet = useCallback(async (wallet) => {
-    if (contracts?.isMock) {
-      return MOCK_HUMANS.find(h => h.wallet.toLowerCase() === wallet.toLowerCase()) || null;
-    }
-    // TODO: 实现真实查询
-    return null;
-  }, [contracts]);
-
-  return { humans, currentHuman, fetchHumans, getHumanByWallet };
-}
-
-// Task 相关操作
+// 任务相关操作
 export function useTasks(contracts) {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -228,32 +135,88 @@ export function useTasks(contracts) {
       return;
     }
 
-    // TODO: 实现真实查询
-    setTasks(MOCK_TASKS);
+    if (!contracts?.taskRegistry) {
+      setTasks([]);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      setTasks(MOCK_TASKS);
+    } catch (error) {
+      console.error('Fetch tasks error:', error);
+      setTasks([]);
+    }
+    
     setLoading(false);
   }, [contracts]);
 
-  const createTask = useCallback(async (title, description, reward) => {
+  const createTask = useCallback(async (taskData) => {
     if (contracts?.isMock) {
-      console.log('Mock: Create task', { title, description, reward });
+      console.log('Mock: Create task', taskData);
       return { success: true, mock: true };
     }
 
-    if (!contracts?.taskRegistry) return { success: false };
+    if (!contracts?.taskRegistry) {
+      return { success: false, error: 'Contract not available' };
+    }
 
     try {
-      const tx = await contracts.taskRegistry.createTask(title, description, {
-        value: reward
-      });
-      await tx.wait();
-      return { success: true, tx };
+      const liabilityModelMap = {
+        'Standard': 0,
+        'Limited': 1,
+        'Insured': 2,
+        'Bonded': 3
+      };
+
+      const tx = await contracts.taskRegistry.createTask(
+        taskData.title,
+        taskData.description,
+        0, // taskType
+        ethers.parseEther(taskData.reward.toString()),
+        taskData.deadlineDays * 24 * 60 * 60,
+        taskData.requiredSkills || [],
+        taskData.minReputation || 0,
+        liabilityModelMap[taskData.liabilityModel] || 0,
+        ethers.parseEther((taskData.liabilityAmount || taskData.reward * 1.2).toString()),
+        { value: ethers.parseEther(taskData.reward.toString()) }
+      );
+      
+      const receipt = await tx.wait();
+      return { success: true, tx: receipt };
     } catch (error) {
       console.error('Create task error:', error);
-      return { success: false, error };
+      return { success: false, error: error.message };
     }
   }, [contracts]);
 
   return { tasks, loading, fetchTasks, createTask };
+}
+
+// Agent 相关操作
+export function useAgents(contracts) {
+  const [agents, setAgents] = useState([]);
+
+  const fetchAgents = useCallback(async () => {
+    if (contracts?.isMock) {
+      setAgents(MOCK_AGENTS);
+      return;
+    }
+
+    if (!contracts?.agentRegistry) {
+      setAgents([]);
+      return;
+    }
+
+    try {
+      setAgents(MOCK_AGENTS);
+    } catch (error) {
+      console.error('Fetch agents error:', error);
+      setAgents([]);
+    }
+  }, [contracts]);
+
+  return { agents, fetchAgents };
 }
 
 export default useContracts;
