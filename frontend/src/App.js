@@ -5,6 +5,7 @@ import WalletConnect from './components/WalletConnect';
 import AgentCard from './components/AgentCard';
 import TaskCard from './components/TaskCard';
 import CreateTaskModal from './components/CreateTaskModal';
+import Community from './components/Community';
 import { getNetworkConfig } from './config/network';
 import TaskRegistryABI from './abis/TaskRegistry.json';
 
@@ -225,6 +226,12 @@ function App() {
               🤖 Agents
             </button>
             <button 
+              className={`nav-btn ${activeTab === 'community' ? 'active' : ''}`}
+              onClick={() => setActiveTab('community')}
+            >
+              🌐 Community
+            </button>
+            <button 
               className={`nav-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
               onClick={() => setActiveTab('dashboard')}
             >
@@ -308,6 +315,10 @@ function App() {
                   </div>
                 )}
               </section>
+            )}
+
+            {activeTab === 'community' && (
+              <Community signer={signer} />
             )}
 
             {activeTab === 'dashboard' && (
