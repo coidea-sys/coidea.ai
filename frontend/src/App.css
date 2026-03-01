@@ -465,6 +465,34 @@ body {
   color: #888;
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tx-status {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.tx-status.pending {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.tx-status.success {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.tx-status.error {
+  background: #ffebee;
+  color: #c62828;
+}
+
 /* Footer */
 .App-footer {
   text-align: center;

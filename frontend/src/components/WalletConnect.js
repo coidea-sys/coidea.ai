@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { ethers } from 'ethers';
 import { getNetworkConfig, isLocal } from '../config/network';
 
 function WalletConnect({ onConnect }) {
   const [account, setAccount] = useState('');
+  const [signer, setSigner] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [chainId, setChainId] = useState(null);
   const [networkName, setNetworkName] = useState('');
@@ -16,6 +18,12 @@ function WalletConnect({ onConnect }) {
     else setNetworkName(`Chain ${id}`);
   }, []);
 
+  const getSigner = async () => {
+    if (!window.ethereum) return null;
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    return await provider.getSigner();
+  };
+
   useEffect(() => {
     const checkConnection = async () => {
       if (window.ethereum) {
@@ -28,7 +36,10 @@ function WalletConnect({ onConnect }) {
             const currentChainId = parseInt(chain, 16);
             setChainId(currentChainId);
             updateNetworkName(currentChainId);
-            onConnect && onConnect(accounts[0]);
+            
+            const userSigner = await getSigner();
+            setSigner(userSigner);
+            onConnect && onConnect(accounts[0], userSigner);
           }
         } catch (error) {
           console.error('Check connection error:', error);
@@ -36,15 +47,18 @@ function WalletConnect({ onConnect }) {
       }
     };
 
-    const handleAccountsChanged = (accounts) => {
+    const handleAccountsChanged = async (accounts) => {
       if (accounts.length > 0) {
         setAccount(accounts[0]);
         setIsConnected(true);
-        onConnect && onConnect(accounts[0]);
+        const userSigner = await getSigner();
+        setSigner(userSigner);
+        onConnect && onConnect(accounts[0], userSigner);
       } else {
         setAccount('');
+        setSigner(null);
         setIsConnected(false);
-        onConnect && onConnect(null);
+        onConnect && onConnect(null, null);
       }
     };
 
@@ -83,7 +97,10 @@ function WalletConnect({ onConnect }) {
       const currentChainId = parseInt(chain, 16);
       setChainId(currentChainId);
       updateNetworkName(currentChainId);
-      onConnect && onConnect(accounts[0]);
+      
+      const userSigner = await getSigner();
+      setSigner(userSigner);
+      onConnect && onConnect(accounts[0], userSigner);
     } catch (error) {
       console.error('Connection error:', error);
     }
