@@ -110,7 +110,7 @@ export function useCommunity(signer) {
     }
     
     setLoading(false);
-  }, [contract, signer]);
+  }, [contract]);
 
   // 创建帖子
   const createPost = useCallback(async (title, content, postType) => {
