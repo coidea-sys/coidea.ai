@@ -14,18 +14,33 @@ module.exports = {
     }
   },
   networks: {
+    // 本地开发环境 - 无限 gas，快速迭代
     hardhat: {
-      chainId: 1337
+      chainId: 31337,
+      mining: {
+        auto: true,
+        interval: 0
+      }
     },
+    // 本地节点 - 用于前端联调
+    localhost: {
+      url: 'http://127.0.0.1:8545',
+      chainId: 31337,
+      accounts: process.env.LOCAL_PRIVATE_KEY ? [process.env.LOCAL_PRIVATE_KEY] : undefined
+    },
+    // Amoy 测试网 - 预生产验证
     amoy: {
       url: process.env.POLYGON_RPC_URL || 'https://rpc-amoy.polygon.technology',
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
-      chainId: 80002
+      accounts: process.env.PRIVATE_KEY && process.env.PRIVATE_KEY !== 'your_private_key_here' ? [process.env.PRIVATE_KEY] : [],
+      chainId: 80002,
+      gasPrice: 'auto'
     },
+    // Polygon 主网 - 生产环境
     polygon: {
       url: process.env.POLYGON_MAINNET_RPC || 'https://polygon-rpc.com',
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
-      chainId: 137
+      accounts: process.env.MAINNET_PRIVATE_KEY && process.env.MAINNET_PRIVATE_KEY !== 'your_mainnet_private_key_here' ? [process.env.MAINNET_PRIVATE_KEY] : [],
+      chainId: 137,
+      gasPrice: 'auto'
     }
   },
   etherscan: {

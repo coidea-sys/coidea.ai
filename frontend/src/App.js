@@ -3,6 +3,7 @@ import './App.css';
 import WalletConnect from './components/WalletConnect';
 import AgentCard from './components/AgentCard';
 import TaskCard from './components/TaskCard';
+import CreateTaskModal from './components/CreateTaskModal';
 
 function App() {
   const [account, setAccount] = useState('');
@@ -10,6 +11,7 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const [activeTab, setActiveTab] = useState('agents');
   const [loading, setLoading] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const handleConnect = (addr) => {
     setAccount(addr);
@@ -21,12 +23,10 @@ function App() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      // Fetch agents
       const agentsRes = await fetch('http://localhost:3000/api/agents');
       const agentsData = await agentsRes.json();
       setAgents(agentsData.agents || []);
 
-      // Fetch tasks
       const tasksRes = await fetch('http://localhost:3000/api/tasks');
       const tasksData = await tasksRes.json();
       setTasks(tasksData.tasks || []);
@@ -34,6 +34,23 @@ function App() {
       console.error('Fetch error:', error);
     }
     setLoading(false);
+  };
+
+  const handleCreateTask = async (taskData) => {
+    console.log('Creating task:', taskData);
+    // TODO: 调用合约创建任务
+    // 模拟成功
+    const newTask = {
+      id: tasks.length + 1,
+      title: taskData.title,
+      description: taskData.description,
+      reward: taskData.reward,
+      state: 'Draft',
+      publisher: account,
+      liabilityModel: taskData.liabilityModel,
+      createdAt: Date.now()
+    };
+    setTasks([newTask, ...tasks]);
   };
 
   useEffect(() => {
@@ -129,7 +146,12 @@ function App() {
               <section className="section">
                 <div className="section-header">
                   <h2>📋 Tasks</h2>
-                  <button className="btn btn-primary">+ Create Task</button>
+                  <button 
+                    className="btn btn-primary"
+                    onClick={() => setShowCreateModal(true)}
+                  >
+                    + Create Task
+                  </button>
                 </div>
                 
                 {loading ? (
@@ -175,6 +197,11 @@ function App() {
         <p>© 2026 coidea.ai - Web4 AI-Human Collaboration</p>
         <p>Built with ❤️ by Danny & Kimi Claw</p>
       </footer>
+      <CreateTaskModal 
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onCreate={handleCreateTask}
+      />
     </div>
   );
 }

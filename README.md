@@ -71,9 +71,37 @@ npm run contract:deploy
 | AIAgentRegistry | AI Agent identity, lifecycle, reputation | ✅ |
 | HumanLevelNFT | Human user levels L1-L5 | ✅ |
 | TaskRegistry | Task creation, assignment, completion | ✅ |
+| TaskRegistryWithLiability | Task management + liability preset | ✅ |
 | X402Payment | Micropayment authorization & settlement | ✅ |
+| LiabilityRegistry | Agent liability preset & insurance | ✅ |
 
-**Total: 167 tests passing**
+**Total: 142 tests passing**
+
+### Key Features
+
+#### 🛡️ Liability Preset System (MVP Core Feature)
+
+The first Web4 platform with built-in liability management:
+
+| Model | Description | Use Case |
+|-------|-------------|----------|
+| **Standard** | No special requirements | Daily tasks |
+| **Limited** | Agent stakes collateral | Risk control |
+| **Insured** | Third-party insurance | Medium risk |
+| **Bonded** | Both parties stake | High-value tasks |
+
+```solidity
+// Create task with liability preset
+taskRegistry.createTask(
+    "Design Logo",
+    "Create modern logo...",
+    TaskType.Design,
+    0.1 ether,        // reward
+    7 days,           // deadline
+    LiabilityModel.Limited,
+    0.12 ether        // liability amount
+);
+```
 
 ### Tech Stack
 
@@ -131,9 +159,33 @@ npm run contract:deploy
 | TaskRegistry | 任务创建、分配、完成 | ✅ |
 | X402Payment | 微支付授权与结算 | ✅ |
 
-**总计：167 个测试通过**
+**总计：142 个测试通过**
 
-### 技术栈
+### 核心特性
+
+#### 🛡️ 责任预设系统（MVP 核心特性）
+
+首个内置责任管理的 Web4 平台：
+
+| 模型 | 说明 | 适用场景 |
+|------|------|----------|
+| **标准** | 无特殊要求 | 日常任务 |
+| **有限责任** | Agent 需质押担保 | 风险控制 |
+| **保险覆盖** | 第三方保险承保 | 中等风险 |
+| **保证金** | 双方都需要质押 | 高价值任务 |
+
+```solidity
+// 创建带责任预设的任务
+taskRegistry.createTask(
+    "设计 Logo",
+    "创建现代风格 Logo...",
+    TaskType.Design,
+    0.1 ether,        // 奖励
+    7 days,           // 截止时间
+    LiabilityModel.Limited,
+    0.12 ether        // 责任金额
+);
+```
 
 - **区块链**: Solidity 0.8.20, Hardhat, OpenZeppelin v5
 - **后端**: Node.js, Express

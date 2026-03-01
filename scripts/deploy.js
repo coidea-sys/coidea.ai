@@ -1,87 +1,153 @@
 const { ethers, network } = require("hardhat");
+const fs = require('fs');
+const path = require('path');
+
+// 网络配置
+const NETWORK_CONFIG = {
+  hardhat: {
+    name: 'Local Hardhat',
+    confirmations: 1,
+    verify: false
+  },
+  localhost: {
+    name: 'Local Node',
+    confirmations: 1,
+    verify: false
+  },
+  amoy: {
+    name: 'Polygon Amoy Testnet',
+    confirmations: 2,
+    verify: true,
+    explorer: 'https://amoy.polygonscan.com'
+  },
+  polygon: {
+    name: 'Polygon Mainnet',
+    confirmations: 5,
+    verify: true,
+    explorer: 'https://polygonscan.com'
+  }
+};
 
 async function main() {
-  console.log("Network:", network.name);
-  console.log("Chain ID:", network.config.chainId);
-  
-  const signers = await ethers.getSigners();
-  console.log("Number of signers:", signers.length);
-  
-  if (signers.length === 0) {
-    console.error("No signers found! Check PRIVATE_KEY in .env");
+  const config = NETWORK_CONFIG[network.name];
+  if (!config) {
+    throw new Error(`Unknown network: ${network.name}`);
+  }
+
+  console.log(`\n🚀 Deploying to: ${config.name}`);
+  console.log(`   Chain ID: ${network.config.chainId}`);
+  console.log(`   RPC: ${network.config.url || 'built-in'}\n`);
+
+  // 获取签名者
+  const [deployer] = await ethers.getSigners();
+  console.log(`👤 Deployer: ${deployer.address}`);
+
+  // 检查余额
+  const balance = await ethers.provider.getBalance(deployer.address);
+  console.log(`💰 Balance: ${ethers.formatEther(balance)} ${network.name === 'polygon' ? 'POL' : 'ETH/POL'}\n`);
+
+  if (balance === 0n && network.name !== 'hardhat') {
+    console.error(`❌ Insufficient balance! Get ${network.name === 'amoy' ? 'testnet POL from faucet' : 'POL from exchange'}`);
     process.exit(1);
   }
-  
-  const [deployer] = signers;
-  
-  console.log("Deploying contracts with the account:", deployer.address);
-  
-  const balance = await ethers.provider.getBalance(deployer.address);
-  console.log("Account balance:", ethers.formatEther(balance), "POL");
 
-  // Deploy AIAgentRegistry
-  console.log("\nDeploying AIAgentRegistry...");
+  // 部署合约
+  const deployments = {};
+
+  // 1. AIAgentRegistry
+  console.log('📄 Deploying AIAgentRegistry...');
   const AIAgentRegistry = await ethers.getContractFactory("AIAgentRegistry");
   const registry = await AIAgentRegistry.deploy(deployer.address);
-  await registry.waitForDeployment();
-  const registryAddress = await registry.getAddress();
-  console.log("AIAgentRegistry deployed to:", registryAddress);
+  await registry.deploymentTransaction().wait(config.confirmations);
+  deployments.AIAgentRegistry = await registry.getAddress();
+  console.log(`   ✅ ${deployments.AIAgentRegistry}\n`);
 
-  // Deploy HumanLevelNFT
-  console.log("\nDeploying HumanLevelNFT...");
+  // 2. HumanLevelNFT
+  console.log('📄 Deploying HumanLevelNFT...');
   const HumanLevelNFT = await ethers.getContractFactory("HumanLevelNFT");
   const humanNFT = await HumanLevelNFT.deploy();
-  await humanNFT.waitForDeployment();
-  const humanNFTAddress = await humanNFT.getAddress();
-  console.log("HumanLevelNFT deployed to:", humanNFTAddress);
+  await humanNFT.deploymentTransaction().wait(config.confirmations);
+  deployments.HumanLevelNFT = await humanNFT.getAddress();
+  console.log(`   ✅ ${deployments.HumanLevelNFT}\n`);
 
-  // Deploy TaskRegistry
-  console.log("\nDeploying TaskRegistry...");
+  // 3. TaskRegistry
+  console.log('📄 Deploying TaskRegistry...');
   const TaskRegistry = await ethers.getContractFactory("TaskRegistry");
   const taskRegistry = await TaskRegistry.deploy(deployer.address);
-  await taskRegistry.waitForDeployment();
-  const taskRegistryAddress = await taskRegistry.getAddress();
-  console.log("TaskRegistry deployed to:", taskRegistryAddress);
+  await taskRegistry.deploymentTransaction().wait(config.confirmations);
+  deployments.TaskRegistry = await taskRegistry.getAddress();
+  console.log(`   ✅ ${deployments.TaskRegistry}\n`);
 
-  // Deploy X402Payment
-  console.log("\nDeploying X402Payment...");
+  // 4. X402Payment
+  console.log('📄 Deploying X402Payment...');
   const X402Payment = await ethers.getContractFactory("X402Payment");
   const x402 = await X402Payment.deploy(deployer.address);
-  await x402.waitForDeployment();
-  const x402Address = await x402.getAddress();
-  console.log("X402Payment deployed to:", x402Address);
+  await x402.deploymentTransaction().wait(config.confirmations);
+  deployments.X402Payment = await x402.getAddress();
+  console.log(`   ✅ ${deployments.X402Payment}\n`);
 
-  console.log("\n=== Deployment Summary ===");
-  console.log("AIAgentRegistry:", registryAddress);
-  console.log("HumanLevelNFT:", humanNFTAddress);
-  console.log("TaskRegistry:", taskRegistryAddress);
-  console.log("X402Payment:", x402Address);
-  
-  // Save deployment info
+  // 保存部署信息
   const deploymentInfo = {
     network: network.name,
     chainId: network.config.chainId,
     deployer: deployer.address,
-    contracts: {
-      AIAgentRegistry: registryAddress,
-      HumanLevelNFT: humanNFTAddress,
-      TaskRegistry: taskRegistryAddress,
-      X402Payment: x402Address
-    },
-    timestamp: new Date().toISOString()
+    contracts: deployments,
+    timestamp: new Date().toISOString(),
+    explorer: config.explorer
   };
-  
-  const fs = require('fs');
-  fs.writeFileSync(
-    `deployment-${network.name}.json`,
-    JSON.stringify(deploymentInfo, null, 2)
-  );
-  console.log("\nDeployment info saved to deployment-" + network.name + ".json");
+
+  // 保存到 deployments/ 目录
+  const deploymentsDir = path.join(__dirname, '..', 'deployments');
+  if (!fs.existsSync(deploymentsDir)) {
+    fs.mkdirSync(deploymentsDir, { recursive: true });
+  }
+
+  const deploymentFile = path.join(deploymentsDir, `${network.name}.json`);
+  fs.writeFileSync(deploymentFile, JSON.stringify(deploymentInfo, null, 2));
+  console.log(`💾 Deployment saved to: deployments/${network.name}.json`);
+
+  // 同时保存最新部署
+  const latestFile = path.join(deploymentsDir, 'latest.json');
+  fs.writeFileSync(latestFile, JSON.stringify(deploymentInfo, null, 2));
+
+  // 打印摘要
+  console.log('\n📋 Deployment Summary');
+  console.log('═══════════════════════════════════════════════════');
+  for (const [name, address] of Object.entries(deployments)) {
+    console.log(`${name.padEnd(20)} ${address}`);
+    if (config.explorer) {
+      console.log(`${''.padEnd(20)} ${config.explorer}/address/${address}`);
+    }
+  }
+  console.log('═══════════════════════════════════════════════════');
+
+  // 验证提示
+  if (config.verify) {
+    console.log('\n🔍 To verify contracts, run:');
+    for (const [name, address] of Object.entries(deployments)) {
+      console.log(`   npx hardhat verify --network ${network.name} ${address}`);
+    }
+  }
+
+  // 更新 .env 文件提示
+  console.log('\n📝 Update your .env file with:');
+  const envPrefix = network.name.toUpperCase();
+  for (const [name, address] of Object.entries(deployments)) {
+    // 转换 CamelCase 为 UPPER_SNAKE_CASE
+    const envName = name
+      .replace(/([A-Z])/g, '_$1')
+      .toUpperCase()
+      .replace(/^_/, ''); // 移除开头的下划线
+    console.log(`${envPrefix}_${envName}_ADDRESS=${address}`);
+  }
 }
 
 main()
-  .then(() => process.exit(0))
+  .then(() => {
+    console.log('\n✨ Deployment complete!\n');
+    process.exit(0);
+  })
   .catch((error) => {
-    console.error(error);
+    console.error('\n❌ Deployment failed:', error.message);
     process.exit(1);
   });
