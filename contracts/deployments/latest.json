@@ -1,0 +1,15 @@
+{
+  "network": "hardhat",
+  "chainId": 31337,
+  "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+  "contracts": {
+    "LiabilityPreset": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+  },
+  "presets": {
+    "STANDARD": "0xa3fb30056d2c05f0b310151a52bfffabfc375a5f39efdcc17184b34cb3f5d9e1",
+    "LIMITED": "0x2a9f784d89f900f485f2f888a68d66d840fa9cea3b9dea64f2903dbbf89b7675",
+    "INSURED": "0x0e23468e1abbcbb31d08ab18aa8df8953b5acd751a0c4725ae27b44d0e8c2f93",
+    "BONDED": "0x9d9297abed392649589abfa441f0a17b4903c1bc2fbed7231ca3434e0532e837"
+  },
+  "deployedAt": "2026-03-01T17:00:02.383Z"
+}
