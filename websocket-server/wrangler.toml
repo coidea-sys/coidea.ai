@@ -1,15 +1,6 @@
 name = "coidea-websocket"
-main = "server.js"
+main = "index.js"
 compatibility_date = "2026-03-01"
 
 [env.production]
 vars = { NODE_ENV = "production", FRONTEND_URL = "https://coidea-ai.pages.dev" }
-
-# 使用 Durable Objects 支持 WebSocket
-[[durable_objects.bindings]]
-name = "ROOMS"
-class_name = "ChatRoom"
-
-[[migrations]]
-tag = "v1"
-new_classes = ["ChatRoom"]
