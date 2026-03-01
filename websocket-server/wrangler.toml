@@ -3,9 +3,13 @@ main = "server.js"
 compatibility_date = "2026-03-01"
 
 [env.production]
-vars = { NODE_ENV = "production" }
+vars = { NODE_ENV = "production", FRONTEND_URL = "https://coidea-ai.pages.dev" }
 
-# 可选：如果需要持久化，可以添加 Durable Objects
-# [[durable_objects.bindings]]
-# name = "ROOMS"
-# class_name = "ChatRoom"
+# 使用 Durable Objects 支持 WebSocket
+[[durable_objects.bindings]]
+name = "ROOMS"
+class_name = "ChatRoom"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["ChatRoom"]
