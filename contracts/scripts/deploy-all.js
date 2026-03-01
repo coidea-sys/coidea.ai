@@ -28,7 +28,7 @@ async function main() {
   // 2. Deploy AIAgentRegistry
   console.log("📋 2/5 Deploying AIAgentRegistry...");
   const AIAgentRegistry = await hre.ethers.getContractFactory("AIAgentRegistry");
-  const agentRegistry = await AIAgentRegistry.deploy();
+  const agentRegistry = await AIAgentRegistry.deploy(deployer.address);
   await agentRegistry.waitForDeployment();
   deployments.contracts.AIAgentRegistry = await agentRegistry.getAddress();
   console.log("   ✅ AIAgentRegistry:", deployments.contracts.AIAgentRegistry);
@@ -36,7 +36,7 @@ async function main() {
   // 3. Deploy TaskRegistry
   console.log("📋 3/5 Deploying TaskRegistry...");
   const TaskRegistry = await hre.ethers.getContractFactory("TaskRegistry");
-  const taskRegistry = await TaskRegistry.deploy();
+  const taskRegistry = await TaskRegistry.deploy(deployer.address);
   await taskRegistry.waitForDeployment();
   deployments.contracts.TaskRegistry = await taskRegistry.getAddress();
   console.log("   ✅ TaskRegistry:", deployments.contracts.TaskRegistry);
@@ -52,10 +52,7 @@ async function main() {
   // 5. Deploy CommunityGovernance
   console.log("📋 5/5 Deploying CommunityGovernance...");
   const CommunityGovernance = await hre.ethers.getContractFactory("CommunityGovernance");
-  const communityGovernance = await CommunityGovernance.deploy(
-    deployments.contracts.AIAgentRegistry,
-    deployments.contracts.TaskRegistry
-  );
+  const communityGovernance = await CommunityGovernance.deploy(deployer.address);
   await communityGovernance.waitForDeployment();
   deployments.contracts.CommunityGovernance = await communityGovernance.getAddress();
   console.log("   ✅ CommunityGovernance:", deployments.contracts.CommunityGovernance);
