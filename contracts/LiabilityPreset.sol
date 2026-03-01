@@ -82,6 +82,22 @@ contract LiabilityPreset is Ownable, ReentrancyGuard {
     /**
      * @notice 授权任务注册表合约
      */
+    function authorizeRegistry(address _registry) external onlyOwner {
+        require(_registry != address(0), "Invalid registry address");
+        authorizedTaskRegistries[_registry] = true;
+        emit TaskRegistryAuthorized(_registry);
+    }
+    
+    /**
+     * @notice 撤销任务注册表授权
+     */
+    function revokeRegistry(address _registry) external onlyOwner {
+        authorizedTaskRegistries[_registry] = false;
+    }
+    
+    /**
+     * @notice 授权任务注册表合约
+     */
     function authorizeTaskRegistry(address _registry) external onlyOwner {
         authorizedTaskRegistries[_registry] = true;
         emit TaskRegistryAuthorized(_registry);
