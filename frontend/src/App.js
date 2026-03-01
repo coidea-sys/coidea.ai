@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import './App.css';
 import { ethers } from 'ethers';
 import { ToastProvider, useToast } from './hooks/useToast';
+import { ThemeProvider } from './contexts/ThemeContext';
+import ErrorBoundary from './components/common/ErrorBoundary';
+import ThemeToggle from './components/common/ThemeToggle';
 import WalletConnect from './components/WalletConnect';
 import AgentCard from './components/AgentCard';
 import TaskCard from './components/TaskCard';
-import CreateTaskModal from './components/CreateTaskModal';
-import Community from './components/Community';
-import UserProfile from './components/UserProfile';
+import { SkeletonCard } from './components/common/Skeleton';
 import { getNetworkConfig } from './config/network';
 import TaskRegistryABI from './abis/TaskRegistry.json';
+
+// Lazy load heavy components
+const CreateTaskModal = lazy(() => import('./components/CreateTaskModal'));
+const Community = lazy(() => import('./components/Community'));
+const UserProfile = lazy(() => import('./components/UserProfile'));
+const NotificationCenter = lazy(() => import('./components/collaboration/NotificationCenter'));
 
 function App() {
   const { success, error: showError } = useToast();
@@ -177,6 +184,10 @@ function App() {
             {isCreating && (
               <span className="tx-status pending">⏳ Creating task...</span>
             )}
+            <ThemeToggle />
+            <Suspense fallback={<span>🔔</span>}>
+              <NotificationCenter socket={null} userId={account} />
+            </Suspense>
             <WalletConnect onConnect={handleConnect} />
             {account && (
               <button
@@ -327,27 +338,35 @@ function App() {
         <p>Built with ❤️ by Danny & Kimi Claw</p>
       </footer>
       
-      <CreateTaskModal 
-        isOpen={showCreateModal}
-        onClose={() => setShowCreateModal(false)}
-        onCreate={handleCreateTask}
-      />
+      <Suspense fallback={<SkeletonCard />}>
+        <CreateTaskModal 
+          isOpen={showCreateModal}
+          onClose={() => setShowCreateModal(false)}
+          onCreate={handleCreateTask}
+        />
+      </Suspense>
 
-      <UserProfile
-        isOpen={showProfile}
-        onClose={() => setShowProfile(false)}
-        account={account}
-        signer={signer}
-      />
+      <Suspense fallback={<SkeletonCard />}>
+        <UserProfile
+          isOpen={showProfile}
+          onClose={() => setShowProfile(false)}
+          account={account}
+          signer={signer}
+        />
+      </Suspense>
     </div>
   );
 }
 
 function AppWithProvider() {
   return (
-    <ToastProvider>
-      <App />
-    </ToastProvider>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <ToastProvider>
+          <App />
+        </ToastProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 

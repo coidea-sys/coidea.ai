@@ -1,0 +1,11 @@
+name = "coidea-websocket"
+main = "server.js"
+compatibility_date = "2026-03-01"
+
+[env.production]
+vars = { NODE_ENV = "production" }
+
+# 可选：如果需要持久化，可以添加 Durable Objects
+# [[durable_objects.bindings]]
+# name = "ROOMS"
+# class_name = "ChatRoom"
