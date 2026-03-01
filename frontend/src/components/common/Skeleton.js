@@ -60,10 +60,12 @@ export const SkeletonStats = () => (
   </div>
 );
 
-export default {
+const Skeleton = {
   SkeletonCard,
   SkeletonList,
   SkeletonText,
   SkeletonAvatar,
   SkeletonStats
 };
+
+export default Skeleton;
