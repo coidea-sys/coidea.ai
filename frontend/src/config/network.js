@@ -40,6 +40,7 @@ const NETWORKS = {
     name: 'Polygon Mainnet',
     chainId: 137,
     rpc: 'https://polygon-mainnet.g.alchemy.com/v2/5G_UIjfuIOv5Eyk5yL4w5',
+    wsUrl: 'wss://coidea-websocket.webthree549.workers.dev',
     contracts: {
       AIAgentRegistry: '0xdb36268016302Ca6abcBcD45CB206e88Ee358fD6',
       TaskRegistry: '0x3970FAf7708E18BD737C1f7fAD5c770FCD519Db5',
