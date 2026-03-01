@@ -1,0 +1,178 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "LiabilityPreset",
+  "sourceName": "contracts/LiabilityPreset.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_presetId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_publisherLiability",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_workerLiability",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_disputeWindow",
+          "type": "uint256"
+        }
+      ],
+      "name": "createBondedPreset",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_presetId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_publisherLiability",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_workerLiability",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_disputeWindow",
+          "type": "uint256"
+        }
+      ],
+      "name": "createLimitedPreset",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_presetId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_disputeWindow",
+          "type": "uint256"
+        }
+      ],
+      "name": "createStandardPreset",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_taskId",
+          "type": "uint256"
+        }
+      ],
+      "name": "depositWorkerLiability",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_taskId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_party",
+          "type": "address"
+        }
+      ],
+      "name": "getEscrowBalance",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_taskId",
+          "type": "uint256"
+        }
+      ],
+      "name": "requiresWorkerDeposit",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "presetId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "enum LiabilityPreset.LiabilityModel",
+          "name": "model",
+          "type": "uint8"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "publisherLiability",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "workerLiability",
+          "type": "uint256"
+        }
+      ],
+      "name": "PresetCreated",
+      "type": "event"
+    }
+  ]
+}
