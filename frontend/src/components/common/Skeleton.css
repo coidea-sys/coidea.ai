@@ -1,0 +1,126 @@
+/* Skeleton Loading Animation */
+
+.skeleton-card,
+.skeleton-text,
+.skeleton-stats {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.skeleton-header {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.skeleton-avatar,
+.skeleton-avatar-circle {
+  background: var(--skeleton-bg);
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-avatar {
+  width: 48px;
+  height: 48px;
+}
+
+.skeleton-lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+}
+
+.skeleton-line {
+  height: 12px;
+  background: var(--skeleton-bg);
+  border-radius: 6px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-line.short {
+  width: 40%;
+}
+
+.skeleton-line.medium {
+  width: 60%;
+}
+
+.skeleton-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.skeleton-footer {
+  display: flex;
+  gap: 12px;
+}
+
+.skeleton-button {
+  width: 100px;
+  height: 36px;
+  background: var(--skeleton-bg);
+  border-radius: 8px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.skeleton-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.skeleton-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* Stagger animation for multiple skeletons */
+.skeleton-list .skeleton-card:nth-child(1) .skeleton-line,
+.skeleton-list .skeleton-card:nth-child(1) .skeleton-avatar,
+.skeleton-list .skeleton-card:nth-child(1) .skeleton-button {
+  animation-delay: 0s;
+}
+
+.skeleton-list .skeleton-card:nth-child(2) .skeleton-line,
+.skeleton-list .skeleton-card:nth-child(2) .skeleton-avatar,
+.skeleton-list .skeleton-card:nth-child(2) .skeleton-button {
+  animation-delay: 0.1s;
+}
+
+.skeleton-list .skeleton-card:nth-child(3) .skeleton-line,
+.skeleton-list .skeleton-card:nth-child(3) .skeleton-avatar,
+.skeleton-list .skeleton-card:nth-child(3) .skeleton-button {
+  animation-delay: 0.2s;
+}
+
+/* CSS Variables for theming */
+:root {
+  --skeleton-bg: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="light"] {
+  --skeleton-bg: rgba(0, 0, 0, 0.1);
+}
