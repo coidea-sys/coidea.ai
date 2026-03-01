@@ -1,81 +1,72 @@
-# coidea.ai 已完成工作汇总
+# 已完成工作记录
 
-## ✅ Phase 1: Cloudflare Pages 部署准备
-
-### 已完成
-- [x] 静态落地页 (`dist/index.html`)
-- [x] Cloudflare 配置 (`wrangler.toml`)
-- [x] GitHub 推送
-
-### 待手动操作
-- [ ] Cloudflare Dashboard 创建项目
-- [ ] 连接 GitHub 仓库
-- [ ] 配置构建设置
-- [ ] 部署上线
-
----
-
-## ✅ 之前完成的所有工作
+## v0.1.0 - 基础架构 (2026-02-28 ~ 2026-03-02)
 
 ### 智能合约
-- [x] 4个合约开发完成
-- [x] 120+ 测试用例
-- [x] Hardhat 配置
-- [x] 编译通过
 
-### 后端
-- [x] Express API 服务
-- [x] 合约交互接口
-- [x] Docker 配置
-- [x] 本地运行测试通过
+#### 已部署 (Polygon Mainnet)
+- ✅ AIAgentRegistry - Agent 注册与身份管理
+- ✅ TaskRegistry - 任务市场核心
+- ✅ X402Payment - 无 Gas 支付协议
+- ✅ CommunityGovernance - 社区治理
+- ✅ LiabilityPreset - 4 种责任模型
+
+#### 已开发 (待部署)
+- ✅ HumanRegistry.sol - Human 身份系统
+- ✅ HumanEconomy.sol - Human 经济系统
+- ✅ AgentLifecycle.sol - Agent 生命周期管理
+- ✅ AgentRuntime.sol - Agent 执行引擎
+- ✅ AgentCommunity.sol - Agent 社区互动
 
 ### 前端
-- [x] React 组件
-- [x] WalletConnect
-- [x] AgentCard / TaskCard
-- [x] 响应式设计
+
+- ✅ React + Web3 基础架构
+- ✅ MetaMask 钱包连接
+- ✅ 网络切换 (Local/Polygon)
+- ✅ 主题切换 (Dark/Light/Organic)
+- ✅ 任务列表展示
+- ✅ Agent 卡片展示
+- ✅ 通知中心 UI
+- ✅ WebSocket 集成
+
+### 基础设施
+
+- ✅ Cloudflare Pages 部署
+- ✅ Cloudflare Workers WebSocket
+- ✅ GitHub CI/CD
 
 ### 文档
-- [x] API 文档
-- [x] 部署指南
-- [x] 数据库设计
-- [x] Cloudflare 部署策略
 
-### DevOps
-- [x] Dockerfile
-- [x] docker-compose.yml
-- [x] GitHub Actions 配置
+- ✅ 项目 README
+- ✅ Agent 生命周期文档
+- ✅ Human 生命周期文档
+- ✅ 部署指南
+- ✅ 项目状态文档
+- ✅ 迭代计划
 
----
+### 关键设计决策
 
-## ⏳ 待办事项
+1. **双轨经济系统**
+   - Human: 投资型，可以投资 Agent
+   - Agent: 执行型，自主管理资金
 
-### 高优先级
-1. [ ] 部署合约到 Polygon Amoy
-2. [ ] 获取测试网 POL
-3. [ ] 更新合约地址到 .env
+2. **4 层责任模型**
+   - Standard: 标准责任
+   - Limited: 有限责任
+   - Insured: 保险保障
+   - Bonded: 保证金担保
 
-### 中优先级
-4. [ ] 启动后端服务
-5. [ ] 完成 Cloudflare Pages 部署
-6. [ ] 添加数据库 (D1/KV)
+3. **混合执行模型**
+   - 链上: 身份、资金、关键状态
+   - 链下: LLM 推理、MCP 服务、实时协作
 
-### 低优先级
-7. [ ] 前端功能完善
-8. [ ] 监控日志
-9. [ ] 性能优化
+### 技术栈
 
----
-
-## 当前状态
-
-```
-合约: 开发完成 ➜ 待部署
-后端: 开发完成 ➜ 待启动
-前端: 静态页完成 ➜ 待部署到 Cloudflare
-文档: 完整 ✅
-```
+- **合约**: Solidity ^0.8.20, OpenZeppelin
+- **前端**: React 18, ethers.js, WebSocket
+- **部署**: Hardhat, Cloudflare
+- **网络**: Polygon Mainnet
 
 ---
 
-更新时间: 2026-03-01
+*Last updated: 2026-03-02*
