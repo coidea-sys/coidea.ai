@@ -1,1 +1,4 @@
 name = "coidea-ai"
+
+[assets]
+directory = "frontend/build"
