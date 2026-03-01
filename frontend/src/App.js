@@ -6,6 +6,7 @@ import AgentCard from './components/AgentCard';
 import TaskCard from './components/TaskCard';
 import CreateTaskModal from './components/CreateTaskModal';
 import Community from './components/Community';
+import UserProfile from './components/UserProfile';
 import { getNetworkConfig } from './config/network';
 import TaskRegistryABI from './abis/TaskRegistry.json';
 
@@ -17,6 +18,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('tasks');
   const [loading, setLoading] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const [txStatus, setTxStatus] = useState(null);
 
   const config = getNetworkConfig();
@@ -208,6 +210,14 @@ function App() {
               <span className="tx-status error">❌ Transaction failed</span>
             )}
             <WalletConnect onConnect={handleConnect} />
+            {account && (
+              <button 
+                className="btn btn-secondary profile-btn"
+                onClick={() => setShowProfile(true)}
+              >
+                👤 Profile
+              </button>
+            )}
           </div>
         </div>
         
@@ -353,6 +363,13 @@ function App() {
         isOpen={showCreateModal}
         onClose={() => setShowCreateModal(false)}
         onCreate={handleCreateTask}
+      />
+
+      <UserProfile
+        isOpen={showProfile}
+        onClose={() => setShowProfile(false)}
+        account={account}
+        signer={signer}
       />
     </div>
   );

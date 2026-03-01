@@ -693,6 +693,281 @@ body {
   font-weight: 600;
 }
 
+.profile-btn {
+  margin-left: 1rem;
+}
+
+/* User Profile Styles */
+
+.user-profile {
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00d4ff, #7b2cbf);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-info h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+}
+
+.profile-level {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.level-badge {
+  padding: 0.25rem 0.75rem;
+  background: rgba(0, 212, 255, 0.2);
+  color: #00d4ff;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.level-progress-bar {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.level-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+  transition: width 0.3s ease;
+}
+
+.exp-text {
+  font-size: 0.875rem;
+  color: #888;
+}
+
+.profile-tabs {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.profile-tabs .tab {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.profile-tabs .tab:hover {
+  color: #fff;
+}
+
+.profile-tabs .tab.active {
+  color: #00d4ff;
+  border-bottom: 2px solid #00d4ff;
+}
+
+.profile-content {
+  padding: 1.5rem;
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.overview-grid .stat-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.overview-grid .stat-card:hover {
+  border-color: rgba(0, 212, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.overview-grid .stat-icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.overview-grid .stat-value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #00d4ff;
+  margin-bottom: 0.25rem;
+}
+
+.overview-grid .stat-label {
+  font-size: 0.875rem;
+  color: #888;
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+}
+
+.activity-icon {
+  font-size: 1.5rem;
+}
+
+.activity-content {
+  flex: 1;
+}
+
+.activity-content p {
+  margin: 0 0 0.25rem 0;
+  color: #fff;
+}
+
+.activity-time {
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.activity-reward {
+  color: #4CAF50;
+  font-weight: 600;
+}
+
+.reputation-section {
+  text-align: center;
+}
+
+.credit-score-display {
+  margin-bottom: 2rem;
+}
+
+.credit-circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #00d4ff 0%, #7b2cbf 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  position: relative;
+}
+
+.credit-circle::before {
+  content: '';
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: #1a1a2e;
+}
+
+.credit-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #00d4ff;
+  position: relative;
+  z-index: 1;
+}
+
+.credit-max {
+  font-size: 1rem;
+  color: #888;
+  position: relative;
+  z-index: 1;
+}
+
+.credit-status {
+  font-size: 1.25rem;
+  color: #00d4ff;
+}
+
+.reputation-factors {
+  text-align: left;
+}
+
+.reputation-factors h4 {
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.factor-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.factor-item span:first-child {
+  width: 150px;
+  font-size: 0.875rem;
+  color: #aaa;
+}
+
+.factor-bar {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.factor-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+  transition: width 0.3s ease;
+}
+
+.factor-item span:last-child {
+  width: 40px;
+  text-align: right;
+  font-size: 0.875rem;
+  color: #00d4ff;
+}
+
 /* Footer */
 .App-footer {
   text-align: center;
