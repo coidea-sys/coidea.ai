@@ -1,0 +1,257 @@
+.agent-reputation {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 600px;
+}
+
+/* Header */
+.reputation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.agent-identity {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.agent-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.agent-info h3 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+}
+
+.agent-state {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.agent-state.active {
+  background: rgba(72, 187, 120, 0.2);
+  color: #48bb78;
+}
+
+.agent-state.inactive {
+  background: rgba(160, 174, 192, 0.2);
+  color: #a0aec0;
+}
+
+.agent-state.suspended {
+  background: rgba(237, 137, 54, 0.2);
+  color: #ed8936;
+}
+
+.agent-state.revoked {
+  background: rgba(229, 62, 62, 0.2);
+  color: #e53e3e;
+}
+
+/* Reputation Score */
+.reputation-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.score-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.score-circle::before {
+  content: '';
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  background: #1a1a2e;
+  border-radius: 50%;
+}
+
+.score-value {
+  position: relative;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.score-label {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.stat-value {
+  display: block;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* Skills */
+.skills-section h4,
+.task-history h4,
+.wallet-section h4 {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  text-transform: uppercase;
+  opacity: 0.7;
+  letter-spacing: 1px;
+}
+
+.skills-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.skill-tag {
+  padding: 8px 16px;
+  background: rgba(102, 126, 234, 0.2);
+  border-radius: 20px;
+  font-weight: 500;
+  transition: transform 0.2s;
+}
+
+.skill-tag:hover {
+  transform: scale(1.05);
+  background: rgba(102, 126, 234, 0.3);
+}
+
+/* Task History */
+.task-history {
+  margin-bottom: 24px;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px;
+  transition: background 0.2s;
+}
+
+.history-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.history-main {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.history-title {
+  font-weight: 500;
+}
+
+.history-reward {
+  color: #48bb78;
+  font-weight: 600;
+}
+
+.history-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.history-status {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.history-status.completed {
+  background: rgba(72, 187, 120, 0.2);
+  color: #48bb78;
+}
+
+/* Wallet */
+.wallet-address {
+  display: block;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  word-break: break-all;
+}
+
+/* Loading & Error */
+.reputation-loading,
+.reputation-error {
+  text-align: center;
+  padding: 40px;
+  opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .reputation-header {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+}
