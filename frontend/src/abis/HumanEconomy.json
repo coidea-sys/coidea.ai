@@ -1,0 +1,103 @@
+[
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_humanRegistry", "type": "address" },
+      { "internalType": "address payable", "name": "_agentLifecycle", "type": "address" },
+      { "internalType": "address", "name": "_treasury", "type": "address" }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "deposit",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_amount", "type": "uint256" }],
+    "name": "withdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_human", "type": "address" }],
+    "name": "getWalletSummary",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "uint256", "name": "available", "type": "uint256" },
+          { "internalType": "uint256", "name": "lockedInTasks", "type": "uint256" },
+          { "internalType": "uint256", "name": "investedInAgents", "type": "uint256" },
+          { "internalType": "uint256", "name": "totalValue", "type": "uint256" }
+        ],
+        "internalType": "struct HumanEconomy.WalletSummary",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_human", "type": "address" }],
+    "name": "getInvestments",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "uint256", "name": "agentId", "type": "uint256" },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" },
+          { "internalType": "uint256", "name": "investedAt", "type": "uint256" },
+          { "internalType": "uint256", "name": "sharePercent", "type": "uint256" },
+          { "internalType": "bool", "name": "isActive", "type": "bool" }
+        ],
+        "internalType": "struct HumanEconomy.AgentInvestment[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_human", "type": "address" }],
+    "name": "getRevenueHistory",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "uint256", "name": "agentId", "type": "uint256" },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" },
+          { "internalType": "uint256", "name": "timestamp", "type": "uint256" },
+          { "internalType": "uint256", "name": "taskId", "type": "uint256" }
+        ],
+        "internalType": "struct HumanEconomy.RevenueShare[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "human", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "newBalance", "type": "uint256" }
+    ],
+    "name": "Deposited",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "human", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "newBalance", "type": "uint256" }
+    ],
+    "name": "Withdrawn",
+    "type": "event"
+  }
+]

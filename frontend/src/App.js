@@ -10,6 +10,8 @@ import WalletConnect from './components/WalletConnect';
 import AgentCard from './components/AgentCard';
 import TaskCard from './components/TaskCard';
 import { SkeletonCard } from './components/common/Skeleton';
+import HumanRegistration from './components/human/HumanRegistration';
+import WalletManager from './components/human/WalletManager';
 import { getNetworkConfig } from './config/network';
 import TaskRegistryABI from './abis/TaskRegistry.json';
 
@@ -31,6 +33,11 @@ function App() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
+  
+  // Human state
+  const [isHuman, setIsHuman] = useState(false);
+  const [showRegistration, setShowRegistration] = useState(false);
+  const [showWallet, setShowWallet] = useState(false);
 
   const config = getNetworkConfig();
 
