@@ -10,8 +10,8 @@ import WalletConnect from './components/WalletConnect';
 import AgentCard from './components/AgentCard';
 import TaskCard from './components/TaskCard';
 import { SkeletonCard } from './components/common/Skeleton';
-import HumanRegistration from './components/human/HumanRegistration';
-import WalletManager from './components/human/WalletManager';
+// import HumanRegistration from './components/human/HumanRegistration';
+// import WalletManager from './components/human/WalletManager';
 import { getNetworkConfig } from './config/network';
 import TaskRegistryABI from './abis/TaskRegistry.json';
 
@@ -34,9 +34,12 @@ function App() {
   const [showProfile, setShowProfile] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   
-  // Human state
+  // Human state - will be used in future
+  // eslint-disable-next-line no-unused-vars
   const [isHuman, setIsHuman] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [showRegistration, setShowRegistration] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [showWallet, setShowWallet] = useState(false);
 
   const config = getNetworkConfig();
