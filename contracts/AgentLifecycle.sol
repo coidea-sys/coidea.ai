@@ -132,9 +132,9 @@ contract AgentLifecycle is Ownable, ReentrancyGuard {
     }
     
     constructor(
-        address _agentRegistry,
+        address payable _agentRegistry,
         address _treasury
-    ) Ownable(msg.sender) {
+    ) Ownable() {
         agentRegistry = AIAgentRegistry(_agentRegistry);
         platformTreasury = _treasury;
     }

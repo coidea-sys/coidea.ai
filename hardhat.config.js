@@ -29,22 +29,25 @@ module.exports = {
       accounts: process.env.LOCAL_PRIVATE_KEY ? [process.env.LOCAL_PRIVATE_KEY] : undefined
     },
     // Amoy 测试网 - 预生产验证
-    amoy: {
+    polygonAmoy: {
       url: process.env.POLYGON_RPC_URL || 'https://rpc-amoy.polygon.technology',
-      accounts: process.env.PRIVATE_KEY && process.env.PRIVATE_KEY !== 'your_private_key_here' ? [process.env.PRIVATE_KEY] : [],
+      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
       chainId: 80002,
       gasPrice: 'auto'
     },
     // Polygon 主网 - 生产环境
     polygon: {
-      url: process.env.POLYGON_MAINNET_RPC || 'https://polygon-mainnet.g.alchemy.com/v2/demo',
+      url: 'https://polygon.drpc.org',
       accounts: process.env.MAINNET_PRIVATE_KEY && process.env.MAINNET_PRIVATE_KEY !== 'your_mainnet_private_key_here' ? [process.env.MAINNET_PRIVATE_KEY] : [],
       chainId: 137,
       gasPrice: 'auto'
     }
   },
   etherscan: {
-    apiKey: process.env.POLYGONSCAN_API_KEY,
+    apiKey: {
+      polygon: process.env.POLYGONSCAN_API_KEY,
+      polygonAmoy: process.env.POLYGONSCAN_API_KEY
+    },
     customChains: [
       {
         network: "polygon",
@@ -52,6 +55,14 @@ module.exports = {
         urls: {
           apiURL: "https://api.polygonscan.com/api",
           browserURL: "https://polygonscan.com"
+        }
+      },
+      {
+        network: "polygonAmoy",
+        chainId: 80002,
+        urls: {
+          apiURL: "https://api-amoy.polygonscan.com/api",
+          browserURL: "https://amoy.polygonscan.com"
         }
       }
     ]

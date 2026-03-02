@@ -1,143 +1,98 @@
-# Polygon Mainnet Deployment Guide
+# Polygon 合约部署地址
 
-## Prerequisites
+**最后更新**: 2026-03-02
 
-1. **MATIC Tokens** - 至少 5 MATIC 用于部署
-   - 从交易所购买或桥接
-   - 推荐：Binance, Coinbase, or Polygon Bridge
+---
 
-2. **Private Key** - 用于部署的地址
-   - 必须是新地址或专用部署地址
-   - 确保有足够的 MATIC
+## Polygon Mainnet (Chain ID: 137)
 
-3. **Environment Setup**
-   ```bash
-   cd contracts
-   cp .env.example .env
-   # 编辑 .env，填入 MAINNET_PRIVATE_KEY
-   ```
+### v0.1.0 合约 (已部署)
 
-## Deployment Steps
+| 合约 | 地址 | 说明 |
+|------|------|------|
+| AIAgentRegistry | `0xdb36268016302Ca6abcBcD45CB206e88Ee358fD6` | Agent 注册 |
+| TaskRegistry | `0x3970FAf7708E18BD737C1f7fAD5c770FCD519Db5` | 任务市场 |
+| X402Payment | `0x97738aE517ECDeD0cdfFB2aD7FB90Dfac803efbe` | 无 Gas 支付 |
+| CommunityGovernance | `0x6AA35Fee046412830E371111Ddb15B74A145dF01` | 社区治理 |
+| LiabilityPreset | `0xBE8EFdb2709687CE6128D629F868f28ECcaF1493` | 责任模型 |
 
-### 1. 编译合约
+### v0.2.0 合约 (新部署)
 
-```bash
-npx hardhat compile
-```
+| 合约 | 地址 | 说明 |
+|------|------|------|
+| **HumanRegistry** | `0x47c356CC56F9Ca82E4e2b9F0F6A90D21D1800fec` | Human 身份 |
+| **HumanEconomy** | `0x72f61f6d62772151cF3CA9928a7c041bEB596bA3` | Human 经济 |
+| **AgentLifecycle** | `0x7f3D487f46254F90aBeb0fb07348bC99073F623c` | Agent 生命周期 |
+| **AgentRuntime** | `0x38DcEe54e809edF1BAd241254739377A49dA12A4` | Agent 执行 |
+| **AgentCommunity** | `0xA7f382500BbEc4E3C4eF18682D63dc156AD1CE24` | Agent 社区 |
 
-### 2. 部署到 Polygon 主网
+---
 
-```bash
-npx hardhat run scripts/deploy-polygon.js --network polygon
-```
+## Amoy Testnet (Chain ID: 80002)
 
-预计费用：**~3 MATIC** (~$1.2)
+| 合约 | 地址 | 说明 |
+|------|------|------|
+| HumanRegistry | `0xdb36268016302Ca6abcBcD45CB206e88Ee358fD6` | Human 身份 |
+| HumanEconomy | `0x3970FAf7708E18BD737C1f7fAD5c770FCD519Db5` | Human 经济 |
+| AgentLifecycle | `0x97738aE517ECDeD0cdfFB2aD7FB90Dfac803efbe` | Agent 生命周期 |
+| AgentRuntime | `0x6AA35Fee046412830E371111Ddb15B74A145dF01` | Agent 执行 |
+| AgentCommunity | `0x3C15c31181736bfF6A084267C28366e31fD0aC41` | Agent 社区 |
 
-### 3. 验证合约（可选但推荐）
+---
 
-```bash
-# 在 PolygonScan 上验证
-npx hardhat verify --network polygon DEPLOYED_CONTRACT_ADDRESS
-```
+## 前端配置
 
-## 升级合约
-
-当需要修改合约时：
-
-```bash
-npx hardhat run scripts/upgrade-polygon.js --network polygon
-```
-
-**特点：**
-- ✅ 代理地址不变
-- ✅ 用户无感知
-- ✅ 状态保留
-- ✅ 费用更低（只需部署实现合约）
-
-## 成本估算
-
-### 首次部署
-| 项目 | 预估 Gas | 费用 (MATIC) |
-|------|---------|-------------|
-| ProxyFactory | 1,500,000 | 0.3 |
-| TaskRegistry Impl | 2,500,000 | 0.5 |
-| TaskRegistry Proxy | 500,000 | 0.1 |
-| LiabilityPreset | 2,500,000 | 0.5 |
-| 创建 Presets | 1,000,000 | 0.2 |
-| **总计** | **~8M** | **~1.6 MATIC** |
-
-### 升级
-| 项目 | 预估 Gas | 费用 (MATIC) |
-|------|---------|-------------|
-| 新实现合约 | 2,500,000 | 0.5 |
-| 升级调用 | 100,000 | 0.02 |
-| **总计** | **~2.6M** | **~0.52 MATIC** |
-
-### 用户操作
-| 操作 | 预估 Gas | 费用 (USD) |
-|------|---------|-----------|
-| 创建任务 | ~200,000 | ~$0.016 |
-| 申请任务 | ~100,000 | ~$0.008 |
-| 完成任务 | ~120,000 | ~$0.01 |
-
-## 安全注意事项
-
-1. **私钥管理**
-   - 使用硬件钱包（Ledger/Trezor）
-   - 或专用部署地址（不要存太多资金）
-   - 不要提交私钥到 Git
-
-2. **升级权限**
-   - ProxyAdmin 归部署者所有
-   - 可以转移给多签钱包或 DAO
-   - 建议后期转移给治理合约
-
-3. **合约验证**
-   - 部署后立即在 PolygonScan 验证
-   - 方便用户查看源码
-   - 增加信任度
-
-## 前端配置更新
-
-部署后更新 `frontend/src/config/network.js`：
+更新 `frontend/src/config/network.js`:
 
 ```javascript
 polygon: {
   name: 'Polygon Mainnet',
   chainId: 137,
   rpc: 'https://polygon-rpc.com',
+  wsUrl: 'wss://coidea-websocket.webthree549.workers.dev',
   contracts: {
-    TaskRegistry: 'YOUR_PROXY_ADDRESS',
-    LiabilityPreset: 'YOUR_LIABILITY_ADDRESS',
-    // ...
+    // v0.1.0
+    AIAgentRegistry: '0xdb36268016302Ca6abcBcD45CB206e88Ee358fD6',
+    TaskRegistry: '0x3970FAf7708E18BD737C1f7fAD5c770FCD519Db5',
+    X402Payment: '0x97738aE517ECDeD0cdfFB2aD7FB90Dfac803efbe',
+    CommunityGovernance: '0x6AA35Fee046412830E371111Ddb15B74A145dF01',
+    LiabilityPreset: '0xBE8EFdb2709687CE6128D629F868f28ECcaF1493',
+    // v0.2.0
+    HumanRegistry: '0x47c356CC56F9Ca82E4e2b9F0F6A90D21D1800fec',
+    HumanEconomy: '0x72f61f6d62772151cF3CA9928a7c041bEB596bA3',
+    AgentLifecycle: '0x7f3D487f46254F90aBeb0fb07348bC99073F623c',
+    AgentRuntime: '0x38DcEe54e809edF1BAd241254739377A49dA12A4',
+    AgentCommunity: '0xA7f382500BbEc4E3C4eF18682D63dc156AD1CE24',
   }
 }
 ```
 
-## 监控与维护
+---
 
-1. **Gas 价格监控**
-   - 使用低 Gas 时段部署
-   - 推荐：Polygon Gas Tracker
+## 验证命令
 
-2. **合约监控**
-   - 设置事件监听
-   - 异常交易告警
+```bash
+# HumanRegistry
+npx hardhat verify --network polygon 0x47c356CC56F9Ca82E4e2b9F0F6A90D21D1800fec 0x0FB4eb50E6d70bF1Ed107CeDF18eEe1906f9464d
 
-3. **定期升级**
-   - 修复 Bug
-   - 添加新功能
-   - 优化 Gas
+# HumanEconomy
+npx hardhat verify --network polygon 0x72f61f6d62772151cF3CA9928a7c041bEB596bA3 0x47c356CC56F9Ca82E4e2b9F0F6A90D21D1800fec 0x7f3D487f46254F90aBeb0fb07348bC99073F623c 0x0FB4eb50E6d70bF1Ed107CeDF18eEe1906f9464d
 
-## 紧急处理
+# AgentLifecycle
+npx hardhat verify --network polygon 0x7f3D487f46254F90aBeb0fb07348bC99073F623c 0xdb36268016302Ca6abcBcD45CB206e88Ee358fD6 0x0FB4eb50E6d70bF1Ed107CeDF18eEe1906f9464d
 
-如果发现严重 Bug：
+# AgentRuntime
+npx hardhat verify --network polygon 0x38DcEe54e809edF1BAd241254739377A49dA12A4
 
-1. **暂停合约**（如果有暂停功能）
-2. **部署修复版本**
-3. **立即升级**
-4. **通知用户**
+# AgentCommunity
+npx hardhat verify --network polygon 0xA7f382500BbEc4E3C4eF18682D63dc156AD1CE24 0xdb36268016302Ca6abcBcD45CB206e88Ee358fD6 0x6AA35Fee046412830E371111Ddb15B74A145dF01
+```
 
 ---
 
-**⚠️ 警告：主网部署不可逆，务必在测试网充分测试！**
+## 部署信息
+
+- **部署者**: `0x0FB4eb50E6d70bF1Ed107CeDF18eEe1906f9464d`
+- **部署时间**: 2026-03-02
+- **总 Gas 消耗**: ~5,000,000
+- **总费用**: ~1.5 MATIC

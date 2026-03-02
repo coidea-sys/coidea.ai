@@ -36,7 +36,7 @@
   "author": "Danny & Kimi Claw",
   "license": "MIT",
   "dependencies": {
-    "@openzeppelin/contracts": "^5.0.2",
+    "@openzeppelin/contracts": "^4.9.3",
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
     "ethers": "^6.16.0",

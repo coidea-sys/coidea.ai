@@ -112,7 +112,7 @@ contract HumanRegistry is Ownable, ReentrancyGuard {
         _;
     }
     
-    constructor(address _feeRecipient) Ownable(msg.sender) {
+    constructor(address _feeRecipient) Ownable() {
         feeRecipient = _feeRecipient;
     }
     

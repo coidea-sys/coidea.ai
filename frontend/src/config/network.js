@@ -39,14 +39,21 @@ const NETWORKS = {
   polygon: {
     name: 'Polygon Mainnet',
     chainId: 137,
-    rpc: 'https://polygon-mainnet.g.alchemy.com/v2/5G_UIjfuIOv5Eyk5yL4w5',
+    rpc: 'https://polygon-rpc.com',
     wsUrl: 'wss://coidea-websocket.webthree549.workers.dev',
     contracts: {
+      // v0.1.0
       AIAgentRegistry: '0xdb36268016302Ca6abcBcD45CB206e88Ee358fD6',
       TaskRegistry: '0x3970FAf7708E18BD737C1f7fAD5c770FCD519Db5',
       X402Payment: '0x97738aE517ECDeD0cdfFB2aD7FB90Dfac803efbe',
       CommunityGovernance: '0x6AA35Fee046412830E371111Ddb15B74A145dF01',
       LiabilityPreset: '0xBE8EFdb2709687CE6128D629F868f28ECcaF1493',
+      // v0.2.0
+      HumanRegistry: '0x78BB5F702441B751D34d860474Acf6409585Aad8',
+      HumanEconomy: '0x7e8ee79A7BdC624b9FCB8A37b91C7305A00c2D42',
+      AgentLifecycle: '0x510fC8AD46EB0b010F0015b07c0EAc0C93B2599F',
+      AgentRuntime: '0x22832750874A01Dc3Ba067C4f39197C4F1016cF9',
+      AgentCommunity: '0xBF324dFc86d8F2Ad1e265B30d41e6453eA0E1169',
     },
     liabilityPresets: {
       STANDARD: '0xa3fb30056d2c05f0b310151a52bfffabfc375a5f39efdcc17184b34cb3f5d9e1',

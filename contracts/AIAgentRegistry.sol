@@ -89,7 +89,7 @@ contract AIAgentRegistry is ERC721, ERC721Enumerable, Ownable {
 
     constructor(address _feeRecipient) 
         ERC721("AI Agent Registry", "AGENT") 
-        Ownable(msg.sender) 
+        Ownable() 
     {
         require(_feeRecipient != address(0), "Invalid fee recipient");
         feeRecipient = _feeRecipient;
@@ -312,25 +312,23 @@ contract AIAgentRegistry is ERC721, ERC721Enumerable, Ownable {
     /**
      * @notice Check if token exists / 检查 Token 是否存在
      */
-    function _exists(uint256 tokenId) internal view returns (bool) {
+    function _exists(uint256 tokenId) internal view override returns (bool) {
         return _ownerOf(tokenId) != address(0);
     }
 
     // Override required functions / 重写必要函数
-    function _update(address to, uint256 tokenId, address auth) 
-        internal override(ERC721, ERC721Enumerable) returns (address) 
+    function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize)
+        internal
+        override(ERC721, ERC721Enumerable)
     {
-        return super._update(to, tokenId, auth);
-    }
-
-    function _increaseBalance(address account, uint128 value) 
-        internal override(ERC721, ERC721Enumerable) 
-    {
-        super._increaseBalance(account, value);
+        super._beforeTokenTransfer(from, to, tokenId, batchSize);
     }
 
     function supportsInterface(bytes4 interfaceId)
-        public view override(ERC721, ERC721Enumerable) returns (bool)
+        public
+        view
+        override(ERC721, ERC721Enumerable)
+        returns (bool)
     {
         return super.supportsInterface(interfaceId);
     }

@@ -133,7 +133,7 @@ contract AgentRuntime {
         string memory _endpoint,
         uint256 _costPerCall
     ) external {
-        require(mcpServices[_serviceId].provider == address(0), "Service exists");
+        require(bytes(mcpServices[_serviceId].name).length == 0, "Service exists");
         
         mcpServices[_serviceId] = MCPService({
             serviceId: _serviceId,

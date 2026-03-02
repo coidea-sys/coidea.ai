@@ -2,7 +2,7 @@
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
@@ -93,7 +93,7 @@ contract X402Payment is Ownable, ReentrancyGuard, EIP712 {
 
     // ============ Constructor ============
     constructor(address _feeRecipient) 
-        Ownable(msg.sender) 
+        Ownable() 
         EIP712("X402 Payment Protocol", "1") 
     {
         require(_feeRecipient != address(0), "Invalid fee recipient");

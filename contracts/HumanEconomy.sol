@@ -122,9 +122,9 @@ contract HumanEconomy is Ownable, ReentrancyGuard {
     
     constructor(
         address _humanRegistry,
-        address _agentLifecycle,
+        address payable _agentLifecycle,
         address _treasury
-    ) Ownable(msg.sender) {
+    ) Ownable() {
         humanRegistry = HumanRegistry(_humanRegistry);
         agentLifecycle = AgentLifecycle(_agentLifecycle);
         platformTreasury = _treasury;

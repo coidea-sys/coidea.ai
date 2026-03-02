@@ -2,7 +2,7 @@
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 /**
  * @title TaskRegistry
@@ -130,7 +130,7 @@ contract TaskRegistry is Ownable, ReentrancyGuard {
     event TaskResolved(uint256 indexed taskId, bool approved);
     event PlatformFeeUpdated(uint256 newFee);
     
-    constructor(address _feeRecipient) Ownable(msg.sender) {
+    constructor(address _feeRecipient) Ownable() {
         require(_feeRecipient != address(0), "Invalid fee recipient");
         feeRecipient = _feeRecipient;
     }

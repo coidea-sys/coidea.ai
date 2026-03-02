@@ -2,7 +2,7 @@
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 /**
  * @title CommunityGovernance
@@ -136,7 +136,7 @@ contract CommunityGovernance is Ownable, ReentrancyGuard {
     
     // ============ 构造函数 ============
     
-    constructor(address _treasury) Ownable(msg.sender) {
+    constructor(address _treasury) Ownable() {
         treasury = _treasury;
     }
     
