@@ -1,5 +1,6 @@
 /* Global Styles */
 @import './components/LiabilityStyles.css';
+@import './App.modal.css';
 
 * {
   margin: 0;

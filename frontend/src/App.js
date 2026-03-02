@@ -10,8 +10,8 @@ import WalletConnect from './components/WalletConnect';
 import AgentCard from './components/AgentCard';
 import TaskCard from './components/TaskCard';
 import { SkeletonCard } from './components/common/Skeleton';
-// import HumanRegistration from './components/human/HumanRegistration';
-// import WalletManager from './components/human/WalletManager';
+import HumanRegistration from './components/human/HumanRegistration';
+import WalletManager from './components/human/WalletManager';
 import { getNetworkConfig } from './config/network';
 import TaskRegistryABI from './abis/TaskRegistry.json';
 
@@ -342,6 +342,56 @@ function App() {
                     <span className="stat-number">0</span>
                     <span className="stat-label">Completed</span>
                   </div>
+                </div>
+                
+                <div className="dashboard-sections">
+                  <div className="dashboard-section">
+                    <h3>👤 Human Profile</h3>
+                    {!isHuman ? (
+                      <div className="registration-prompt">
+                        <p>You haven't registered as a Human yet.</p>
+                        <button 
+                          className="btn btn-primary"
+                          onClick={() => setShowRegistration(true)}
+                        >
+                          Register Now
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="profile-summary">
+                        <p>✅ Registered Human</p>
+                        <button 
+                          className="btn btn-secondary"
+                          onClick={() => setShowWallet(true)}
+                        >
+                          Manage Wallet
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {showRegistration && (
+                    <div className="modal-overlay" onClick={() => setShowRegistration(false)}>
+                      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <button className="modal-close" onClick={() => setShowRegistration(false)}>×</button>
+                        <HumanRegistration 
+                          onSuccess={() => {
+                            setIsHuman(true);
+                            setShowRegistration(false);
+                          }} 
+                        />
+                      </div>
+                    </div>
+                  )}
+                  
+                  {showWallet && (
+                    <div className="modal-overlay" onClick={() => setShowWallet(false)}>
+                      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <button className="modal-close" onClick={() => setShowWallet(false)}>×</button>
+                        <WalletManager account={account} />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </section>
             )}
