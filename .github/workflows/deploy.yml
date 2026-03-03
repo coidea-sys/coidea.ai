@@ -1,0 +1,110 @@
+name: Deploy and Verify
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+      
+      - name: Run contract tests
+        run: npm run contract:test
+      
+      - name: Run unit tests
+        run: npm run test:unit
+
+  deploy-amoy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: amoy
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+      
+      - name: Deploy to Amoy
+        env:
+          PRIVATE_KEY: ${{ secrets.AMOY_PRIVATE_KEY }}
+          POLYGON_RPC_URL: ${{ secrets.AMOY_RPC_URL }}
+          POLYGONSCAN_API_KEY: ${{ secrets.POLYGONSCAN_API_KEY }}
+        run: |
+          npx hardhat run scripts/deploy.js --network polygonAmoy
+      
+      - name: Upload deployment artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: amoy-deployment
+          path: deployments/polygonAmoy.json
+
+  verify-sourcify:
+    needs: deploy-amoy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+      
+      - name: Download deployment artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: amoy-deployment
+          path: deployments/
+      
+      - name: Verify on Sourcify
+        env:
+          PRIVATE_KEY: ${{ secrets.AMOY_PRIVATE_KEY }}
+          POLYGON_RPC_URL: ${{ secrets.AMOY_RPC_URL }}
+        run: |
+          ./scripts/verify-sourcify.sh
+
+  deploy-production:
+    needs: [test, deploy-amoy]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
+    environment: production
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+      
+      - name: Deploy to Polygon Mainnet
+        env:
+          MAINNET_PRIVATE_KEY: ${{ secrets.MAINNET_PRIVATE_KEY }}
+          POLYGONSCAN_API_KEY: ${{ secrets.POLYGONSCAN_API_KEY }}
+        run: |
+          npx hardhat run scripts/deploy.js --network polygon

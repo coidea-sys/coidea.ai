@@ -15,9 +15,9 @@ async function main() {
   console.log("\n🚀 Deploying to Polygon Amoy Testnet\n");
   
   // 检查网络
-  if (network.name !== 'amoy') {
-    console.error("❌ Please run with --network amoy");
-    console.log("   npx hardhat run scripts/deploy-amoy.js --network amoy");
+  if (network.name !== 'polygonAmoy') {
+    console.error("❌ Please run with --network polygonAmoy");
+    console.log("   npx hardhat run scripts/deploy-amoy.js --network polygonAmoy");
     process.exit(1);
   }
 
@@ -149,13 +149,42 @@ async function main() {
   }
   console.log("=".repeat(60));
 
-  // 验证提示
-  console.log("\n🔍 To verify contracts on PolygonScan:");
-  console.log("   npx hardhat verify --network amoy <address> [constructor args]");
-  console.log("\n   Or run:");
-  console.log("   npm run verify:amoy");
+  // 自动验证合约（使用 Sourcify - Amoy 推荐）
+  console.log("\n🔍 Starting contract verification with Sourcify...");
+  console.log("───────────────────────────────────────────────────");
 
-  console.log("\n✨ Amoy deployment complete!\n");
+  const contractsToVerify = [
+    { name: 'LiabilityRegistry', address: deployments.LiabilityRegistry, args: [feeRecipient] },
+    { name: 'AIAgentRegistry', address: deployments.AIAgentRegistry, args: [feeRecipient] },
+    { name: 'HumanLevelNFT', address: deployments.HumanLevelNFT, args: [] },
+    { name: 'TaskRegistryWithLiability', address: deployments.TaskRegistryWithLiability, args: [feeRecipient] },
+    { name: 'X402Payment', address: deployments.X402Payment, args: [feeRecipient] },
+  ];
+
+  for (const contract of contractsToVerify) {
+    console.log(`\n📋 Verifying ${contract.name}...`);
+    try {
+      // Amoy 测试网优先使用 Sourcify（免费、开源）
+      await hre.run("verify:verify", {
+        address: contract.address,
+        constructorArguments: contract.args,
+      });
+      console.log(`   ✅ ${contract.name} verified on Sourcify`);
+    } catch (error) {
+      if (error.message.includes("Already Verified")) {
+        console.log(`   ⚠️  ${contract.name} already verified`);
+      } else {
+        console.error(`   ❌ ${contract.name} verification failed:`, error.message);
+        console.log(`      Manual verify: npx hardhat verify --network polygonAmoy ${contract.address}`);
+      }
+    }
+  }
+  console.log("\n───────────────────────────────────────────────────");
+
+  console.log("\n✨ Amoy deployment complete!");
+  console.log("\n📚 Verification Status:");
+  console.log("   • Sourcify: https://sourcify.dev/#/lookup");
+  console.log("   • Amoy Explorer: https://amoy.polygonscan.com\n");
 }
 
 main()

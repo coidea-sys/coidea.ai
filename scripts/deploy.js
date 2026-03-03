@@ -56,7 +56,7 @@ async function main() {
 
   // 1. AIAgentRegistry
   console.log('📄 Deploying AIAgentRegistry...');
-  const AIAgentRegistry = await ethers.getContractFactory("AIAgentRegistry");
+  const AIAgentRegistry = await ethers.getContractFactory("contracts/AIAgentRegistry.sol:AIAgentRegistry");
   const registry = await AIAgentRegistry.deploy(deployer.address);
   await registry.deploymentTransaction().wait(config.confirmations);
   deployments.AIAgentRegistry = await registry.getAddress();
@@ -64,7 +64,7 @@ async function main() {
 
   // 2. HumanLevelNFT
   console.log('📄 Deploying HumanLevelNFT...');
-  const HumanLevelNFT = await ethers.getContractFactory("HumanLevelNFT");
+  const HumanLevelNFT = await ethers.getContractFactory("contracts/HumanLevelNFT.sol:HumanLevelNFT");
   const humanNFT = await HumanLevelNFT.deploy();
   await humanNFT.deploymentTransaction().wait(config.confirmations);
   deployments.HumanLevelNFT = await humanNFT.getAddress();
@@ -72,7 +72,7 @@ async function main() {
 
   // 3. TaskRegistry
   console.log('📄 Deploying TaskRegistry...');
-  const TaskRegistry = await ethers.getContractFactory("TaskRegistry");
+  const TaskRegistry = await ethers.getContractFactory("contracts/TaskRegistry.sol:TaskRegistry");
   const taskRegistry = await TaskRegistry.deploy(deployer.address);
   await taskRegistry.deploymentTransaction().wait(config.confirmations);
   deployments.TaskRegistry = await taskRegistry.getAddress();
@@ -80,7 +80,7 @@ async function main() {
 
   // 4. X402Payment
   console.log('📄 Deploying X402Payment...');
-  const X402Payment = await ethers.getContractFactory("X402Payment");
+  const X402Payment = await ethers.getContractFactory("contracts/X402Payment.sol:X402Payment");
   const x402 = await X402Payment.deploy(deployer.address);
   await x402.deploymentTransaction().wait(config.confirmations);
   deployments.X402Payment = await x402.getAddress();
