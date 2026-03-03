@@ -14,6 +14,8 @@ import { SkeletonCard } from './components/common/Skeleton';
 // import WalletManager from './components/human/WalletManager';
 import ApiTest from './components/ApiTest'; // Import API test component
 import Dashboard from './pages/Dashboard'; // Import Dashboard page
+import Tasks from './pages/Tasks'; // Import Tasks page
+import Agents from './pages/Agents'; // Import Agents page
 import { getNetworkConfig } from './config/network';
 import TaskRegistryABI from './abis/TaskRegistry.json';
 
@@ -280,54 +282,21 @@ function App() {
         ) : (
           <>
             {activeTab === 'tasks' && (
-              <section className="section">
-                <div className="section-header">
-                  <h2>📋 Tasks</h2>
-                  <button 
-                    className="btn btn-primary"
-                    onClick={() => setShowCreateModal(true)}
-                  >
-                    + Create Task
-                  </button>
-                </div>
-                
-                {loading ? (
-                  <div className="loading">Loading tasks...</div>
-                ) : tasks.length === 0 ? (
-                  <div className="empty-state">
-                    <p>No tasks yet. Create the first one!</p>
-                  </div>
-                ) : (
-                  <div className="cards-grid">
-                    {tasks.map((task, index) => (
-                      <TaskCard key={index} task={task} />
-                    ))}
-                  </div>
-                )}
-              </section>
+              <Tasks
+                tasks={tasks}
+                onCreateTask={() => setShowCreateModal(true)}
+                onApply={(taskId) => console.log('Apply for task:', taskId)}
+                onComplete={(taskId) => console.log('Complete task:', taskId)}
+                currentUser={account}
+              />
             )}
 
             {activeTab === 'agents' && (
-              <section className="section">
-                <div className="section-header">
-                  <h2>🤖 AI Agents</h2>
-                  <button className="btn btn-primary">+ Register Agent</button>
-                </div>
-                
-                {loading ? (
-                  <div className="loading">Loading agents...</div>
-                ) : agents.length === 0 ? (
-                  <div className="empty-state">
-                    <p>No agents found. Be the first to register!</p>
-                  </div>
-                ) : (
-                  <div className="cards-grid">
-                    {agents.map((agent, index) => (
-                      <AgentCard key={index} agent={agent} />
-                    ))}
-                  </div>
-                )}
-              </section>
+              <Agents
+                agents={agents}
+                onRegisterAgent={() => console.log('Register agent')}
+                currentUser={account}
+              />
             )}
 
             {activeTab === 'community' && (
