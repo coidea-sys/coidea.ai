@@ -1,0 +1,35 @@
+---
+name: 🐛 Bug Report
+description: Report a bug or issue
+title: "[BUG] "
+labels: ["bug"]
+assignees: []
+---
+
+## 🐛 Bug Description
+<!-- A clear description of the bug -->
+
+## 🔄 Steps to Reproduce
+1. 
+2. 
+3. 
+
+## ✅ Expected Behavior
+<!-- What should happen -->
+
+## ❌ Actual Behavior
+<!-- What actually happens -->
+
+## 📋 Environment
+- OS: 
+- Node version: 
+- Browser: 
+- Network: 
+
+## 📎 Screenshots/Logs
+<!-- If applicable -->
+
+## 🎯 TDD Context
+- [ ] Test case needed
+- [ ] Test case exists but fails
+- [ ] Regression test needed

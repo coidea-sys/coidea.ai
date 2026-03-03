@@ -1,0 +1,30 @@
+---
+name: ✨ Feature Request
+description: Suggest a new feature
+title: "[FEATURE] "
+labels: ["enhancement"]
+assignees: []
+---
+
+## ✨ Feature Description
+<!-- A clear description of the feature -->
+
+## 🎯 User Story
+As a [type of user], I want [goal] so that [benefit].
+
+## 📋 Acceptance Criteria
+- [ ] Criterion 1
+- [ ] Criterion 2
+- [ ] Criterion 3
+
+## 🧪 TDD Approach
+- [ ] Test cases defined
+- [ ] Red phase: Write failing tests
+- [ ] Green phase: Implement feature
+- [ ] Refactor: Optimize code
+
+## 🔗 Related
+<!-- Related issues, PRs, or documentation -->
+
+## 📎 Additional Context
+<!-- Any other information -->
