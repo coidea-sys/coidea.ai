@@ -1,83 +1,33 @@
 /**
- * Sentry Configuration
+ * Sentry Configuration (Placeholder)
  * Error monitoring and performance tracking
+ * 
+ * Note: Install @sentry/react and @sentry/tracing for full functionality
+ * npm install @sentry/react @sentry/tracing
  */
-
-import * as Sentry from '@sentry/react';
-import { BrowserTracing } from '@sentry/tracing';
 
 const SENTRY_DSN = process.env.REACT_APP_SENTRY_DSN;
 
 export function initSentry() {
   if (!SENTRY_DSN) {
-    console.warn('Sentry DSN not configured');
+    console.log('Sentry not configured (optional)');
     return;
   }
-
-  Sentry.init({
-    dsn: SENTRY_DSN,
-    integrations: [new BrowserTracing()],
-    
-    // Performance monitoring
-    tracesSampleRate: 1.0,
-    
-    // Error tracking
-    beforeSend(event) {
-      // Filter out specific errors
-      if (shouldIgnoreError(event)) {
-        return null;
-      }
-      return event;
-    },
-    
-    // Environment
-    environment: process.env.NODE_ENV,
-    
-    // Release tracking
-    release: process.env.REACT_APP_VERSION,
-    
-    // User context
-    initialScope: {
-      tags: {
-        platform: 'web',
-        network: process.env.REACT_APP_NETWORK_NAME,
-      },
-    },
-  });
-}
-
-function shouldIgnoreError(event) {
-  const ignorePatterns = [
-    /ResizeObserver loop limit exceeded/,
-    /Non-Error promise rejection/,
-  ];
   
-  const errorMessage = event.exception?.values?.[0]?.value || '';
-  return ignorePatterns.some(pattern => pattern.test(errorMessage));
+  // Sentry integration placeholder
+  console.log('Sentry would be initialized here');
 }
 
 export function setUserContext(user) {
-  Sentry.setUser({
-    id: user.address,
-    wallet: user.address,
-  });
+  // Placeholder
 }
 
 export function captureError(error, context = {}) {
-  Sentry.captureException(error, {
-    extra: context,
-  });
+  console.error('Error captured:', error, context);
 }
 
 export function captureMessage(message, level = 'info') {
-  Sentry.captureMessage(message, level);
+  console.log(`[${level}]`, message);
 }
 
-export function startTransaction(name, op = 'navigation') {
-  return Sentry.startTransaction({
-    name,
-    op,
-  });
-}
-
-export default Sentry;
+export default { initSentry, captureError, captureMessage };
