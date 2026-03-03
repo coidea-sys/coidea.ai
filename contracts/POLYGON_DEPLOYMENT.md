@@ -1,6 +1,32 @@
+# TDD Deployment Status
+
+## TDD Cycle Completion
+
+### Step 1: Red - Write Tests ✅
+- **Test File**: `__tests__/integration/missing-contracts.test.js`
+- **Coverage**: HumanLevelNFT (5 tests), LiabilityRegistry (4 tests)
+- **Status**: Tests written, ready for deployment
+
+### Step 2: Green - Deploy to Amoy 🔄
+```bash
+npx hardhat run scripts/tdd-deploy-missing.js --network polygonAmoy
+```
+
+### Step 3: Refactor - Verify & Test ⏳
+- Update test file with deployed addresses
+- Run integration tests on Amoy
+- Fix any issues
+
+### Step 4: Deploy to Mainnet ✅
+```bash
+npx hardhat run scripts/tdd-deploy-missing.js --network polygon
+```
+
+---
+
 # Polygon 合约部署地址
 
-**最后更新**: 2026-03-02
+**最后更新**: 2026-03-04
 
 ---
 
