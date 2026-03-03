@@ -82,8 +82,33 @@ describe('WebSocket Service', () => {
   });
 
   describe('messaging', () => {
-    it.skip('should send message', () => {
-      // Skipped due to mock complexity
+    it('should send message when connected', () => {
+      const WebSocketService = require('./websocket').default;
+      const service = new WebSocketService('ws://localhost:3001');
+      
+      // Mock the internal WebSocket
+      const mockSend = jest.fn();
+      service.ws = {
+        readyState: 1, // OPEN
+        send: mockSend
+      };
+      
+      const message = { type: 'ping', data: {} };
+      const result = service.send(message);
+      
+      expect(result).toBe(true);
+      expect(mockSend).toHaveBeenCalledWith(JSON.stringify(message));
+    });
+
+    it('should not send when not connected', () => {
+      const WebSocketService = require('./websocket').default;
+      const service = new WebSocketService('ws://localhost:3001');
+      
+      // ws is null (not connected)
+      const message = { type: 'ping', data: {} };
+      const result = service.send(message);
+      
+      expect(result).toBe(false);
     });
 
     it('should receive message', () => {
