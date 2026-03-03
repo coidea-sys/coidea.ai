@@ -46,10 +46,13 @@ app.use((req, res) => {
   });
 });
 
-app.listen(config.port, () => {
-  console.log(`🚀 coidea.ai API server running on port ${config.port}`);
-  console.log(`📡 Connected to chain ID: ${config.chainId}`);
-  console.log(`📚 API Docs: http://localhost:${config.port}/api-docs`);
-});
+// Start server only if not in test mode or explicitly requested
+if (process.env.NODE_ENV !== 'test' || process.env.START_SERVER === 'true') {
+  app.listen(config.port, () => {
+    console.log(`🚀 coidea.ai API server running on port ${config.port}`);
+    console.log(`📡 Connected to chain ID: ${config.chainId}`);
+    console.log(`📚 API Docs: http://localhost:${config.port}/api-docs`);
+  });
+}
 
 module.exports = app;

@@ -68,6 +68,7 @@ class BlockchainService {
     return this._formatAgent(agent);
   }
 
+  // AI Agent Registry methods
   async registerAgent(agentName, agentURI, agentWallet, signer) {
     if (!this.contracts.aiAgentRegistry) {
       throw new Error('AIAgentRegistry contract not configured');

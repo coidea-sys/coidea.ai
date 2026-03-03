@@ -7,9 +7,10 @@ const request = require('supertest');
 
 // Set test port before importing app
 process.env.PORT = '0';
+process.env.NODE_ENV = 'test';
 
 // Mock blockchain service
-jest.mock('../backend/services/blockchain', () => {
+jest.mock('../../backend/services/blockchain', () => {
   const mockSigner = { address: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266' };
   return {
     createPayment: jest.fn(),
@@ -22,8 +23,8 @@ jest.mock('../backend/services/blockchain', () => {
   };
 });
 
-const app = require('../backend/index');
-const blockchain = require('../backend/services/blockchain');
+const app = require('../../backend/index');
+const blockchain = require('../../backend/services/blockchain');
 
 describe('Payments API - Unit Tests', () => {
   beforeEach(() => {

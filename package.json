@@ -7,49 +7,43 @@
     "start": "node backend/index.js",
     "dev": "nodemon backend/index.js",
     "test": "jest",
-    "test:unit": "jest --testPathPattern=unit",
-    "test:integration": "jest --testPathPattern=integration --forceExit",
+    "test:unit": "jest __tests__",
+    "test:integration": "jest __tests__ --forceExit",
     "test:coverage": "jest --coverage",
     "contract:compile": "hardhat compile",
     "contract:test": "hardhat test",
     "node": "hardhat node",
     "deploy:local": "hardhat run scripts/deploy.js --network localhost",
-    "deploy:amoy:full": "hardhat run scripts/deploy-amoy.js --network polygonAmoy",
     "deploy:amoy": "hardhat run scripts/deploy.js --network polygonAmoy",
     "deploy:polygon": "hardhat run scripts/deploy.js --network polygon",
-    "env:local": "node scripts/env-manager.js localhost",
-    "env:amoy": "node scripts/env-manager.js polygonAmoy",
-    "env:polygon": "node scripts/env-manager.js polygon",
-    "env:status": "node scripts/env-manager.js status",
     "verify:amoy": "hardhat verify --network polygonAmoy",
     "verify:polygon": "hardhat verify --network polygon",
     "verify:sourcify:amoy": "hardhat verify --network polygonAmoy --sourcify",
-    "verify:sourcify:polygon": "hardhat verify --network polygon --sourcify",
-    "verify:helper": "node scripts/verify-contract.js",
-    "lint": "eslint .",
-    "format:check": "prettier --check .",
-    "format:write": "prettier --write ."
+    "verify:sourcify:polygon": "hardhat verify --network polygon --sourcify"
   },
-  "keywords": [
-    "AI",
-    "Web4",
-    "DAO",
-    "Agent",
-    "Collaboration",
-    "ERC8004"
-  ],
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/frontend/"
+    ]
+  },
+  "keywords": ["AI", "Web4", "DAO", "Agent", "Collaboration", "ERC8004"],
   "author": "Danny & Kimi Claw",
   "license": "MIT",
   "dependencies": {
-    "@nomicfoundation/hardhat-verify": "^3.0.11",
     "@openzeppelin/contracts": "^4.9.3",
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
     "ethers": "^6.16.0",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^7.0.0",
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
+    "@nomicfoundation/hardhat-ethers": "^3.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.0",
+    "chai": "^4.3.7",
     "hardhat": "^2.19.0",
     "jest": "^29.7.0",
     "nodemon": "^3.0.2",

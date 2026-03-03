@@ -1,5 +1,7 @@
 require("dotenv").config();
-require('@nomicfoundation/hardhat-toolbox');
+require("@nomicfoundation/hardhat-ethers");
+require("@nomicfoundation/hardhat-verify");
+require("@nomicfoundation/hardhat-chai-matchers");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -14,7 +16,6 @@ module.exports = {
     }
   },
   networks: {
-    // 本地开发环境 - 无限 gas，快速迭代
     hardhat: {
       chainId: 31337,
       mining: {
@@ -22,20 +23,17 @@ module.exports = {
         interval: 0
       }
     },
-    // 本地节点 - 用于前端联调
     localhost: {
       url: 'http://127.0.0.1:8545',
       chainId: 31337,
       accounts: process.env.LOCAL_PRIVATE_KEY ? [process.env.LOCAL_PRIVATE_KEY] : undefined
     },
-    // Amoy 测试网 - 预生产验证
     polygonAmoy: {
       url: process.env.POLYGON_RPC_URL || 'https://rpc-amoy.polygon.technology',
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
       chainId: 80002,
       gasPrice: 'auto'
     },
-    // Polygon 主网 - 生产环境
     polygon: {
       url: 'https://polygon.drpc.org',
       accounts: process.env.MAINNET_PRIVATE_KEY && process.env.MAINNET_PRIVATE_KEY !== 'your_mainnet_private_key_here' ? [process.env.MAINNET_PRIVATE_KEY] : [],
@@ -46,7 +44,7 @@ module.exports = {
   etherscan: {
     apiKey: {
       polygon: process.env.POLYGONSCAN_API_KEY,
-      polygonAmoy: process.env.POLYGONSCAN_API_KEY,  // Amoy 和主网共用同一个 API Key
+      polygonAmoy: process.env.POLYGONSCAN_API_KEY,
     },
     customChains: [
       {
@@ -75,5 +73,8 @@ module.exports = {
     tests: './test',
     cache: './cache',
     artifacts: './artifacts'
+  },
+  mocha: {
+    ignore: ['**/jest/**']
   }
 };
