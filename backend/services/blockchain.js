@@ -489,6 +489,89 @@ class BlockchainService {
     return task;
   }
 
+  // X402 Payment methods
+  async createPayment(amount, payee, taskId, signer) {
+    if (!this.contracts.x402Payment) {
+      throw new Error('X402Payment contract not configured');
+    }
+
+    const contractWithSigner = this.contracts.x402Payment.connect(signer);
+    const tx = await contractWithSigner.createPayment(payee, taskId, { value: amount });
+    const receipt = await tx.wait();
+
+    // Get paymentId from event
+    let paymentId = null;
+    for (const log of receipt.logs) {
+      try {
+        const parsed = contractWithSigner.interface.parseLog(log);
+        if (parsed && parsed.name === 'PaymentCreated') {
+          paymentId = parsed.args.paymentId.toString();
+          break;
+        }
+      } catch {
+        // Continue
+      }
+    }
+
+    return {
+      paymentId,
+      amount: amount.toString(),
+      payer: signer.address,
+      payee,
+      taskId: taskId.toString(),
+      transactionHash: receipt.hash,
+      blockNumber: receipt.blockNumber.toString()
+    };
+  }
+
+  async processPayment(paymentId, signer) {
+    if (!this.contracts.x402Payment) {
+      throw new Error('X402Payment contract not configured');
+    }
+
+    const contractWithSigner = this.contracts.x402Payment.connect(signer);
+    const tx = await contractWithSigner.processPayment(paymentId);
+    const receipt = await tx.wait();
+
+    return {
+      paymentId: paymentId.toString(),
+      status: 'completed',
+      transactionHash: receipt.hash,
+      blockNumber: receipt.blockNumber.toString()
+    };
+  }
+
+  async getPayment(paymentId) {
+    if (!this.contracts.x402Payment) {
+      throw new Error('X402Payment contract not configured');
+    }
+    const payment = await this.contracts.x402Payment.payments(paymentId);
+    return this._formatPayment(payment);
+  }
+
+  // Format payment data for JSON serialization
+  _formatPayment(payment) {
+    if (!payment || payment[0] === 0n) {
+      return null;
+    }
+
+    // Handle array format from ethers.js
+    if (Array.isArray(payment)) {
+      return {
+        id: payment[0]?.toString() || '0',
+        payer: payment[1],
+        payee: payment[2],
+        amount: payment[3]?.toString() || '0',
+        taskId: payment[4]?.toString() || '0',
+        status: payment[5]?.toString() || '0',
+        createdAt: payment[6]?.toString() || '0',
+        processedAt: payment[7]?.toString() || '0'
+      };
+    }
+
+    return payment;
+  }
+
   // Event listeners
   async listenToEvents(eventName, callback) {
     // Implementation for event listening
