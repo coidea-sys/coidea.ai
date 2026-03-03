@@ -284,15 +284,21 @@ jobs:
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
   # ==========================================
-  # Phase 8: Deploy to Production (Mainnet)
+  # Phase 8: Deploy to Production (Mainnet) - Auto Deploy
   # ==========================================
   deploy-production:
     name: 🏭 Deploy to Mainnet
     runs-on: ubuntu-latest
     needs: [deploy-amoy, deploy-frontend]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
+    if: github.ref == 'refs/heads/main'
     environment: production
     steps:
+      - name: Confirm mainnet deployment
+        run: |
+          echo "🚀 Auto-deploying to Polygon Mainnet..."
+          echo "This will deploy contracts to production network."
+          echo "Amoy deployment status: ${{ needs.deploy-amoy.result }}"
+          echo "Frontend deployment status: ${{ needs.deploy-frontend.result }}"
       - uses: actions/checkout@v4
 
       - name: Setup Node.js
