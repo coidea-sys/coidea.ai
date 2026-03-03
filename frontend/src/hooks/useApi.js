@@ -20,6 +20,7 @@ export function useApi(apiFunction, deps = []) {
     } finally {
       setLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [apiFunction, ...deps]);
 
   return { data, loading, error, execute };
