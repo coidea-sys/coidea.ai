@@ -7,8 +7,8 @@ import ErrorBoundary from './components/common/ErrorBoundary';
 import ThemeToggle from './components/common/ThemeToggle';
 import NetworkSwitch from './components/common/NetworkSwitch';
 import WalletConnect from './components/WalletConnect';
-import AgentCard from './components/AgentCard';
-import TaskCard from './components/TaskCard';
+// import AgentCard from './components/AgentCard';
+// import TaskCard from './components/TaskCard';
 import { SkeletonCard } from './components/common/Skeleton';
 // import HumanRegistration from './components/human/HumanRegistration';
 // import WalletManager from './components/human/WalletManager';
@@ -33,6 +33,7 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const [agents, setAgents] = useState([]);
   const [activeTab, setActiveTab] = useState('tasks');
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
