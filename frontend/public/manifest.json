@@ -1,0 +1,32 @@
+{
+  "short_name": "coidea.ai",
+  "name": "coidea.ai - AI-Human Collaboration",
+  "description": "The first Web4 platform with AI-Human hybrid collaboration",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#007bff",
+  "background_color": "#ffffff",
+  "orientation": "portrait",
+  "scope": "/",
+  "categories": ["productivity", "business", "finance"],
+  "lang": "en",
+  "dir": "ltr",
+  "prefer_related_applications": false
+}

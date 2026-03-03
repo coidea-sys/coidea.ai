@@ -1,0 +1,263 @@
+/**
+ * Mobile Responsive Styles
+ * PWA support and mobile optimization
+ */
+
+/* Mobile Navigation */
+@media (max-width: 768px) {
+  .main-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 1px solid #e0e0e0;
+    padding: 8px;
+    display: flex;
+    justify-content: space-around;
+    z-index: 100;
+  }
+
+  .nav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .nav-icon {
+    font-size: 20px;
+    margin-bottom: 4px;
+  }
+
+  .nav-label {
+    font-size: 10px;
+  }
+
+  /* Adjust main content for bottom nav */
+  .App-main {
+    padding-bottom: 80px;
+  }
+}
+
+/* Touch-friendly buttons */
+@media (pointer: coarse) {
+  .btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .task-card,
+  .agent-card {
+    cursor: default;
+  }
+
+  .task-card:active,
+  .agent-card:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Safe area for notched phones */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .App-header {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .main-nav {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Mobile-optimized forms */
+@media (max-width: 640px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  .modal-content {
+    margin: 16px;
+    max-height: calc(100vh - 32px);
+  }
+}
+
+/* PWA Add to Home Screen prompt */
+.pwa-prompt {
+  position: fixed;
+  bottom: 100px;
+  left: 16px;
+  right: 16px;
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  z-index: 1000;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.pwa-prompt-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.pwa-prompt-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.pwa-prompt-title {
+  flex: 1;
+}
+
+.pwa-prompt-title h3 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+}
+
+.pwa-prompt-title p {
+  margin: 0;
+  font-size: 13px;
+  color: #666;
+}
+
+.pwa-prompt-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #999;
+  cursor: pointer;
+}
+
+.pwa-prompt-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.pwa-prompt-actions .btn {
+  flex: 1;
+}
+
+/* Offline indicator */
+.offline-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #f59e0b;
+  color: white;
+  text-align: center;
+  padding: 8px;
+  font-size: 14px;
+  z-index: 1000;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+}
+
+.offline-indicator.show {
+  transform: translateY(0);
+}
+
+/* Loading skeleton for mobile */
+@media (max-width: 640px) {
+  .skeleton {
+    padding: 16px;
+  }
+
+  .skeleton-line {
+    height: 12px;
+    margin-bottom: 8px;
+  }
+}
+
+/* Pull to refresh indicator */
+.pull-to-refresh {
+  position: absolute;
+  top: -60px;
+  left: 0;
+  right: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-size: 14px;
+}
+
+.pull-to-refresh-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e0e0e0;
+  border-top-color: #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Mobile-optimized tables */
+@media (max-width: 768px) {
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .error-boundary {
+    background: #1a1a1a;
+  }
+
+  .error-container {
+    background: #2d2d2d;
+    color: white;
+  }
+
+  .error-container h1 {
+    color: white;
+  }
+
+  .error-details {
+    background: #1a1a1a;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
