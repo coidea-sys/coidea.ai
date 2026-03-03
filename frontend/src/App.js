@@ -12,6 +12,7 @@ import TaskCard from './components/TaskCard';
 import { SkeletonCard } from './components/common/Skeleton';
 import HumanRegistration from './components/human/HumanRegistration';
 import WalletManager from './components/human/WalletManager';
+import ApiTest from './components/ApiTest'; // Import API test component
 import { getNetworkConfig } from './config/network';
 import TaskRegistryABI from './abis/TaskRegistry.json';
 
@@ -242,6 +243,12 @@ function App() {
             >
               📊 Dashboard
             </button>
+            <button
+              className={`nav-btn ${activeTab === 'api-test' ? 'active' : ''}`}
+              onClick={() => setActiveTab('api-test')}
+            >
+              🔌 API Test
+            </button>
           </nav>
         )}
       </header>
@@ -369,17 +376,15 @@ function App() {
                       </div>
                     )}
                   </div>
-                  
-                  {showRegistration && (
-                    <div className="modal-overlay" onClick={() => setShowRegistration(false)}>
-                      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <button className="modal-close" onClick={() => setShowRegistration(false)}>×</button>
-                        <HumanRegistration 
-                          onSuccess={() => {
-                            setIsHuman(true);
-                            setShowRegistration(false);
-                          }} 
-                        />
+                </div>
+              </section>
+            )}
+
+            {activeTab === 'api-test' && (
+              <section className="section">
+                <ApiTest />
+              </section>
+            )}
                       </div>
                     </div>
                   )}
