@@ -1,9 +1,66 @@
+/**
+ * @swagger
+ * tags:
+ *   name: Tasks
+ *   description: Task management
+ */
+
 const express = require('express');
 const router = express.Router();
 const blockchain = require('../services/blockchain');
 const config = require('../config');
 
-// Create new task
+/**
+ * @swagger
+ * /tasks/create:
+ *   post:
+ *     summary: Create a new task
+ *     tags: [Tasks]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - title
+ *               - description
+ *               - reward
+ *               - deadline
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 description: Task title
+ *               description:
+ *                 type: string
+ *                 description: Task description
+ *               taskType:
+ *                 type: integer
+ *                 description: 0=Coding, 1=Design, 2=Research, etc.
+ *               reward:
+ *                 type: string
+ *                 description: Reward in wei
+ *               deadline:
+ *                 type: integer
+ *                 description: Unix timestamp
+ *               requiredSkills:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               minReputation:
+ *                 type: integer
+ *               isMultiAgent:
+ *                 type: boolean
+ *               privateKey:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Task created successfully
+ *       400:
+ *         description: Missing required fields
+ *       500:
+ *         description: Server error
+ */
 router.post('/create', async (req, res) => {
   try {
     const {
@@ -52,7 +109,32 @@ router.post('/create', async (req, res) => {
   }
 });
 
-// Publish task (move from Draft to Open)
+/**
+ * @swagger
+ * /tasks/{taskId}/publish:
+ *   post:
+ *     summary: Publish a task (move from Draft to Open)
+ *     tags: [Tasks]
+ *     parameters:
+ *       - in: path
+ *         name: taskId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               privateKey:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Task published successfully
+ *       500:
+ *         description: Server error
+ */
 router.post('/:taskId/publish', async (req, res) => {
   try {
     const { taskId } = req.params;
@@ -75,7 +157,43 @@ router.post('/:taskId/publish', async (req, res) => {
   }
 });
 
-// Apply for task
+/**
+ * @swagger
+ * /tasks/{taskId}/apply:
+ *   post:
+ *     summary: Apply for a task
+ *     tags: [Tasks]
+ *     parameters:
+ *       - in: path
+ *         name: taskId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - proposal
+ *             properties:
+ *               agentId:
+ *                 type: integer
+ *               proposal:
+ *                 type: string
+ *               proposedPrice:
+ *                 type: string
+ *               privateKey:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Application submitted successfully
+ *       400:
+ *         description: Missing required fields
+ *       500:
+ *         description: Server error
+ */
 router.post('/:taskId/apply', async (req, res) => {
   try {
     const { taskId } = req.params;
@@ -105,7 +223,39 @@ router.post('/:taskId/apply', async (req, res) => {
   }
 });
 
-// Assign task to applicant
+/**
+ * @swagger
+ * /tasks/{taskId}/assign:
+ *   post:
+ *     summary: Assign task to an applicant
+ *     tags: [Tasks]
+ *     parameters:
+ *       - in: path
+ *         name: taskId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - applicationId
+ *             properties:
+ *               applicationId:
+ *                 type: string
+ *               privateKey:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Task assigned successfully
+ *       400:
+ *         description: Missing required fields
+ *       500:
+ *         description: Server error
+ */
 router.post('/:taskId/assign', async (req, res) => {
   try {
     const { taskId } = req.params;
@@ -135,7 +285,40 @@ router.post('/:taskId/assign', async (req, res) => {
   }
 });
 
-// Submit work
+/**
+ * @swagger
+ * /tasks/{taskId}/submit:
+ *   post:
+ *     summary: Submit work for a task
+ *     tags: [Tasks]
+ *     parameters:
+ *       - in: path
+ *         name: taskId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - deliverableURI
+ *             properties:
+ *               deliverableURI:
+ *                 type: string
+ *                 description: IPFS URI of deliverable
+ *               privateKey:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Work submitted successfully
+ *       400:
+ *         description: Missing required fields
+ *       500:
+ *         description: Server error
+ */
 router.post('/:taskId/submit', async (req, res) => {
   try {
     const { taskId } = req.params;
@@ -165,7 +348,32 @@ router.post('/:taskId/submit', async (req, res) => {
   }
 });
 
-// Complete task (publisher approves and pays)
+/**
+ * @swagger
+ * /tasks/{taskId}/complete:
+ *   post:
+ *     summary: Complete task and release payment
+ *     tags: [Tasks]
+ *     parameters:
+ *       - in: path
+ *         name: taskId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               privateKey:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Task completed successfully
+ *       500:
+ *         description: Server error
+ */
 router.post('/:taskId/complete', async (req, res) => {
   try {
     const { taskId } = req.params;
@@ -188,7 +396,24 @@ router.post('/:taskId/complete', async (req, res) => {
   }
 });
 
-// Get task by ID
+/**
+ * @swagger
+ * /tasks/{taskId}:
+ *   get:
+ *     summary: Get task by ID
+ *     tags: [Tasks]
+ *     parameters:
+ *       - in: path
+ *         name: taskId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Task data
+ *       500:
+ *         description: Server error
+ */
 router.get('/:taskId', async (req, res) => {
   try {
     const { taskId } = req.params;
@@ -205,7 +430,24 @@ router.get('/:taskId', async (req, res) => {
   }
 });
 
-// Get task applications
+/**
+ * @swagger
+ * /tasks/{taskId}/applications:
+ *   get:
+ *     summary: Get applications for a task
+ *     tags: [Tasks]
+ *     parameters:
+ *       - in: path
+ *         name: taskId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of applications
+ *       500:
+ *         description: Server error
+ */
 router.get('/:taskId/applications', async (req, res) => {
   try {
     const { taskId } = req.params;
@@ -222,7 +464,24 @@ router.get('/:taskId/applications', async (req, res) => {
   }
 });
 
-// Get tasks by publisher
+/**
+ * @swagger
+ * /tasks/publisher/{address}:
+ *   get:
+ *     summary: Get tasks by publisher address
+ *     tags: [Tasks]
+ *     parameters:
+ *       - in: path
+ *         name: address
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of task IDs
+ *       500:
+ *         description: Server error
+ */
 router.get('/publisher/:address', async (req, res) => {
   try {
     const { address } = req.params;
@@ -239,7 +498,24 @@ router.get('/publisher/:address', async (req, res) => {
   }
 });
 
-// Get tasks by worker
+/**
+ * @swagger
+ * /tasks/worker/{address}:
+ *   get:
+ *     summary: Get tasks by worker address
+ *     tags: [Tasks]
+ *     parameters:
+ *       - in: path
+ *         name: address
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of task IDs
+ *       500:
+ *         description: Server error
+ */
 router.get('/worker/:address', async (req, res) => {
   try {
     const { address } = req.params;
@@ -256,7 +532,18 @@ router.get('/worker/:address', async (req, res) => {
   }
 });
 
-// Get active tasks
+/**
+ * @swagger
+ * /tasks/list/active:
+ *   get:
+ *     summary: Get all active (Open) tasks
+ *     tags: [Tasks]
+ *     responses:
+ *       200:
+ *         description: List of task IDs
+ *       500:
+ *         description: Server error
+ */
 router.get('/list/active', async (req, res) => {
   try {
     const taskIds = await blockchain.getActiveTasks();
