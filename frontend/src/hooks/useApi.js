@@ -20,7 +20,7 @@ export function useApi(apiFunction, deps = []) {
     } finally {
       setLoading(false);
     }
-  }, deps);
+  }, [apiFunction, ...deps]);
 
   return { data, loading, error, execute };
 }
@@ -79,8 +79,6 @@ export function useTask(taskId) {
 // Hook for fetching agents
 export function useAgents() {
   const [agents, setAgents] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const fetchAgents = useCallback(async () => {
     // For now, we'll need to add an endpoint to get all agents
@@ -88,7 +86,7 @@ export function useAgents() {
     setAgents([]);
   }, []);
 
-  return { agents, loading, error, refetch: fetchAgents };
+  return { agents, refetch: fetchAgents };
 }
 
 // Hook for fetching a single agent
@@ -140,7 +138,7 @@ export function useHealth() {
   return { healthy, loading };
 }
 
-export default {
+const useApiHooks = {
   useApi,
   useTasks,
   useTask,
@@ -148,3 +146,5 @@ export default {
   useAgent,
   useHealth
 };
+
+export default useApiHooks;

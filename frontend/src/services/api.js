@@ -99,9 +99,11 @@ export const healthApi = {
   check: () => apiCall('/health')
 };
 
-export default {
+const api = {
   agents: agentsApi,
   tasks: tasksApi,
   humans: humansApi,
   health: healthApi
 };
+
+export default api;

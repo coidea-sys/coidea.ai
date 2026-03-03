@@ -10,8 +10,8 @@ import WalletConnect from './components/WalletConnect';
 import AgentCard from './components/AgentCard';
 import TaskCard from './components/TaskCard';
 import { SkeletonCard } from './components/common/Skeleton';
-import HumanRegistration from './components/human/HumanRegistration';
-import WalletManager from './components/human/WalletManager';
+// import HumanRegistration from './components/human/HumanRegistration';
+// import WalletManager from './components/human/WalletManager';
 import ApiTest from './components/ApiTest'; // Import API test component
 import { getNetworkConfig } from './config/network';
 import TaskRegistryABI from './abis/TaskRegistry.json';
