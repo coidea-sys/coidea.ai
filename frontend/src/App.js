@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense } from 'react';
+import React, { useState, lazy, Suspense, useEffect } from 'react';
 import './App.css';
 import { ethers } from 'ethers';
 import { ToastProvider, useToast } from './hooks/useToast';
@@ -16,6 +16,9 @@ import ApiTest from './components/ApiTest'; // Import API test component
 import Dashboard from './pages/Dashboard'; // Import Dashboard page
 import Tasks from './pages/Tasks'; // Import Tasks page
 import Agents from './pages/Agents'; // Import Agents page
+import AnalyticsDashboard from './pages/AnalyticsDashboard';
+import FeedbackWidget from './components/FeedbackWidget';
+import { initSentry } from './config/sentry';
 import { getNetworkConfig } from './config/network';
 import TaskRegistryABI from './abis/TaskRegistry.json';
 
@@ -38,6 +41,11 @@ function App() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
+  
+  // Initialize Sentry
+  useEffect(() => {
+    initSentry();
+  }, []);
   
   // Human state - will be used in future
   // eslint-disable-next-line no-unused-vars
@@ -242,10 +250,16 @@ function App() {
               🌐 Community
             </button>
             <button
+              className={`nav-btn ${activeTab === 'analytics' ? 'active' : ''}`}
+              onClick={() => setActiveTab('analytics')}
+            >
+              📊 Analytics
+            </button>
+            <button
               className={`nav-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
               onClick={() => setActiveTab('dashboard')}
             >
-              📊 Dashboard
+              📈 Dashboard
             </button>
             <button
               className={`nav-btn ${activeTab === 'api-test' ? 'active' : ''}`}
@@ -316,6 +330,13 @@ function App() {
               />
             )}
 
+            {activeTab === 'analytics' && (
+              <AnalyticsDashboard
+                contractData={{ taskActivity: [], recentEvents: [] }}
+                userData={{ growth: [] }}
+              />
+            )}
+
             {activeTab === 'api-test' && (
               <section className="section">
                 <ApiTest />
@@ -324,6 +345,9 @@ function App() {
           </>
         )}
       </main>
+
+      {/* Feedback Widget */}
+      {account && <FeedbackWidget onSubmit={(data) => console.log('Feedback:', data)} />}
 
       <footer className="App-footer">
         <p>© 2026 coidea.ai - Web4 AI-Human Collaboration</p>
