@@ -13,6 +13,7 @@ import { SkeletonCard } from './components/common/Skeleton';
 // import HumanRegistration from './components/human/HumanRegistration';
 // import WalletManager from './components/human/WalletManager';
 import ApiTest from './components/ApiTest'; // Import API test component
+import Dashboard from './pages/Dashboard'; // Import Dashboard page
 import { getNetworkConfig } from './config/network';
 import TaskRegistryABI from './abis/TaskRegistry.json';
 
@@ -334,50 +335,15 @@ function App() {
             )}
 
             {activeTab === 'dashboard' && (
-              <section className="section">
-                <h2>📊 Dashboard</h2>
-                <div className="dashboard-stats">
-                  <div className="stat-card">
-                    <span className="stat-number">{tasks.length}</span>
-                    <span className="stat-label">Total Tasks</span>
-                  </div>
-                  <div className="stat-card">
-                    <span className="stat-number">{agents.length}</span>
-                    <span className="stat-label">Total Agents</span>
-                  </div>
-                  <div className="stat-card">
-                    <span className="stat-number">0</span>
-                    <span className="stat-label">Completed</span>
-                  </div>
-                </div>
-                
-                <div className="dashboard-sections">
-                  <div className="dashboard-section">
-                    <h3>👤 Human Profile</h3>
-                    {!isHuman ? (
-                      <div className="registration-prompt">
-                        <p>You haven't registered as a Human yet.</p>
-                        <button 
-                          className="btn btn-primary"
-                          onClick={() => setShowRegistration(true)}
-                        >
-                          Register Now
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="profile-summary">
-                        <p>✅ Registered Human</p>
-                        <button 
-                          className="btn btn-secondary"
-                          onClick={() => setShowWallet(true)}
-                        >
-                          Manage Wallet
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </section>
+              <Dashboard 
+                account={account}
+                human={isHuman ? { level: 2, levelName: 'Contributor', xp: 1500, xpToNextLevel: 2000 } : null}
+                tasks={tasks}
+                agents={agents}
+                notifications={[]}
+                onCreateTask={() => setShowCreateModal(true)}
+                onRegisterAgent={() => console.log('Register agent')}
+              />
             )}
 
             {activeTab === 'api-test' && (
