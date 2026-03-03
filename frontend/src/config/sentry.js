@@ -30,4 +30,6 @@ export function captureMessage(message, level = 'info') {
   console.log(`[${level}]`, message);
 }
 
-export default { initSentry, captureError, captureMessage };
+const Sentry = { initSentry, captureError, captureMessage };
+
+export default Sentry;
