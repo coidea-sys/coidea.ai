@@ -57,7 +57,9 @@ describe('X402Payment - True x402 Protocol', function () {
   describe('Authorization with EIP-712 Signature', function () {
     it('Should create authorization with valid signature', async function () {
       const amount = ethers.parseEther('1.0');
-      const expiresAt = Math.floor(Date.now() / 1000) + 3600;
+      // Get current block timestamp and add 1 hour
+      const block = await ethers.provider.getBlock('latest');
+      const expiresAt = block.timestamp + 3600;
       const payloadHash = ethers.keccak256(ethers.toUtf8Bytes('test'));
       const gasFee = ethers.parseEther('0.01');
       
@@ -95,7 +97,9 @@ describe('X402Payment - True x402 Protocol', function () {
 
     it('Should reject invalid signature', async function () {
       const amount = ethers.parseEther('1.0');
-      const expiresAt = Math.floor(Date.now() / 1000) + 3600;
+      // Get current block timestamp and add 1 hour
+      const block = await ethers.provider.getBlock('latest');
+      const expiresAt = block.timestamp + 3600;
       const payloadHash = ethers.keccak256(ethers.toUtf8Bytes('test'));
       
       const value = {
@@ -135,7 +139,9 @@ describe('X402Payment - True x402 Protocol', function () {
 
     beforeEach(async function () {
       amount = ethers.parseEther('1.0');
-      const expiresAt = Math.floor(Date.now() / 1000) + 3600;
+      // Get current block timestamp and add 1 hour
+      const block = await ethers.provider.getBlock('latest');
+      const expiresAt = block.timestamp + 3600;
       payload = ethers.toUtf8Bytes('test payload');
       payloadHash = ethers.keccak256(payload);
       const gasFee = ethers.parseEther('0.01');
