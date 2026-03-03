@@ -14,7 +14,7 @@ const NETWORK_CONFIG = {
     confirmations: 1,
     verify: false
   },
-  amoy: {
+  polygonAmoy: {
     name: 'Polygon Amoy Testnet',
     confirmations: 2,
     verify: true,
@@ -47,7 +47,7 @@ async function main() {
   console.log(`💰 Balance: ${ethers.formatEther(balance)} ${network.name === 'polygon' ? 'POL' : 'ETH/POL'}\n`);
 
   if (balance === 0n && network.name !== 'hardhat') {
-    console.error(`❌ Insufficient balance! Get ${network.name === 'amoy' ? 'testnet POL from faucet' : 'POL from exchange'}`);
+    console.error(`❌ Insufficient balance! Get ${network.name === 'polygonAmoy' ? 'testnet POL from faucet' : 'POL from exchange'}`);
     process.exit(1);
   }
 
@@ -121,12 +121,36 @@ async function main() {
   }
   console.log('═══════════════════════════════════════════════════');
 
-  // 验证提示
+  // 自动验证合约
   if (config.verify) {
-    console.log('\n🔍 To verify contracts, run:');
-    for (const [name, address] of Object.entries(deployments)) {
-      console.log(`   npx hardhat verify --network ${network.name} ${address}`);
+    console.log('\n🔍 Starting contract verification...');
+    console.log('───────────────────────────────────────────────────');
+
+    const contractsToVerify = [
+      { name: 'AIAgentRegistry', address: deployments.AIAgentRegistry, args: [deployer.address] },
+      { name: 'HumanLevelNFT', address: deployments.HumanLevelNFT, args: [] },
+      { name: 'TaskRegistry', address: deployments.TaskRegistry, args: [deployer.address] },
+      { name: 'X402Payment', address: deployments.X402Payment, args: [deployer.address] },
+    ];
+
+    for (const contract of contractsToVerify) {
+      console.log(`\n📋 Verifying ${contract.name}...`);
+      try {
+        await hre.run("verify:verify", {
+          address: contract.address,
+          constructorArguments: contract.args,
+        });
+        console.log(`   ✅ ${contract.name} verified successfully`);
+      } catch (error) {
+        if (error.message.includes("Already Verified")) {
+          console.log(`   ⚠️  ${contract.name} already verified`);
+        } else {
+          console.error(`   ❌ ${contract.name} verification failed:`, error.message);
+          console.log(`      Manual verify: npx hardhat verify --network ${network.name} ${contract.address}`);
+        }
+      }
     }
+    console.log('\n───────────────────────────────────────────────────');
   }
 
   // 更新 .env 文件提示

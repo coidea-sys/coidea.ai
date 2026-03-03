@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
  * coidea.ai 环境管理工具
- * 
+ *
  * 用法:
- *   node scripts/env-manager.js local     # 切换到本地环境
- *   node scripts/env-manager.js amoy      # 切换到 Amoy 测试网
- *   node scripts/env-manager.js polygon   # 切换到 Polygon 主网
- *   node scripts/env-manager.js status    # 查看当前环境状态
+ *   node scripts/env-manager.js local         # 切换到本地环境
+ *   node scripts/env-manager.js polygonAmoy   # 切换到 Amoy 测试网
+ *   node scripts/env-manager.js polygon       # 切换到 Polygon 主网
+ *   node scripts/env-manager.js status        # 查看当前环境状态
  */
 
 const fs = require('fs');
@@ -22,7 +22,7 @@ const NETWORKS = {
     rpc: 'http://127.0.0.1:8545',
     color: '\x1b[36m' // Cyan
   },
-  amoy: {
+  polygonAmoy: {
     name: 'Polygon Amoy Testnet',
     chainId: 80002,
     rpc: 'https://rpc-amoy.polygon.technology',
@@ -113,11 +113,11 @@ function switchNetwork(network) {
   }
 
   console.log(`\n📝 Next steps:`);
-  if (network === 'local') {
+  if (network === 'localhost') {
     console.log('   1. npx hardhat node');
     console.log('   2. npx hardhat run scripts/deploy.js --network localhost');
   } else {
-    console.log(`   1. Ensure you have ${network === 'amoy' ? 'testnet POL' : 'POL'} in your wallet`);
+    console.log(`   1. Ensure you have ${network === 'polygonAmoy' ? 'testnet POL' : 'POL'} in your wallet`);
     console.log(`   2. npx hardhat run scripts/deploy.js --network ${network}`);
   }
 }
@@ -182,15 +182,15 @@ if (!command || command === 'status') {
 Usage: node scripts/env-manager.js [command]
 
 Commands:
-  local     Switch to local Hardhat network
-  amoy      Switch to Polygon Amoy testnet
-  polygon   Switch to Polygon mainnet
-  status    Show current environment status
-  help      Show this help message
+  local         Switch to local Hardhat network
+  polygonAmoy   Switch to Polygon Amoy testnet
+  polygon       Switch to Polygon mainnet
+  status        Show current environment status
+  help          Show this help message
 
 Examples:
   node scripts/env-manager.js local
-  node scripts/env-manager.js amoy
+  node scripts/env-manager.js polygonAmoy
   node scripts/env-manager.js status
 `);
 } else {
