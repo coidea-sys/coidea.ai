@@ -1,21 +1,36 @@
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' });
+
+const network = process.env.NETWORK || 'localhost';
+
+// 根据网络选择合约地址
+const getContractAddress = (name) => {
+  const prefix = network.toUpperCase();
+  return process.env[`${prefix}_${name}_ADDRESS`] || '';
+};
 
 module.exports = {
   // Server
   port: process.env.PORT || 3000,
   nodeEnv: process.env.NODE_ENV || 'development',
+  network,
   
   // Blockchain
-  rpcUrl: process.env.RPC_URL || 'https://rpc-amoy.polygon.technology',
-  chainId: process.env.CHAIN_ID || 80002,
+  rpcUrl: network === 'localhost' 
+    ? 'http://127.0.0.1:8545'
+    : (process.env.POLYGON_RPC_URL || 'https://rpc-amoy.polygon.technology'),
+  chainId: network === 'localhost' ? 31337 : (process.env.CHAIN_ID || 80002),
   
-  // Contract Addresses (to be filled after deployment)
+  // Contract Addresses
   contracts: {
-    aiAgentRegistry: process.env.AI_AGENT_REGISTRY_ADDRESS || '',
-    humanLevelNFT: process.env.HUMAN_LEVEL_NFT_ADDRESS || '',
-    taskRegistry: process.env.TASK_REGISTRY_ADDRESS || '',
-    x402Payment: process.env.X402_PAYMENT_ADDRESS || ''
+    aiAgentRegistry: getContractAddress('AI_AGENT_REGISTRY'),
+    humanLevelNFT: getContractAddress('HUMAN_LEVEL_NFT'),
+    taskRegistry: getContractAddress('TASK_REGISTRY'),
+    x402Payment: getContractAddress('X402_PAYMENT'),
+    communityGovernance: getContractAddress('COMMUNITY_GOVERNANCE')
   },
+  
+  // Private key for local development (Hardhat default account #0)
+  localPrivateKey: process.env.LOCAL_PRIVATE_KEY || '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
   
   // Database
   database: {
