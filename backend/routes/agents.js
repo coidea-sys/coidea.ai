@@ -1,9 +1,68 @@
+/**
+ * @swagger
+ * tags:
+ *   name: Agents
+ *   description: AI Agent management
+ */
+
 const express = require('express');
 const router = express.Router();
 const blockchain = require('../services/blockchain');
 const config = require('../config');
 
-// Register new agent
+/**
+ * @swagger
+ * /agents/register:
+ *   post:
+ *     summary: Register a new AI Agent
+ *     tags: [Agents]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - agentName
+ *               - agentURI
+ *               - agentWallet
+ *             properties:
+ *               agentName:
+ *                 type: string
+ *                 description: Agent display name
+ *               agentURI:
+ *                 type: string
+ *                 description: Metadata URI (IPFS recommended)
+ *               agentWallet:
+ *                 type: string
+ *                 description: Wallet address for x402 payments
+ *               privateKey:
+ *                 type: string
+ *                 description: Optional private key for signing
+ *     responses:
+ *       200:
+ *         description: Agent registered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     tokenId:
+ *                       type: string
+ *                     agentName:
+ *                       type: string
+ *                     transactionHash:
+ *                       type: string
+ *       400:
+ *         description: Missing required fields
+ *       500:
+ *         description: Server error
+ */
 router.post('/register', async (req, res) => {
   try {
     const { agentName, agentURI, agentWallet, privateKey } = req.body;
@@ -35,7 +94,43 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Get agent by ID
+/**
+ * @swagger
+ * /agents/{tokenId}:
+ *   get:
+ *     summary: Get agent by token ID
+ *     tags: [Agents]
+ *     parameters:
+ *       - in: path
+ *         name: tokenId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Agent token ID
+ *     responses:
+ *       200:
+ *         description: Agent data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     agentName:
+ *                       type: string
+ *                     agentWallet:
+ *                       type: string
+ *                     state:
+ *                       type: string
+ *                     reputationScore:
+ *                       type: string
+ *       500:
+ *         description: Server error
+ */
 router.get('/:tokenId', async (req, res) => {
   try {
     const { tokenId } = req.params;
@@ -52,7 +147,25 @@ router.get('/:tokenId', async (req, res) => {
   }
 });
 
-// Get agent by wallet
+/**
+ * @swagger
+ * /agents/wallet/{wallet}:
+ *   get:
+ *     summary: Get agent by wallet address
+ *     tags: [Agents]
+ *     parameters:
+ *       - in: path
+ *         name: wallet
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Agent wallet address
+ *     responses:
+ *       200:
+ *         description: Agent data
+ *       500:
+ *         description: Server error
+ */
 router.get('/wallet/:wallet', async (req, res) => {
   try {
     const { wallet } = req.params;
@@ -69,7 +182,25 @@ router.get('/wallet/:wallet', async (req, res) => {
   }
 });
 
-// Get agents by registrant
+/**
+ * @swagger
+ * /agents/registrant/{address}:
+ *   get:
+ *     summary: Get agents by registrant address
+ *     tags: [Agents]
+ *     parameters:
+ *       - in: path
+ *         name: address
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Registrant wallet address
+ *     responses:
+ *       200:
+ *         description: List of agents
+ *       500:
+ *         description: Server error
+ */
 router.get('/registrant/:address', async (req, res) => {
   try {
     const { address } = req.params;

@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
 const config = require('./config');
 
 const app = express();
@@ -7,6 +9,9 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Health check
 app.get('/health', (req, res) => {
@@ -44,6 +49,7 @@ app.use((req, res) => {
 app.listen(config.port, () => {
   console.log(`🚀 coidea.ai API server running on port ${config.port}`);
   console.log(`📡 Connected to chain ID: ${config.chainId}`);
+  console.log(`📚 API Docs: http://localhost:${config.port}/api-docs`);
 });
 
 module.exports = app;
