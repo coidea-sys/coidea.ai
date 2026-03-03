@@ -385,21 +385,6 @@ function App() {
                 <ApiTest />
               </section>
             )}
-                      </div>
-                    </div>
-                  )}
-                  
-                  {showWallet && (
-                    <div className="modal-overlay" onClick={() => setShowWallet(false)}>
-                      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <button className="modal-close" onClick={() => setShowWallet(false)}>×</button>
-                        <WalletManager account={account} />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </section>
-            )}
           </>
         )}
       </main>
