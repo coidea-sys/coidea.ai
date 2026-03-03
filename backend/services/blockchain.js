@@ -155,7 +155,113 @@ class BlockchainService {
     if (!this.contracts.humanLevelNFT) {
       throw new Error('HumanLevelNFT contract not configured');
     }
-    return await this.contracts.humanLevelNFT.humans(tokenId);
+    const human = await this.contracts.humanLevelNFT.humans(tokenId);
+    return this._formatHuman(human);
+  }
+
+  async getHumanByWallet(wallet) {
+    if (!this.contracts.humanLevelNFT) {
+      throw new Error('HumanLevelNFT contract not configured');
+    }
+    const human = await this.contracts.humanLevelNFT.getHumanByWallet(wallet);
+    return this._formatHuman(human);
+  }
+
+  async registerHuman(name, wallet, signer) {
+    if (!this.contracts.humanLevelNFT) {
+      throw new Error('HumanLevelNFT contract not configured');
+    }
+
+    const contractWithSigner = this.contracts.humanLevelNFT.connect(signer);
+
+    // Check if wallet already registered
+    const isRegistered = await this.contracts.humanLevelNFT.isRegistered(wallet);
+    if (isRegistered) {
+      throw new Error(`Wallet ${wallet} already registered`);
+    }
+
+    const tx = await contractWithSigner.registerHuman(name, wallet);
+    const receipt = await tx.wait();
+
+    // Get tokenId from event
+    let tokenId = null;
+    for (const log of receipt.logs) {
+      try {
+        const parsed = contractWithSigner.interface.parseLog(log);
+        if (parsed && parsed.name === 'HumanRegistered') {
+          tokenId = parsed.args.tokenId.toString();
+          break;
+        }
+      } catch {
+        // Continue
+      }
+    }
+
+    return {
+      tokenId,
+      name,
+      wallet,
+      transactionHash: receipt.hash,
+      blockNumber: receipt.blockNumber.toString()
+    };
+  }
+
+  async getHumanLevel(tokenId) {
+    if (!this.contracts.humanLevelNFT) {
+      throw new Error('HumanLevelNFT contract not configured');
+    }
+    return await this.contracts.humanLevelNFT.getLevel(tokenId);
+  }
+
+  async getHumanLevelName(tokenId) {
+    if (!this.contracts.humanLevelNFT) {
+      throw new Error('HumanLevelNFT contract not configured');
+    }
+    return await this.contracts.humanLevelNFT.getLevelName(tokenId);
+  }
+
+  async canPublishTask(tokenId) {
+    if (!this.contracts.humanLevelNFT) {
+      throw new Error('HumanLevelNFT contract not configured');
+    }
+    return await this.contracts.humanLevelNFT.canPublishTask(tokenId);
+  }
+
+  async canArbitrate(tokenId) {
+    if (!this.contracts.humanLevelNFT) {
+      throw new Error('HumanLevelNFT contract not configured');
+    }
+    return await this.contracts.humanLevelNFT.canArbitrate(tokenId);
+  }
+
+  async canGovern(tokenId) {
+    if (!this.contracts.humanLevelNFT) {
+      throw new Error('HumanLevelNFT contract not configured');
+    }
+    return await this.contracts.humanLevelNFT.canGovern(tokenId);
+  }
+
+  // Format human data for JSON serialization
+  _formatHuman(human) {
+    if (!human || human[1] === '0x0000000000000000000000000000000000000000') {
+      return null;
+    }
+
+    // Handle array format from ethers.js
+    if (Array.isArray(human)) {
+      return {
+        name: human[0],
+        wallet: human[1],
+        level: human[2]?.toString() || '0',
+        contribution: human[3]?.toString() || '0',
+        reputation: human[4]?.toString() || '0',
+        tasksPublished: human[5]?.toString() || '0',
+        tasksCompleted: human[6]?.toString() || '0',
+        registeredAt: human[7]?.toString() || '0'
+      };
+    }
+
+    return human;
   }
 
   // Task Registry methods
