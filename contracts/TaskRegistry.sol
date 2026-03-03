@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity 0.8.20;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
@@ -152,6 +152,7 @@ contract TaskRegistry is Ownable, ReentrancyGuard {
         require(bytes(_title).length > 0, "Title cannot be empty");
         require(bytes(_title).length <= 100, "Title too long");
         require(_reward >= minReward, "Reward below minimum");
+        require(_deadlineDuration > 0, "Deadline must be in the future");
         require(_deadlineDuration <= maxDeadlineDuration, "Deadline too far");
         require(msg.value >= _reward, "Insufficient deposit");
         

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity 0.8.20;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
@@ -54,8 +54,15 @@ contract HumanLevelNFT is ERC721, ERC721Enumerable, Ownable {
     // Level thresholds (contribution points) / 等级阈值（贡献值）
     mapping(Level => uint256) public levelThresholds;
 
-    // Level names for metadata / 等级名称（用于元数据）
-    mapping(Level => string) public levelNames;
+    // Level names for metadata (constant) / 等级名称（常量）
+    function getLevelName(Level _level) public pure returns (string memory) {
+        if (_level == Level.L1) return "Novice";
+        if (_level == Level.L2) return "Apprentice";
+        if (_level == Level.L3) return "Expert";
+        if (_level == Level.L4) return "Master";
+        if (_level == Level.L5) return "Legend";
+        return "";
+    }
 
     // Events / 事件
     event HumanRegistered(uint256 indexed tokenId, address indexed wallet, string username);
@@ -70,13 +77,6 @@ contract HumanLevelNFT is ERC721, ERC721Enumerable, Ownable {
         levelThresholds[Level.L3] = 500;     // 500 points / 500 贡献值
         levelThresholds[Level.L4] = 2000;    // 2000 points / 2000 贡献值
         levelThresholds[Level.L5] = 10000;   // 10000 points / 10000 贡献值
-
-        // Initialize level names / 初始化等级名称
-        levelNames[Level.L1] = "Novice";
-        levelNames[Level.L2] = "Apprentice";
-        levelNames[Level.L3] = "Expert";
-        levelNames[Level.L4] = "Master";
-        levelNames[Level.L5] = "Legend";
     }
 
     /**
@@ -235,9 +235,9 @@ contract HumanLevelNFT is ERC721, ERC721Enumerable, Ownable {
      * @notice Get human's level name
      * @notice 获取等级名称
      */
-    function getLevelName(uint256 _tokenId) public view returns (string memory) {
+    function getHumanLevelName(uint256 _tokenId) public view returns (string memory) {
         require(_exists(_tokenId), "Human does not exist");
-        return levelNames[humans[_tokenId].level];
+        return getLevelName(humans[_tokenId].level);
     }
 
     /**
