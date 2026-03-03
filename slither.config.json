@@ -1,0 +1,128 @@
+# Slither Configuration
+# Smart Contract Security Analysis
+
+# Detectors to run
+detectors:
+  - reentrancy
+  - reentrancy-benign
+  - reentrancy-eth
+  - reentrancy-unlimited-gas
+  - unchecked-transfer
+  - unchecked-send
+  - unchecked-lowlevel
+  - calls-loop
+  - timestamp
+  - block-number
+  - weak-prng
+  - tx-origin
+  - msg-value-loop
+  - delegatecall-loop
+  - controlled-delegatecall
+  - controlled-array-length
+  - controlled-assembly
+  - incorrect-shift
+  - incorrect-exp
+  - divide-before-multiply
+  - integer-overflow
+  - integer-underflow
+  - signed-integer-overflow
+  - unsigned-integer-overflow
+  - storage-array
+  - storage-signed-integer-array
+  - storage-unaligned
+  - storage-packed
+  - mapping-deletion
+  - arbitrary-send
+  - arbitrary-send-erc20
+  - arbitrary-send-erc20-permit
+  - suicidable
+  - delegate
+  - default-visibility
+  - shadowing-local
+  - shadowing-state
+  - shadowing-builtin
+  - shadowing-abstract
+  - uninitialized-state
+  - uninitialized-storage
+  - uninitialized-local
+  - unprotected-upgrade
+  - unprotected-delegatecall
+  - locked-ether
+  - ether-lock
+  - erc20-interface
+  - erc721-interface
+  - erc777-interface
+  - erc677-interface
+  - erc1155-interface
+  - missing-zero-check
+  - missing-events-access
+  - missing-events-arithmetic
+  - missing-events-approval
+  - missing-events-transfer
+  - missing-events-transferfrom
+  - missing-events-mint
+  - missing-events-burn
+  - missing-events-pause
+  - missing-events-unpause
+  - missing-events-ownership
+  - missing-events-upgrade
+  - missing-events-role
+  - missing-events-role-admin
+  - missing-events-role-granted
+  - missing-events-role-revoked
+  - missing-events-role-renounced
+  - missing-events-approval-for-all
+  - missing-events-uri
+  - missing-events-consecutive-transfer
+  - missing-events-batch-transfer
+  - missing-events-batch-mint
+  - missing-events-batch-burn
+  - missing-events-batch-approval
+  - missing-events-batch-approval-for-all
+  - missing-events-batch-uri
+  - missing-events-batch-consecutive-transfer
+
+# Exclude detectors
+exclude_detectors:
+  - naming-convention
+  - solc-version
+  - pragma
+  - external-function
+  - low-level-calls
+  - assembly
+  - too-many-digits
+  - cache-storage
+  - cache-state-variables
+  - cache-array-length
+  - constable-states
+  - immutable-states
+  - var-read-using-this
+  - dead-code
+  - redundant-statements
+  - unused-return
+  - unused-state
+  - unused-variables
+  - similar-names
+  - too-many-statements
+  - cyclomatic-complexity
+  - function-init-state
+  - reentrancy-no-eth
+  - reentrancy-events
+  - reentrancy-unlimited-gas-no-eth
+
+# Filter paths
+filter_paths:
+  - node_modules
+  - @openzeppelin
+  - hardhat
+
+# Compilation
+compile_force_framework: hardhat
+compile_remove_metadata: true
+
+# Output
+output_format: json
+output_destination: ./security-report.json
+
+# Timeout
+timeout: 300
