@@ -55,14 +55,17 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
-
-      - name: Install OpenZeppelin contracts
         run: |
+          npm install --legacy-peer-deps
           npm install @openzeppelin/contracts@^5.0.0
-          echo "=== Verifying OpenZeppelin installation ==="
-          ls -la node_modules/@openzeppelin/contracts/ 2>/dev/null || echo "Directory not found"
-          ls -la node_modules/@openzeppelin/contracts/security/ 2>/dev/null || echo "Security directory not found"
+
+      - name: Verify OpenZeppelin installation
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Listing node_modules/@openzeppelin/:"
+          ls -la node_modules/@openzeppelin/ 2>/dev/null || echo "OpenZeppelin directory not found"
+          echo "Checking for ReentrancyGuard.sol:"
+          find node_modules -name "ReentrancyGuard.sol" 2>/dev/null || echo "ReentrancyGuard.sol not found"
 
       - name: Compile contracts
         run: npx hardhat compile
