@@ -19,7 +19,9 @@ jobs:
         node-version: '18'
     
     - name: Install dependencies
-      run: npm install
+      run: |
+        npm install
+        npm ls @openzeppelin/contracts || npm install @openzeppelin/contracts@^5.0.0
     
     - name: Compile contracts
       run: npx hardhat compile
