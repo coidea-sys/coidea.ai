@@ -99,9 +99,9 @@ jobs:
           name: node_modules
           path: node_modules
       - name: Compile contracts
-        run: npm run contract:compile
+        run: npm run compile
       - name: Run contract tests
-        run: npm run contract:test
+        run: npm test
       - name: Upload coverage
         uses: codecov/codecov-action@v4
         with:
