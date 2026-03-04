@@ -55,9 +55,12 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Install OpenZeppelin contracts
         run: |
-          npm install --legacy-peer-deps
-          npm ls @openzeppelin/contracts || npm install @openzeppelin/contracts@^5.0.0
+          npm install @openzeppelin/contracts@^5.0.0 --save
+          ls -la node_modules/@openzeppelin/contracts/
 
       - name: Compile contracts
         run: npx hardhat compile
