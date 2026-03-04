@@ -55,14 +55,22 @@ node scripts/verify-sourcify-all.js
 
 ## Verification Status
 
-### Amoy Testnet (Verified on Sourcify)
+### Amoy Testnet (All Verified on Sourcify ✅)
 
 | Contract | Address | Sourcify |
 |----------|---------|----------|
 | HumanRegistry | `0xa7049DB55AE7D67FBC006734752DD1fe24687bE3` | ✅ [View](https://repo.sourcify.dev/contracts/full_match/80002/0xa7049DB55AE7D67FBC006734752DD1fe24687bE3/) |
 | AIAgentRegistry | `0xB3b5b0955cFaDdB92b2433818159A1B4f7daaF78` | ✅ [View](https://repo.sourcify.dev/contracts/full_match/80002/0xB3b5b0955cFaDdB92b2433818159A1B4f7daaF78/) |
 | HumanLevelNFT | `0xb42Bb4AcEf001b472f0A2838bD7EbC4Df544290D` | ✅ [View](https://repo.sourcify.dev/contracts/full_match/80002/0xb42Bb4AcEf001b472f0A2838bD7EbC4Df544290D/) |
-| ... | ... | ... |
+| CommunityGovernance | `0x7e1005053683C1F9697Dc90a071cDE350791F1e3` | ✅ [View](https://repo.sourcify.dev/contracts/full_match/80002/0x7e1005053683C1F9697Dc90a071cDE350791F1e3/) |
+| LiabilityRegistry | `0x93C9eF9C3ac2F7536F901b2c4d3CDa8FDceB526A` | ✅ [View](https://repo.sourcify.dev/contracts/full_match/80002/0x93C9eF9C3ac2F7536F901b2c4d3CDa8FDceB526A/) |
+| AgentCommunity | `0x303C3fa2d0F156372F5ec8689095C20D50431191` | ✅ [View](https://repo.sourcify.dev/contracts/full_match/80002/0x303C3fa2d0F156372F5ec8689095C20D50431191/) |
+| LiabilityPreset | `0x969133C8509b17956022aE4e43dC3B95577134A2` | ✅ [View](https://repo.sourcify.dev/contracts/full_match/80002/0x969133C8509b17956022aE4e43dC3B95577134A2/) |
+| AgentLifecycle | `0xE342ba865025ee90Ff540Cc10c7192d15e813278` | ✅ [View](https://repo.sourcify.dev/contracts/full_match/80002/0xE342ba865025ee90Ff540Cc10c7192d15e813278/) |
+| AgentRuntime | `0xccCe4726D5e480184b2aF51b39943e387F7acBd1` | ✅ [View](https://repo.sourcify.dev/contracts/full_match/80002/0xccCe4726D5e480184b2aF51b39943e387F7acBd1/) |
+| HumanEconomy | `0x2FC0a1B77047833Abb836048Dec3585f27c9f01a` | ✅ [View](https://repo.sourcify.dev/contracts/full_match/80002/0x2FC0a1B77047833Abb836048Dec3585f27c9f01a/) |
+| TaskRegistry | `0xE8eb60EB3cFEaC27fb9D0bC52d5DE346206D3fAE` | ✅ [View](https://repo.sourcify.dev/contracts/full_match/80002/0xE8eb60EB3cFEaC27fb9D0bC52d5DE346206D3fAE/) |
+| X402Payment | `0x608b0E50593B307CC7F09C1bE0Bd691107F8C87B` | ✅ [View](https://repo.sourcify.dev/contracts/full_match/80002/0x608b0E50593B307CC7F09C1bE0Bd691107F8C87B/) |
 
 ## Troubleshooting
 
