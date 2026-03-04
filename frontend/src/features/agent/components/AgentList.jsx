@@ -9,6 +9,7 @@ export function AgentList({ ownerAddress, onSelectAgent }) {
     if (ownerAddress) {
       loadAgents();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ownerAddress]);
 
   const loadAgents = async () => {

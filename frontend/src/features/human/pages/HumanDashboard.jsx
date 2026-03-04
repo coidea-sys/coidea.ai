@@ -13,7 +13,7 @@ export function HumanDashboard({ account }) {
     if (account) {
       checkIsHuman(account).then(setIsRegistered);
     }
-  }, [account]);
+  }, [account, checkIsHuman]);
 
   if (!account) {
     return (

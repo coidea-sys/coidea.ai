@@ -11,6 +11,7 @@ export function HumanProfile({ address }) {
     if (address) {
       loadProfile();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
 
   const loadProfile = async () => {

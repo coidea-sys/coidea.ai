@@ -11,6 +11,7 @@ export function WalletManager({ address }) {
     if (address) {
       loadBalance();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
 
   const loadBalance = async () => {
