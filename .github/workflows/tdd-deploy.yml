@@ -61,13 +61,14 @@ jobs:
 
       - name: Verify OpenZeppelin installation
         run: |
-          echo "Current directory: $(pwd)"
-          echo "Listing node_modules/@openzeppelin/:"
-          ls -la node_modules/@openzeppelin/ 2>/dev/null || echo "OpenZeppelin directory not found"
-          echo "Checking for ReentrancyGuard.sol:"
-          find node_modules -name "ReentrancyGuard.sol" 2>/dev/null || echo "ReentrancyGuard.sol not found"
-          echo "Package.json dependencies:"
-          cat package.json | grep -A5 "dependencies"
+          if [ ! -f "node_modules/@openzeppelin/contracts/security/ReentrancyGuard.sol" ]; then
+            echo "❌ OpenZeppelin contracts not installed correctly!"
+            echo "Listing node_modules/@openzeppelin/:"
+            ls -la node_modules/@openzeppelin/ 2>/dev/null || echo "Directory not found"
+            exit 1
+          fi
+          echo "✅ OpenZeppelin contracts installed successfully"
+          ls -la node_modules/@openzeppelin/contracts/security/
 
       - name: Compile contracts
         run: npx hardhat compile
