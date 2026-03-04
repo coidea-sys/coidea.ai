@@ -57,7 +57,7 @@ jobs:
       - name: Install dependencies
         run: |
           npm install --legacy-peer-deps
-          npm install @openzeppelin/contracts@^5.0.0
+          npm install @openzeppelin/contracts@^5.0.0 --force
 
       - name: Verify OpenZeppelin installation
         run: |
@@ -66,6 +66,8 @@ jobs:
           ls -la node_modules/@openzeppelin/ 2>/dev/null || echo "OpenZeppelin directory not found"
           echo "Checking for ReentrancyGuard.sol:"
           find node_modules -name "ReentrancyGuard.sol" 2>/dev/null || echo "ReentrancyGuard.sol not found"
+          echo "Package.json dependencies:"
+          cat package.json | grep -A5 "dependencies"
 
       - name: Compile contracts
         run: npx hardhat compile
