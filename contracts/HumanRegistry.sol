@@ -365,6 +365,8 @@ contract HumanRegistry is Ownable, ReentrancyGuard, Pausable {
     
     // ============ 紧急控制 ============
     
+    string public pauseReason;
+    
     function pause() external onlyOwner {
         _pause();
     }
@@ -372,4 +374,27 @@ contract HumanRegistry is Ownable, ReentrancyGuard, Pausable {
     function unpause() external onlyOwner {
         _unpause();
     }
+    
+    function emergencyPause() external onlyOwner {
+        _pause();
+        emit EmergencyPause(msg.sender, block.number);
+    }
+    
+    function emergencyPauseWithReason(string calldata _reason) external onlyOwner {
+        _pause();
+        pauseReason = _reason;
+        emit EmergencyPauseWithReason(msg.sender, block.number, _reason);
+    }
+    
+    function emergencyResume() external onlyOwner {
+        _unpause();
+        pauseReason = "";
+        emit EmergencyResume(msg.sender);
+    }
+    
+    // ============ 事件 ============
+    
+    event EmergencyPause(address indexed account, uint256 blockNumber);
+    event EmergencyPauseWithReason(address indexed account, uint256 blockNumber, string reason);
+    event EmergencyResume(address indexed account);
 }
