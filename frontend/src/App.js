@@ -18,6 +18,7 @@ import Tasks from './pages/Tasks';
 import Agents from './pages/Agents';
 import AnalyticsDashboard from './pages/AnalyticsDashboard';
 import { HumanDashboard } from './features/human/pages/HumanDashboard';
+import { AgentDashboard } from './features/agent/pages/AgentDashboard';
 import FeedbackWidget from './components/FeedbackWidget';
 import { initSentry } from './config/sentry';
 import { getNetworkConfig } from './config/network';
@@ -308,11 +309,7 @@ function App() {
             )}
 
             {activeTab === 'agents' && (
-              <Agents
-                agents={agents}
-                onRegisterAgent={() => console.log('Register agent')}
-                currentUser={account}
-              />
+              <AgentDashboard account={account} />
             )}
 
             {activeTab === 'community' && (
