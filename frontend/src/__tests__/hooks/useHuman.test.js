@@ -1,4 +1,4 @@
-import { renderHook, act, waitFor } from '@testing-library/react';
+import { renderHook, act } from '@testing-library/react';
 import { useHuman } from '../hooks/useHuman';
 import { ethers } from 'ethers';
 
@@ -7,6 +7,8 @@ jest.mock('ethers', () => ({
   ...jest.requireActual('ethers'),
   BrowserProvider: jest.fn(),
   Contract: jest.fn(),
+  parseEther: jest.fn((val) => val),
+  formatEther: jest.fn((val) => val),
 }));
 
 describe('useHuman Hook', () => {
@@ -15,119 +17,123 @@ describe('useHuman Hook', () => {
   };
 
   const mockSigner = {
-    getAddress: jest.fn().mockResolvedValue('0x123'),
+    getAddress: jest.fn().mockResolvedValue('0x1234567890123456789012345678901234567890'),
   };
 
   const mockContract = {
-    registrationFee: jest.fn().mockResolvedValue(ethers.parseEther('0.001')),
-    register: jest.fn().mockResolvedValue({ wait: jest.fn() }),
-    getHumanProfile: jest.fn(),
+    register: jest.fn(),
+    humans: jest.fn(),
     isHuman: jest.fn(),
+    getHumanProfile: jest.fn(),
   };
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockProvider.getSigner.mockResolvedValue(mockSigner);
     ethers.BrowserProvider.mockImplementation(() => mockProvider);
     ethers.Contract.mockImplementation(() => mockContract);
-    mockProvider.getSigner.mockResolvedValue(mockSigner);
   });
 
   describe('Registration', () => {
-    it('should get registration fee', async () => {
+    it('should register a new human with username and metadata', async () => {
+      // Arrange
+      mockContract.register.mockResolvedValue({ wait: jest.fn().mockResolvedValue(true) });
+      
+      // Act
       const { result } = renderHook(() => useHuman());
-
+      
       await act(async () => {
-        await result.current.getRegistrationFee();
+        await result.current.register('testuser', 'ipfs://metadata');
       });
-
-      expect(mockContract.registrationFee).toHaveBeenCalled();
-      expect(result.current.registrationFee).toBe('0.001');
-    });
-
-    it('should register human successfully', async () => {
-      const { result } = renderHook(() => useHuman());
-
-      let success = false;
-      await act(async () => {
-        success = await result.current.register('testuser', 'ipfs://test');
-      });
-
-      expect(success).toBe(true);
+      
+      // Assert
       expect(mockContract.register).toHaveBeenCalledWith(
         'testuser',
-        'ipfs://test',
-        { value: ethers.parseEther('0.001') }
+        'ipfs://metadata',
+        { value: '0.001' }
       );
+      expect(result.current.isRegistered).toBe(true);
     });
 
-    it('should handle registration error', async () => {
+    it('should handle registration errors', async () => {
+      // Arrange
       mockContract.register.mockRejectedValue(new Error('Username taken'));
       
+      // Act
       const { result } = renderHook(() => useHuman());
-
-      let error = null;
+      
       await act(async () => {
         try {
-          await result.current.register('testuser', 'ipfs://test');
+          await result.current.register('existinguser', 'ipfs://metadata');
         } catch (e) {
-          error = e.message;
+          // Expected error
         }
       });
+      
+      // Assert
+      expect(result.current.error).toBe('Username taken');
+      expect(result.current.isRegistered).toBe(false);
+    });
 
-      expect(error).toBe('Username taken');
+    it('should check if user is already registered', async () => {
+      // Arrange
+      mockContract.isHuman.mockResolvedValue(true);
+      
+      // Act
+      const { result } = renderHook(() => useHuman());
+      
+      await act(async () => {
+        await result.current.checkRegistration();
+      });
+      
+      // Assert
+      expect(result.current.isRegistered).toBe(true);
     });
   });
 
-  describe('Profile', () => {
+  describe('Profile Management', () => {
     it('should fetch human profile', async () => {
+      // Arrange
       const mockProfile = {
-        wallet: '0x123',
+        wallet: '0x1234567890123456789012345678901234567890',
         username: 'testuser',
+        metadataURI: 'ipfs://metadata',
+        registeredAt: 1234567890,
         reputation: 100,
-        totalTasksCreated: 5,
         isVerified: true,
+        isActive: true,
       };
       mockContract.getHumanProfile.mockResolvedValue(mockProfile);
-
+      
+      // Act
       const { result } = renderHook(() => useHuman());
-
+      
       await act(async () => {
-        await result.current.fetchProfile('0x123');
+        await result.current.fetchProfile();
       });
-
-      expect(mockContract.getHumanProfile).toHaveBeenCalledWith('0x123');
+      
+      // Assert
       expect(result.current.profile).toEqual(mockProfile);
-    });
-
-    it('should check if address is human', async () => {
-      mockContract.isHuman.mockResolvedValue(true);
-
-      const { result } = renderHook(() => useHuman());
-
-      let isHuman = false;
-      await act(async () => {
-        isHuman = await result.current.checkIsHuman('0x123');
-      });
-
-      expect(isHuman).toBe(true);
+      expect(result.current.profile.username).toBe('testuser');
     });
   });
 
   describe('Loading States', () => {
-    it('should set loading during registration', async () => {
+    it('should show loading state during registration', async () => {
+      // Arrange
+      mockContract.register.mockImplementation(() => 
+        new Promise(resolve => setTimeout(() => resolve({ wait: jest.fn() }), 100))
+      );
+      
+      // Act
       const { result } = renderHook(() => useHuman());
-
-      expect(result.current.loading).toBe(false);
-
+      
       act(() => {
-        result.current.register('testuser', 'ipfs://test');
+        result.current.register('testuser', 'ipfs://metadata');
       });
-
-      expect(result.current.loading).toBe(true);
-
-      await waitFor(() => {
-        expect(result.current.loading).toBe(false);
-      });
+      
+      // Assert - immediately after calling
+      expect(result.current.isLoading).toBe(true);
     });
   });
 });
