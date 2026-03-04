@@ -504,7 +504,7 @@ describe('TaskRegistry - Task Management Contract', function () {
       
       await expect(
         taskRegistry.connect(publisher).resolveDispute(0, true)
-      ).to.be.revertedWithCustomError(taskRegistry, 'OwnableUnauthorizedAccount');
+      ).to.be.revertedWith('Ownable: caller is not the owner');
     });
   });
 
@@ -526,7 +526,7 @@ describe('TaskRegistry - Task Management Contract', function () {
     it('Should only allow owner to update fee', async function () {
       await expect(
         taskRegistry.connect(publisher).setPlatformFee(500)
-      ).to.be.revertedWithCustomError(taskRegistry, 'OwnableUnauthorizedAccount');
+      ).to.be.revertedWith('Ownable: caller is not the owner');
     });
   });
 
@@ -580,7 +580,7 @@ describe('TaskRegistry - Task Management Contract', function () {
     it('Should only allow owner to emergency withdraw', async function () {
       await expect(
         taskRegistry.connect(publisher).emergencyWithdraw()
-      ).to.be.revertedWithCustomError(taskRegistry, 'OwnableUnauthorizedAccount');
+      ).to.be.revertedWith('Ownable: caller is not the owner');
     });
   });
 });
