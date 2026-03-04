@@ -61,14 +61,14 @@ jobs:
 
       - name: Verify OpenZeppelin installation
         run: |
-          if [ ! -f "node_modules/@openzeppelin/contracts/security/ReentrancyGuard.sol" ]; then
+          if [ ! -f "node_modules/@openzeppelin/contracts/utils/ReentrancyGuard.sol" ]; then
             echo "❌ OpenZeppelin contracts not installed correctly!"
             echo "Listing node_modules/@openzeppelin/:"
             ls -la node_modules/@openzeppelin/ 2>/dev/null || echo "Directory not found"
             exit 1
           fi
           echo "✅ OpenZeppelin contracts installed successfully"
-          ls -la node_modules/@openzeppelin/contracts/security/
+          ls -la node_modules/@openzeppelin/contracts/utils/
 
       - name: Compile contracts
         run: npx hardhat compile
