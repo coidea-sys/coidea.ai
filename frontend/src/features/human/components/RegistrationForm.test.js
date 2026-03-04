@@ -8,7 +8,7 @@ jest.mock('../hooks/useHuman', () => ({
     register: mockRegister,
     isLoading: false,
     error: null,
-    REGISTRATION_FEE: { toString: () => '1000000000000000' },
+    REGISTRATION_FEE: BigInt(1000000000000000),
   }),
 }));
 

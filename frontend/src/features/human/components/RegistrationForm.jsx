@@ -65,7 +65,7 @@ export function RegistrationForm({ onSuccess }) {
       </div>
 
       <div>
-        <p>注册费用: {REGISTRATION_FEE ? ethers.formatEther(REGISTRATION_FEE) : '0.001'} ETH</p>
+        <p>注册费用: {REGISTRATION_FEE ? ethers.formatEther(REGISTRATION_FEE.toString()) : '0.001'} ETH</p>
       </div>
 
       {error && (
