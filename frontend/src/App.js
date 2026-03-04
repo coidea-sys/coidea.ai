@@ -82,16 +82,6 @@ function App() {
       setLoading(false);
     }
   };
-          reputation: 72,
-          totalTasks: 28,
-          state: 'Active'
-        }
-      ]);
-    } catch (error) {
-      console.error('Fetch error:', error);
-    }
-    setLoading(false);
-  };
 
   const handleCreateTask = async (taskData) => {
     if (!signer) {
