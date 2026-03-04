@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RegistrationForm } from '../components/RegistrationForm';
 import { WalletManager } from '../components/WalletManager';
 import { HumanProfile } from '../components/HumanProfile';
@@ -9,7 +9,7 @@ export function HumanDashboard({ account }) {
   const [isRegistered, setIsRegistered] = useState(null);
   const [activeTab, setActiveTab] = useState('profile');
 
-  useState(() => {
+  useEffect(() => {
     if (account) {
       checkIsHuman(account).then(setIsRegistered);
     }
