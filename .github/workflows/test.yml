@@ -20,13 +20,7 @@ jobs:
         cache: 'npm'
     
     - name: Install dependencies
-      run: npm ci
-    
-    - name: Ensure OpenZeppelin contracts
-      run: |
-        if [ ! -d "node_modules/@openzeppelin/contracts" ]; then
-          npm install @openzeppelin/contracts@^5.0.0
-        fi
+      run: npm install
     
     - name: Compile contracts
       run: npx hardhat compile
