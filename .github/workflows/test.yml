@@ -21,7 +21,11 @@ jobs:
     - name: Install dependencies
       run: |
         npm install
+        echo "=== Checking node_modules ==="
+        ls -la node_modules/@openzeppelin/ 2>/dev/null || echo "OpenZeppelin not found"
         npm ls @openzeppelin/contracts || npm install @openzeppelin/contracts@^5.0.0
+        echo "=== After install ==="
+        ls -la node_modules/@openzeppelin/contracts/ 2>/dev/null || echo "Still not found"
     
     - name: Compile contracts
       run: npx hardhat compile
