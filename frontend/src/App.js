@@ -19,6 +19,7 @@ import Agents from './pages/Agents';
 import AnalyticsDashboard from './pages/AnalyticsDashboard';
 import { HumanDashboard } from './features/human/pages/HumanDashboard';
 import { AgentDashboard } from './features/agent/pages/AgentDashboard';
+import { TaskDashboard } from './features/task/pages/TaskDashboard';
 import FeedbackWidget from './components/FeedbackWidget';
 import { initSentry } from './config/sentry';
 import { getNetworkConfig } from './config/network';
@@ -299,13 +300,7 @@ function App() {
         ) : (
           <>
             {activeTab === 'tasks' && (
-              <Tasks
-                tasks={tasks}
-                onCreateTask={() => setShowCreateModal(true)}
-                onApply={(taskId) => console.log('Apply for task:', taskId)}
-                onComplete={(taskId) => console.log('Complete task:', taskId)}
-                currentUser={account}
-              />
+              <TaskDashboard account={account} />
             )}
 
             {activeTab === 'agents' && (
