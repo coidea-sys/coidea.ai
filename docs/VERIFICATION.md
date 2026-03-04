@@ -2,126 +2,109 @@
 
 ## Overview
 
-We support multiple verification methods for maximum compatibility:
+Due to **PolygonScan API V1 deprecation** (May 31, 2025), we have switched to **Sourcify** as our primary verification method.
 
 | Method | Type | Status | Use Case |
 |--------|------|--------|----------|
-| **Sourcify** | Open Source | ✅ Recommended | Primary verification |
-| **PolygonScan** | Commercial | ⚠️ API V1 Deprecated | Backup/legacy |
+| **Sourcify** | Open Source | ✅ **Primary** | Recommended for all chains |
+| **PolygonScan** | Commercial | ⚠️ Deprecated | Legacy only |
 | **Blockscout** | Open Source | ✅ Supported | Alternative explorer |
 
-## Sourcify (Recommended)
+## Why Sourcify?
 
-Sourcify is the **open-source verification standard** supported by:
-- MetaMask
-- Remix IDE
-- Blockscout
-- Safe (Gnosis Safe)
+- **Open source** - Transparent and community-driven
+- **No API keys** - Free to use without registration
+- **Multi-chain** - Works with any EVM chain
+- **Wallet integration** - Supported by MetaMask, Remix, Safe
+- **Future-proof** - Not subject to commercial API changes
 
-### Verify via Script
+## Configuration
 
-```bash
-./scripts/verify-sourcify.sh
+Our `hardhat.config.js` is already configured to use Sourcify:
+
+```javascript
+// Sourcify verification (primary method)
+sourcify: {
+  enabled: true
+},
+// Etherscan disabled due to API V1 deprecation
+etherscan: {
+  apiKey: process.env.POLYGONSCAN_API_KEY,
+  enabled: false,
+}
 ```
 
-### Verify Manually
+## Verifying Contracts
+
+### Single Contract
 
 ```bash
-# AIAgentRegistry
-npx hardhat verify --network polygonAmoy --sourcify \
-  0xA7f382500BbEc4E3C4eF18682D63dc156AD1CE24 \
-  "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
-
-# HumanLevelNFT
-npx hardhat verify --network polygonAmoy --sourcify \
-  0x78BB5F702441B751D34d860474Acf6409585Aad8
-
-# TaskRegistry
-npx hardhat verify --network polygonAmoy --sourcify \
-  0x7e8ee79A7BdC624b9FCB8A37b91C7305A00c2D42 \
-  "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
-
-# X402Payment
-npx hardhat verify --network polygonAmoy --sourcify \
-  0x510fC8AD46EB0b010F0015b07c0EAc0C93B2599F \
-  "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+npx hardhat verify --network polygonAmoy <CONTRACT_ADDRESS> [constructor-args]
 ```
 
-### Check Verification Status
+Example:
+```bash
+npx hardhat verify --network polygonAmoy 0xa7049DB55AE7D67FBC006734752DD1fe24687bE3 0x6e2c6bFDc06BAf06c3c42Cb5B9Dc73a9c41143Df
+```
+
+### All Contracts (Batch)
 
 ```bash
-curl "https://sourcify.dev/server/check-all-by-addresses?\
-  addresses=0xA7f382500BbEc4E3C4eF18682D63dc156AD1CE24&\
-  chainIds=80002"
+node scripts/verify-sourcify-all.js
 ```
 
-### View Verified Contracts
+## Verification Status
 
-- https://sourcify.dev/#/lookup/0xA7f382500BbEc4E3C4eF18682D63dc156AD1CE24
-- https://sourcify.dev/#/lookup/0x78BB5F702441B751D34d860474Acf6409585Aad8
-- https://sourcify.dev/#/lookup/0x7e8ee79A7BdC624b9FCB8A37b91C7305A00c2D42
-- https://sourcify.dev/#/lookup/0x510fC8AD46EB0b010F0015b07c0EAc0C93B2599F
+### Amoy Testnet (Verified on Sourcify)
 
-## PolygonScan (Legacy)
-
-Due to PolygonScan API V1 deprecation, automatic verification may fail.
-
-### Manual Verification
-
-1. Go to https://amoy.polygonscan.com
-2. Search for your contract address
-3. Click "Verify and Publish"
-4. Select:
-   - Compiler Type: Solidity (Single file)
-   - Compiler Version: v0.8.24
-   - License Type: MIT
-5. Paste the flattened contract code
-
-### Flatten Contract
-
-```bash
-npx hardhat flatten contracts/AIAgentRegistry.sol > AIAgentRegistry.flattened.sol
-```
-
-## Automated CI/CD
-
-The project includes GitHub Actions workflow for automated deployment and verification:
-
-```bash
-# Trigger deployment
-gh workflow run deploy.yml
-
-# Or push to main branch
-git push origin main
-```
-
-See `.github/workflows/deploy.yml` for details.
+| Contract | Address | Sourcify |
+|----------|---------|----------|
+| HumanRegistry | `0xa7049DB55AE7D67FBC006734752DD1fe24687bE3` | ✅ [View](https://repo.sourcify.dev/contracts/full_match/80002/0xa7049DB55AE7D67FBC006734752DD1fe24687bE3/) |
+| AIAgentRegistry | `0xB3b5b0955cFaDdB92b2433818159A1B4f7daaF78` | ✅ [View](https://repo.sourcify.dev/contracts/full_match/80002/0xB3b5b0955cFaDdB92b2433818159A1B4f7daaF78/) |
+| HumanLevelNFT | `0xb42Bb4AcEf001b472f0A2838bD7EbC4Df544290D` | ✅ [View](https://repo.sourcify.dev/contracts/full_match/80002/0xb42Bb4AcEf001b472f0A2838bD7EbC4Df544290D/) |
+| ... | ... | ... |
 
 ## Troubleshooting
 
-### "Multiple contracts match bytecode"
+### "Contract already verified"
 
-Use `--contract` flag with full path:
-```bash
-npx hardhat verify --network polygonAmoy \
-  --contract contracts/AIAgentRegistry.sol:AIAgentRegistry \
-  <address> <constructor-args>
-```
+This is normal. Sourcify will skip already verified contracts.
 
-### "API V1 Deprecated"
+### "Network request failed"
 
-Switch to Sourcify or manual verification on PolygonScan website.
+- Check your internet connection
+- Verify the contract address is correct
+- Ensure the contract is deployed on the specified network
 
-### "Contract not found"
+### Verification fails
 
-Ensure:
-1. Contract is deployed
-2. Using correct network
-3. Constructor arguments match
+1. **Check constructor arguments** - Must match exactly
+2. **Check compiler version** - Must match deployment settings
+3. **Check optimizer settings** - Must match (enabled: true, runs: 200)
+4. **Wait a minute** - Block explorer may not have indexed the contract yet
+
+## Manual Verification
+
+If automatic verification fails, you can verify manually:
+
+1. Go to [Sourcify](https://sourcify.dev/)
+2. Enter contract address and chain ID (80002 for Amoy)
+3. Upload source files or provide repository URL
+
+## Legacy: PolygonScan Verification
+
+If you still need PolygonScan verification (not recommended):
+
+1. Wait for Hardhat to support PolygonScan API V2
+2. Or verify manually on [Amoy PolygonScan](https://amoy.polygonscan.com/)
 
 ## Best Practices
 
-1. **Always verify immediately after deployment**
-2. **Use Sourcify as primary method** - it's open and wallet-agnostic
-3. **Keep deployment artifacts** in `deployments/` directory
-4. **Document constructor arguments** for each deployment
+1. **Verify immediately after deployment** - While context is fresh
+2. **Document constructor arguments** - Save deployment info
+3. **Use Sourcify as primary** - More reliable and future-proof
+4. **Keep deployment artifacts** - In `deployments/` directory
+
+---
+
+*Last updated: 2026-03-04*

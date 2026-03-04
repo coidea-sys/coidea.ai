@@ -55,30 +55,15 @@ module.exports = {
       gasPrice: 50000000000, // 50 gwei
     }
   },
+  // Etherscan API configuration
+  // Note: Etherscan API V1 is deprecated. We use Sourcify as primary verification method.
+  // To enable Etherscan verification, set enabled: true and ensure you have a valid API key.
   etherscan: {
-    apiKey: {
-      polygon: process.env.POLYGONSCAN_API_KEY,
-      polygonAmoy: process.env.POLYGONSCAN_API_KEY,
-    },
-    customChains: [
-      {
-        network: "polygon",
-        chainId: 137,
-        urls: {
-          apiURL: "https://api.polygonscan.com/api",
-          browserURL: "https://polygonscan.com"
-        }
-      },
-      {
-        network: "polygonAmoy",
-        chainId: 80002,
-        urls: {
-          apiURL: "https://api-amoy.polygonscan.com/api",
-          browserURL: "https://amoy.polygonscan.com"
-        }
-      }
-    ]
+    apiKey: process.env.POLYGONSCAN_API_KEY,
+    enabled: false, // Disabled due to API V1 deprecation. Use Sourcify instead.
   },
+  // Sourcify verification (primary method)
+  // Sourcify is open-source and works with all chains without API keys
   sourcify: {
     enabled: true
   },
