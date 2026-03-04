@@ -6,14 +6,28 @@ require("@nomicfoundation/hardhat-chai-matchers");
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: {
-    version: '0.8.24',
-    settings: {
-      optimizer: {
-        enabled: true,
-        runs: 200
+    compilers: [
+      {
+        version: '0.8.24',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200
+          },
+          viaIR: true
+        }
       },
-      viaIR: true
-    }
+      {
+        version: '0.8.20',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200
+          },
+          viaIR: true
+        }
+      }
+    ]
   },
   networks: {
     hardhat: {
@@ -38,7 +52,7 @@ module.exports = {
       url: 'https://polygon.drpc.org',
       accounts: process.env.MAINNET_PRIVATE_KEY && process.env.MAINNET_PRIVATE_KEY !== 'your_mainnet_private_key_here' ? [process.env.MAINNET_PRIVATE_KEY] : [],
       chainId: 137,
-      gasPrice: 'auto'
+      gasPrice: 50000000000, // 50 gwei
     }
   },
   etherscan: {

@@ -1,13 +1,21 @@
 {
   "network": "polygonAmoy",
   "chainId": 80002,
-  "deployer": "0x0FB4eb50E6d70bF1Ed107CeDF18eEe1906f9464d",
+  "deployer": "0x6e2c6bFDc06BAf06c3c42Cb5B9Dc73a9c41143Df",
   "contracts": {
-    "AIAgentRegistry": "0xA7f382500BbEc4E3C4eF18682D63dc156AD1CE24",
-    "HumanLevelNFT": "0x78BB5F702441B751D34d860474Acf6409585Aad8",
-    "TaskRegistry": "0x7e8ee79A7BdC624b9FCB8A37b91C7305A00c2D42",
-    "X402Payment": "0x510fC8AD46EB0b010F0015b07c0EAc0C93B2599F"
+    "HumanRegistry": "0xa7049DB55AE7D67FBC006734752DD1fe24687bE3",
+    "AIAgentRegistry": "0xB3b5b0955cFaDdB92b2433818159A1B4f7daaF78",
+    "HumanLevelNFT": "0xb42Bb4AcEf001b472f0A2838bD7EbC4Df544290D",
+    "CommunityGovernance": "0x7e1005053683C1F9697Dc90a071cDE350791F1e3",
+    "LiabilityRegistry": "0x93C9eF9C3ac2F7536F901b2c4d3CDa8FDceB526A",
+    "AgentCommunity": "0x303C3fa2d0F156372F5ec8689095C20D50431191",
+    "LiabilityPreset": "0x969133C8509b17956022aE4e43dC3B95577134A2",
+    "AgentLifecycle": "0xE342ba865025ee90Ff540Cc10c7192d15e813278",
+    "AgentRuntime": "0xccCe4726D5e480184b2aF51b39943e387F7acBd1",
+    "HumanEconomy": "0x2FC0a1B77047833Abb836048Dec3585f27c9f01a",
+    "TaskRegistry": "0xE8eb60EB3cFEaC27fb9D0bC52d5DE346206D3fAE",
+    "X402Payment": "0x608b0E50593B307CC7F09C1bE0Bd691107F8C87B"
   },
-  "timestamp": "2026-03-03T05:36:34.215Z",
+  "timestamp": "2026-03-04T00:49:48.031Z",
   "explorer": "https://amoy.polygonscan.com"
 }
