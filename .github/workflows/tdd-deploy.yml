@@ -59,8 +59,10 @@ jobs:
 
       - name: Install OpenZeppelin contracts
         run: |
-          npm install @openzeppelin/contracts@^5.0.0 --save
-          ls -la node_modules/@openzeppelin/contracts/
+          npm install @openzeppelin/contracts@^5.0.0
+          echo "=== Verifying OpenZeppelin installation ==="
+          ls -la node_modules/@openzeppelin/contracts/ 2>/dev/null || echo "Directory not found"
+          ls -la node_modules/@openzeppelin/contracts/security/ 2>/dev/null || echo "Security directory not found"
 
       - name: Compile contracts
         run: npx hardhat compile
