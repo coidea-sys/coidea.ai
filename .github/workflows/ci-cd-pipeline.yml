@@ -66,6 +66,15 @@ jobs:
           npm install --legacy-peer-deps
           npm install @openzeppelin/contracts@^5.0.0 --force
 
+      - name: Verify OpenZeppelin installation
+        run: |
+          if [ ! -f "node_modules/@openzeppelin/contracts/security/ReentrancyGuard.sol" ]; then
+            echo "❌ OpenZeppelin contracts not installed correctly!"
+            ls -la node_modules/@openzeppelin/ 2>/dev/null || echo "Directory not found"
+            exit 1
+          fi
+          echo "✅ OpenZeppelin contracts installed successfully"
+
       # Contract Tests
       - name: Compile contracts
         if: matrix.test-type == 'contracts'
