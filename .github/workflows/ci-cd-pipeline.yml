@@ -6,7 +6,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main, develop, feature/*]
+    branches: [main, develop, feature/*, refactor/*]
   pull_request:
     branches: [main, develop]
 
@@ -28,10 +28,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: |
+          npm install --legacy-peer-deps
+          npm install @openzeppelin/contracts@^5.0.0 --force
 
       - name: Run ESLint
         run: npm run lint || true
@@ -59,10 +60,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: |
+          npm install --legacy-peer-deps
+          npm install @openzeppelin/contracts@^5.0.0 --force
 
       # Contract Tests
       - name: Compile contracts
@@ -81,7 +83,7 @@ jobs:
       # Frontend Tests
       - name: Run frontend tests
         if: matrix.test-type == 'frontend'
-        run: cd frontend && npm ci && npm test -- --watchAll=false || true
+        run: cd frontend && npm install && npm test -- --watchAll=false || true
 
       - name: Upload coverage
         uses: codecov/codecov-action@v3
@@ -105,10 +107,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: |
+          npm install --legacy-peer-deps
+          npm install @openzeppelin/contracts@^5.0.0 --force
 
       - name: Start Hardhat node
         run: npx hardhat node &
@@ -141,10 +144,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: |
+          npm install --legacy-peer-deps
+          npm install @openzeppelin/contracts@^5.0.0 --force
 
       - name: Run Slither analysis
         uses: crytic/slither-action@v0.3.0
@@ -174,10 +178,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: |
+          npm install --legacy-peer-deps
+          npm install @openzeppelin/contracts@^5.0.0 --force
 
       - name: Run performance tests
         run: npm run test:performance || true
@@ -228,10 +233,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: |
+          npm install --legacy-peer-deps
+          npm install @openzeppelin/contracts@^5.0.0 --force
 
       - name: Deploy contracts to Amoy
         env:
@@ -288,12 +294,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
 
       - name: Install dependencies
         run: |
-          npm ci --legacy-peer-deps
-          cd frontend && npm ci
+          npm install --legacy-peer-deps
+          cd frontend && npm install
 
       - name: Build frontend (Amoy Testnet)
         run: cd frontend && npm run build
