@@ -1,0 +1,212 @@
+# 统一的 CI/CD 工作流
+# 使用缓存和 artifacts 避免重复工作
+
+name: CI/CD
+
+on:
+  push:
+    branches: [main, develop, feature/*, refactor/*]
+  pull_request:
+    branches: [main, develop]
+
+env:
+  NODE_VERSION: '20'
+  FORCE_COLOR: '1'
+
+jobs:
+  # ==========================================
+  # 基础准备: 安装依赖并缓存
+  # ==========================================
+  setup:
+    name: 📦 Setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      # 使用精确版本的 package.json 哈希作为缓存 key
+      - name: Cache node_modules
+        id: cache-npm
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Install dependencies
+        if: steps.cache-npm.outputs.cache-hit != 'true'
+        run: npm install --legacy-peer-deps
+
+      # 验证关键依赖存在
+      - name: Verify dependencies
+        run: |
+          test -f node_modules/@openzeppelin/contracts/utils/ReentrancyGuard.sol || {
+            echo "❌ OpenZeppelin not installed correctly"
+            exit 1
+          }
+          echo "✅ Dependencies verified"
+
+      # 上传 node_modules 作为 artifact
+      - name: Upload node_modules
+        uses: actions/upload-artifact@v4
+        with:
+          name: node_modules
+          path: node_modules
+          retention-days: 1
+
+  # ==========================================
+  # 代码质量检查
+  # ==========================================
+  lint:
+    name: 🔍 Lint
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Download node_modules
+        uses: actions/download-artifact@v4
+        with:
+          name: node_modules
+          path: node_modules
+      - run: npm run lint || true
+      - run: npm run format:check || true
+
+  # ==========================================
+  # 合约编译和测试
+  # ==========================================
+  contracts:
+    name: 🧪 Contracts
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Download node_modules
+        uses: actions/download-artifact@v4
+        with:
+          name: node_modules
+          path: node_modules
+      - name: Compile contracts
+        run: npm run contract:compile
+      - name: Run contract tests
+        run: npm run contract:test
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/lcov.info
+          flags: contracts
+        continue-on-error: true
+
+  # ==========================================
+  # 前端测试
+  # ==========================================
+  frontend:
+    name: 🧪 Frontend
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Download node_modules
+        uses: actions/download-artifact@v4
+        with:
+          name: node_modules
+          path: node_modules
+      - name: Install frontend deps
+        run: cd frontend && npm install
+      - name: Run frontend tests
+        run: cd frontend && npm test -- --watchAll=false
+
+  # ==========================================
+  # 安全审计
+  # ==========================================
+  security:
+    name: 🛡️ Security
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Download node_modules
+        uses: actions/download-artifact@v4
+        with:
+          name: node_modules
+          path: node_modules
+      - name: Run Slither
+        uses: crytic/slither-action@v0.3.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          fail-on: 'high'
+        continue-on-error: true
+
+  # ==========================================
+  # 部署到测试网 (仅 main/develop 分支)
+  # ==========================================
+  deploy-testnet:
+    name: 🚀 Deploy Testnet
+    runs-on: ubuntu-latest
+    needs: [contracts, frontend, security]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    environment: amoy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Download node_modules
+        uses: actions/download-artifact@v4
+        with:
+          name: node_modules
+          path: node_modules
+      - name: Deploy to Amoy
+        env:
+          PRIVATE_KEY: ${{ secrets.AMOY_PRIVATE_KEY }}
+          POLYGON_RPC_URL: ${{ secrets.AMOY_RPC_URL }}
+        run: npx hardhat run scripts/deploy-all.js --network polygonAmoy
+
+  # ==========================================
+  # 部署前端 (仅 main 分支)
+  # ==========================================
+  deploy-frontend:
+    name: 🌐 Deploy Frontend
+    runs-on: ubuntu-latest
+    needs: deploy-testnet
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Download node_modules
+        uses: actions/download-artifact@v4
+        with:
+          name: node_modules
+          path: node_modules
+      - name: Build frontend
+        run: cd frontend && npm install && npm run build
+        env:
+          CI: false
+          REACT_APP_NETWORK: amoy
+      - name: Deploy to Cloudflare
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: coidea-ai
+          directory: frontend/build
