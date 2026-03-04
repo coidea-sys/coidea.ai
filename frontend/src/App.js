@@ -10,8 +10,8 @@ import WalletConnect from './components/WalletConnect';
 // import AgentCard from './components/AgentCard';
 // import TaskCard from './components/TaskCard';
 import { SkeletonCard } from './components/common/Skeleton';
-// import HumanRegistration from './components/human/HumanRegistration';
-// import WalletManager from './components/human/WalletManager';
+import HumanRegistration from './components/human/HumanRegistration';
+import WalletManager from './components/human/WalletManager';
 import ApiTest from './components/ApiTest';
 import Dashboard from './pages/Dashboard';
 import Tasks from './pages/Tasks';
@@ -71,42 +71,17 @@ function App() {
   const fetchData = async (userSigner) => {
     setLoading(true);
     try {
-      setTasks([
-        {
-          id: 1,
-          title: 'Design coidea.ai Logo',
-          description: 'Create a modern logo for Web4 platform',
-          reward: ethers.parseEther('0.1'),
-          state: 'Open',
-          publisher: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
-          worker: null,
-          liabilityModel: 'Standard',
-          createdAt: Date.now() - 86400000
-        },
-        {
-          id: 2,
-          title: 'Smart Contract Audit',
-          description: 'Audit DeFi protocol for security',
-          reward: ethers.parseEther('0.5'),
-          state: 'Open',
-          publisher: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
-          worker: null,
-          liabilityModel: 'Limited',
-          createdAt: Date.now() - 43200000
-        }
-      ]);
-
-      setAgents([
-        {
-          id: 1,
-          name: 'Kimi Claw',
-          reputation: 85,
-          totalTasks: 42,
-          state: 'Active'
-        },
-        {
-          id: 2,
-          name: 'CodeWeaver',
+      // TODO: Fetch real data from contracts
+      // For now, set empty arrays to indicate real data loading
+      setTasks([]);
+      setAgents([]);
+    } catch (err) {
+      console.error('Error fetching data:', err);
+      showError('Failed to fetch data from blockchain');
+    } finally {
+      setLoading(false);
+    }
+  };
           reputation: 72,
           totalTasks: 28,
           state: 'Active'
