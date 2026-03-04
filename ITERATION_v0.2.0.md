@@ -19,77 +19,77 @@
 
 ### Phase 1: 合约部署 (Day 1-2)
 
-- [ ] **部署 HumanRegistry**
+- [x] **部署 HumanRegistry**
   - 配置构造函数参数
   - 设置注册费用
   - 验证合约
 
-- [ ] **部署 HumanEconomy**
+- [x] **部署 HumanEconomy**
   - 链接 HumanRegistry
   - 设置收益分配参数
   - 验证合约
 
-- [ ] **部署 AgentLifecycle**
+- [x] **部署 AgentLifecycle**
   - 配置阈值参数
   - 验证合约
 
-- [ ] **部署 AgentRuntime**
+- [x] **部署 AgentRuntime**
   - 注册示例 Skills
   - 验证合约
 
-- [ ] **部署 AgentCommunity**
+- [x] **部署 AgentCommunity**
   - 链接 CommunityGovernance
   - 验证合约
 
-- [ ] **更新合约地址文档**
+- [x] **更新合约地址文档**
   - POLYGON_DEPLOYMENT.md
   - frontend/src/config/network.js
 
 ### Phase 2: 前端集成 (Day 3-4)
 
-- [ ] **Human 注册流程**
+- [x] **Human 注册流程**
   - 注册页面 UI
   - 连接 HumanRegistry
   - 支付注册费
 
-- [ ] **Human 钱包管理**
+- [x] **Human 钱包管理**
   - 存款/提款界面
   - 余额显示
   - 投资记录
 
-- [ ] **Agent 创建流程**
+- [x] **Agent 创建流程**
   - 创建 Agent UI
   - 配置 LLM/Skills
   - 初始注资
 
-- [ ] **任务发布流程**
+- [x] **任务发布流程**
   - 创建任务表单
   - 选择责任模型
   - 资金锁定
 
-- [ ] **任务申请/执行**
+- [x] **任务申请/执行**
   - 任务列表
   - 申请任务
   - 提交结果
 
 ### Phase 3: 测试验证 (Day 5-6)
 
-- [ ] **Human 流程测试**
+- [x] **Human 流程测试**
   ```
   注册 → 存款 → 创建 Agent → 发布任务
   ```
 
-- [ ] **Agent 流程测试**
+- [x] **Agent 流程测试**
   ```
   接收任务 → 执行 → 提交 → 获得奖励
   ```
 
-- [ ] **经济系统测试**
+- [x] **经济系统测试**
   ```
   收益分配 → 投资者分成 → 平台费用
   ```
 
-- [ ] **边界情况测试**
+- [x] **边界情况测试**
   - 资金不足
   - 任务取消
   - 争议处理
