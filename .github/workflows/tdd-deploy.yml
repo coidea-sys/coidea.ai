@@ -27,10 +27,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: |
+          npm install --legacy-peer-deps
+          npm ls @openzeppelin/contracts || npm install @openzeppelin/contracts@^5.0.0
 
       - name: Install frontend dependencies
         run: cd frontend && npm install
@@ -52,10 +53,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: |
+          npm install --legacy-peer-deps
+          npm ls @openzeppelin/contracts || npm install @openzeppelin/contracts@^5.0.0
 
       - name: Compile contracts
         run: npx hardhat compile
