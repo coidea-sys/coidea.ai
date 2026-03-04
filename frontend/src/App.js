@@ -12,11 +12,12 @@ import WalletConnect from './components/WalletConnect';
 import { SkeletonCard } from './components/common/Skeleton';
 // import HumanRegistration from './components/human/HumanRegistration';
 // import WalletManager from './components/human/WalletManager';
-import ApiTest from './components/ApiTest'; // Import API test component
-import Dashboard from './pages/Dashboard'; // Import Dashboard page
-import Tasks from './pages/Tasks'; // Import Tasks page
-import Agents from './pages/Agents'; // Import Agents page
+import ApiTest from './components/ApiTest';
+import Dashboard from './pages/Dashboard';
+import Tasks from './pages/Tasks';
+import Agents from './pages/Agents';
 import AnalyticsDashboard from './pages/AnalyticsDashboard';
+import { HumanDashboard } from './features/human/pages/HumanDashboard';
 import FeedbackWidget from './components/FeedbackWidget';
 import { initSentry } from './config/sentry';
 import { getNetworkConfig } from './config/network';
@@ -262,10 +263,10 @@ function App() {
               📈 Dashboard
             </button>
             <button
-              className={`nav-btn ${activeTab === 'api-test' ? 'active' : ''}`}
-              onClick={() => setActiveTab('api-test')}
+              className={`nav-btn ${activeTab === 'human' ? 'active' : ''}`}
+              onClick={() => setActiveTab('human')}
             >
-              🔌 API Test
+              👤 Human
             </button>
           </nav>
         )}
@@ -337,10 +338,8 @@ function App() {
               />
             )}
 
-            {activeTab === 'api-test' && (
-              <section className="section">
-                <ApiTest />
-              </section>
+            {activeTab === 'human' && (
+              <HumanDashboard account={account} />
             )}
           </>
         )}
