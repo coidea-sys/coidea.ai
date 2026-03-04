@@ -42,7 +42,17 @@ contract HumanEconomy is Ownable, ReentrancyGuard {
         uint256 taskId;
     }
     
-    // ============ 状态存储 ============
+    // ============ 安全限制 ============
+    
+    uint256 public constant DAILY_INVESTMENT_LIMIT = 10 ether;  // 每日投资限额
+    uint256 public constant DAILY_WITHDRAWAL_LIMIT = 10 ether;  // 每日提款限额
+    uint256 public constant WITHDRAWAL_COOLDOWN = 1 hours;      // 大额提款冷却时间
+    
+    mapping(address => uint256) public dailyInvested;           // 今日已投资
+    mapping(address => uint256) public dailyWithdrawn;          // 今日已提款
+    mapping(address => uint256) public lastInvestmentDay;       // 最后投资日期
+    mapping(address => uint256) public lastWithdrawalDay;       // 最后提款日期
+    mapping(address => uint256) public lastLargeWithdrawalTime; // 最后大额提款时间
     
     mapping(address => HumanWallet) public humanWallets;
     mapping(address => AgentInvestment[]) public humanAgentInvestments;
@@ -152,6 +162,9 @@ contract HumanEconomy is Ownable, ReentrancyGuard {
         HumanWallet storage wallet = humanWallets[msg.sender];
         require(wallet.availableBalance >= _amount, "Insufficient balance");
         
+        // 检查提款限额
+        _checkWithdrawalLimit(_amount);
+        
         wallet.availableBalance -= _amount;
         wallet.totalWithdrawn += _amount;
         
@@ -165,42 +178,40 @@ contract HumanEconomy is Ownable, ReentrancyGuard {
      * @notice 投资 Agent
      */
     function investInAgent(
-        uint256 _agentId,
-        uint256 _amount
-    ) external onlyHuman nonReentrant {
-        HumanWallet storage wallet = humanWallets[msg.sender];
-        require(wallet.availableBalance >= _amount, "Insufficient balance");
-        require(_amount >= 0.01 ether, "Min investment 0.01 ETH");
+        uint256 _agentId
+    ) external payable onlyHuman nonReentrant {
+        require(msg.value >= 0.01 ether, "Min investment 0.01 ETH");
         
-        wallet.availableBalance -= _amount;
-        wallet.investedInAgents += _amount;
+        // 检查每日投资限额
+        _checkInvestmentLimit(msg.value);
+        
+        HumanWallet storage wallet = humanWallets[msg.sender];
         
         // 转账给 Agent
-        // 实际应该调用 agentLifecycle.fundAgent
-        (bool success, ) = address(agentLifecycle).call{value: _amount}(
+        (bool success, ) = address(agentLifecycle).call{value: msg.value}(
             abi.encodeWithSignature("fundAgent(uint256)", _agentId)
         );
         require(success, "Agent funding failed");
         
-        // 计算分成比例 (基于投资金额占 Agent 总资金的比例)
-        uint256 sharePercent = _calculateSharePercent(_agentId, _amount);
+        // 计算分成比例
+        uint256 sharePercent = _calculateSharePercent(_agentId, msg.value);
         
         // 记录投资
         humanAgentInvestments[msg.sender].push(AgentInvestment({
             agentId: _agentId,
-            amount: _amount,
+            amount: msg.value,
             investedAt: block.timestamp,
             sharePercent: sharePercent,
             isActive: true
         }));
         
-        // 更新 Agent 投资者列表
+        // 更新索引
         if (agentInvestmentIndex[_agentId][msg.sender] == 0) {
             agentInvestors[_agentId].push(msg.sender);
             agentInvestmentIndex[_agentId][msg.sender] = agentInvestors[_agentId].length;
         }
         
-        emit AgentInvested(msg.sender, _agentId, _amount, sharePercent);
+        emit AgentInvested(msg.sender, _agentId, msg.value, sharePercent);
     }
     
     /**
@@ -384,6 +395,49 @@ contract HumanEconomy is Ownable, ReentrancyGuard {
     }
     
     // ============ 内部函数 ============
+    
+    function _checkInvestmentLimit(uint256 _amount) internal {
+        uint256 currentDay = block.timestamp / 1 days;
+        
+        // 重置每日计数
+        if (lastInvestmentDay[msg.sender] < currentDay) {
+            dailyInvested[msg.sender] = 0;
+            lastInvestmentDay[msg.sender] = currentDay;
+        }
+        
+        require(
+            dailyInvested[msg.sender] + _amount <= DAILY_INVESTMENT_LIMIT,
+            "Daily investment limit reached"
+        );
+        
+        dailyInvested[msg.sender] += _amount;
+    }
+    
+    function _checkWithdrawalLimit(uint256 _amount) internal {
+        uint256 currentDay = block.timestamp / 1 days;
+        
+        // 重置每日计数
+        if (lastWithdrawalDay[msg.sender] < currentDay) {
+            dailyWithdrawn[msg.sender] = 0;
+            lastWithdrawalDay[msg.sender] = currentDay;
+        }
+        
+        require(
+            dailyWithdrawn[msg.sender] + _amount <= DAILY_WITHDRAWAL_LIMIT,
+            "Daily withdrawal limit reached"
+        );
+        
+        // 大额提款冷却检查
+        if (_amount > 1 ether) {
+            require(
+                block.timestamp >= lastLargeWithdrawalTime[msg.sender] + WITHDRAWAL_COOLDOWN,
+                "Withdrawal cooldown active"
+            );
+            lastLargeWithdrawalTime[msg.sender] = block.timestamp;
+        }
+        
+        dailyWithdrawn[msg.sender] += _amount;
+    }
     
     function _calculateSharePercent(
         uint256 _agentId,
