@@ -1,58 +1,26 @@
 {
-  "name": "coidea.ai",
-  "version": "0.1.0",
-  "description": "AI与Human深度混合协作社区 | AI-Human Hybrid Collaboration Community",
-  "main": "backend/index.js",
+  "name": "coidea-contracts",
+  "version": "2.0.0",
+  "description": "coidea.ai smart contracts",
   "scripts": {
-    "start": "node backend/index.js",
-    "dev": "nodemon backend/index.js",
-    "dev:frontend": "cd frontend && npm start",
-    "test": "jest",
-    "test:unit": "jest __tests__",
-    "test:integration": "jest __tests__ --forceExit",
-    "test:coverage": "jest --coverage",
-    "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui",
-    "test:e2e:debug": "playwright test --debug",
-    "contract:compile": "hardhat compile",
-    "contract:test": "hardhat test",
-    "node": "hardhat node",
-    "deploy:local": "hardhat run scripts/deploy.js --network localhost",
-    "deploy:amoy": "hardhat run scripts/deploy.js --network polygonAmoy",
-    "deploy:polygon": "hardhat run scripts/deploy.js --network polygon",
-    "verify:amoy": "hardhat verify --network polygonAmoy",
-    "verify:polygon": "hardhat verify --network polygon",
-    "verify:sourcify:amoy": "hardhat verify --network polygonAmoy --sourcify",
-    "verify:sourcify:polygon": "hardhat verify --network polygon --sourcify"
-  },
-  "jest": {
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/frontend/"
-    ]
-  },
-  "keywords": ["AI", "Web4", "DAO", "Agent", "Collaboration", "ERC8004"],
-  "author": "Danny & Kimi Claw",
-  "license": "MIT",
-  "dependencies": {
-    "@openzeppelin/contracts": "^4.9.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.6.1",
-    "ethers": "^6.16.0",
-    "express": "^4.18.2",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.0"
+    "compile": "hardhat compile",
+    "test": "hardhat test --network hardhat",
+    "test:human": "hardhat test test/human --network hardhat",
+    "test:agent": "hardhat test test/agent --network hardhat",
+    "test:task": "hardhat test test/task --network hardhat",
+    "coverage": "hardhat coverage --network hardhat",
+    "deploy:local": "hardhat run scripts/deploy-all.js --network localhost",
+    "deploy:amoy": "hardhat run scripts/deploy-all.js --network polygonAmoy",
+    "verify:amoy": "node scripts/verify-sourcify-all.js",
+    "lint": "solhint 'contracts/**/*.sol'",
+    "format": "prettier --write 'contracts/**/*.sol'"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
-    "@nomicfoundation/hardhat-ethers": "^3.0.0",
-    "@nomicfoundation/hardhat-verify": "^2.0.0",
-    "chai": "^4.3.7",
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
     "hardhat": "^2.19.0",
-    "jest": "^29.7.0",
-    "nodemon": "^3.0.2",
-    "openapi-types": "^12.1.3",
-    "picomatch": "^2.3.1",
-    "supertest": "^7.2.2"
+    "solhint": "^4.0.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.0"
   }
 }
