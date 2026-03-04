@@ -3,6 +3,7 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 /**
@@ -10,7 +11,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
  * @notice Human 用户注册与身份管理
  * @dev Human 是平台的核心参与者，拥有最高权限
  */
-contract HumanRegistry is Ownable, ReentrancyGuard {
+contract HumanRegistry is Ownable, ReentrancyGuard, Pausable {
     
     // ============ 数据结构 ============
     
@@ -124,7 +125,7 @@ contract HumanRegistry is Ownable, ReentrancyGuard {
     function register(
         string memory _username,
         string memory _metadataURI
-    ) external payable nonReentrant {
+    ) external payable nonReentrant whenNotPaused {
         require(bytes(_username).length >= 3, "Username too short");
         require(bytes(_username).length <= 32, "Username too long");
         require(humans[msg.sender].registeredAt == 0, "Already registered");
@@ -360,5 +361,15 @@ contract HumanRegistry is Ownable, ReentrancyGuard {
     
     function setFeeRecipient(address _recipient) external onlyOwner {
         feeRecipient = _recipient;
+    }
+    
+    // ============ 紧急控制 ============
+    
+    function pause() external onlyOwner {
+        _pause();
+    }
+    
+    function unpause() external onlyOwner {
+        _unpause();
     }
 }
