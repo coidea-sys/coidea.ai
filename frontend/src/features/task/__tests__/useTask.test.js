@@ -27,9 +27,19 @@ describe('useTask Hook', () => {
     expect(typeof result.current.submitWork).toBe('function');
   });
 
-  it('should export releasePayment function', () => {
+  it('should export assignTask function', () => {
     const { result } = renderHook(() => useTask());
-    expect(typeof result.current.releasePayment).toBe('function');
+    expect(typeof result.current.assignTask).toBe('function');
+  });
+
+  it('should export publishTask function', () => {
+    const { result } = renderHook(() => useTask());
+    expect(typeof result.current.publishTask).toBe('function');
+  });
+
+  it('should export getContract function', () => {
+    const { result } = renderHook(() => useTask());
+    expect(typeof result.current.getContract).toBe('function');
   });
 
   it('should have isLoading state', () => {
