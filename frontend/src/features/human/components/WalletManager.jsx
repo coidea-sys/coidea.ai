@@ -90,7 +90,7 @@ export function WalletManager({ address }) {
             type="number"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            placeholder="金额 (ETH)"
+            placeholder="金额 (POL)"
             min="0"
             step="0.001"
             disabled={isLoading}
