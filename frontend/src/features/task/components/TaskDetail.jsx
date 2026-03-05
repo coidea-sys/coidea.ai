@@ -4,7 +4,7 @@ import { useTask } from '../hooks/useTask';
 const TASK_STATES = ['草稿', '开放', '已分配', '已提交', '审核中', '已完成', '已取消', '争议'];
 
 export function TaskDetail({ taskId, account, onBack }) {
-  const { getTask, applyForTask, submitWork, assignTask, isLoading, error } = useTask();
+  const { getTask, applyForTask, submitWork, isLoading, error } = useTask();
   const [task, setTask] = useState(null);
   const [applicationPrice, setApplicationPrice] = useState('');
   const [workResult, setWorkResult] = useState('');
