@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTask } from '../hooks/useTask';
+import { TaskApplications } from './TaskApplications';
 
 const TASK_STATES = ['草稿', '开放', '已分配', '已提交', '审核中', '已完成', '已取消', '争议'];
 
@@ -180,9 +181,18 @@ export function TaskDetail({ taskId, account, onBack }) {
 
       {/* 状态提示 */}
       {isOpen && isPublisher && (
-        <div style={{ padding: '12px', background: '#fff3cd', borderRadius: '4px' }}>
+        <div style={{ padding: '12px', background: '#fff3cd', borderRadius: '4px', marginBottom: '16px' }}>
           等待申请者...
         </div>
+      )}
+
+      {/* 申请者列表 - 仅发布者可见 */}
+      {isOpen && isPublisher && (
+        <TaskApplications 
+          taskId={taskId} 
+          isPublisher={isPublisher}
+          onAssigned={loadTask}
+        />
       )}
 
       {isAssigned && isPublisher && (

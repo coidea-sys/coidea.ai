@@ -191,6 +191,7 @@ export function useTask() {
     submitWork,
     assignTask,
     publishTask,
+    getContract, // Export for advanced usage
     isLoading,
     error,
   };
