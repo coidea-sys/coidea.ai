@@ -5,7 +5,7 @@ import { ToastProvider, useToast } from './hooks/useToast';
 import { ThemeProvider } from './contexts/ThemeContext';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import ThemeToggle from './components/common/ThemeToggle';
-import NetworkSwitch from './components/common/NetworkSwitch';
+// import NetworkSwitch from './components/common/NetworkSwitch';
 import WalletConnect from './components/WalletConnect';
 // import AgentCard from './components/AgentCard';
 // import TaskCard from './components/TaskCard';
@@ -30,7 +30,6 @@ function App() {
   const { success, error: showError } = useToast();
   const [account, setAccount] = useState('');
   const [signer, setSigner] = useState(null);
-  const [currentNetwork, setCurrentNetwork] = useState('amoy');
   const [tasks, setTasks] = useState([]);
   const [agents, setAgents] = useState([]);
   const [activeTab, setActiveTab] = useState('tasks');
@@ -173,10 +172,15 @@ function App() {
               <span className="tx-status pending">⏳ Creating task...</span>
             )}
             <ThemeToggle />
-            <NetworkSwitch 
-              currentNetwork={currentNetwork} 
-              onSwitch={setCurrentNetwork} 
-            />
+            <span style={{ 
+              padding: '4px 8px', 
+              background: '#e3f2fd', 
+              borderRadius: '4px',
+              fontSize: '12px',
+              color: '#1976d2'
+            }}>
+              Amoy Testnet
+            </span>
             <Suspense fallback={<span>🔔</span>}>
               <NotificationCenter socket={null} userId={account} />
             </Suspense>
