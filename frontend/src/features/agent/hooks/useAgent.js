@@ -25,7 +25,17 @@ export function useAgent() {
 
     try {
       const contract = await getContract();
-      const tx = await contract.registerAgent(name, skills, configURI);
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const wallet = await signer.getAddress();
+      
+      // Contract expects: name, URI, wallet
+      // Skills are stored in URI/metadata
+      const tx = await contract.registerAgent(
+        name, 
+        configURI || 'ipfs://default-config', 
+        wallet
+      );
       const receipt = await tx.wait();
 
       if (receipt.status !== 1) {
@@ -33,10 +43,15 @@ export function useAgent() {
       }
 
       // Get agent ID from event
-      const event = receipt.logs.find(
-        log => log.fragment?.name === 'AgentRegistered'
-      );
-      const agentId = event?.args?.agentId;
+      const event = receipt.logs.find(log => {
+        try {
+          const parsed = contract.interface.parseLog(log);
+          return parsed?.name === 'AgentRegistered';
+        } catch {
+          return false;
+        }
+      });
+      const agentId = event ? contract.interface.parseLog(event).args[0] : null;
 
       return { receipt, agentId };
     } catch (err) {
