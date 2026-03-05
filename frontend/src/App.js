@@ -30,7 +30,7 @@ function App() {
   const { success, error: showError } = useToast();
   const [account, setAccount] = useState('');
   const [signer, setSigner] = useState(null);
-  const [currentNetwork, setCurrentNetwork] = useState('polygon');
+  const [currentNetwork, setCurrentNetwork] = useState('amoy');
   const [tasks, setTasks] = useState([]);
   const [agents, setAgents] = useState([]);
   const [activeTab, setActiveTab] = useState('tasks');
