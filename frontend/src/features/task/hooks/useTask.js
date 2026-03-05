@@ -139,13 +139,13 @@ export function useTask() {
     }
   }, [getContract]);
 
-  const releasePayment = useCallback(async (taskId) => {
+  const assignTask = useCallback(async (taskId, applicationId) => {
     setIsLoading(true);
     setError(null);
 
     try {
       const contract = await getContract();
-      const tx = await contract.releasePayment(taskId);
+      const tx = await contract.assignTask(taskId, applicationId);
       const receipt = await tx.wait();
 
       if (receipt.status !== 1) {
@@ -154,7 +154,29 @@ export function useTask() {
 
       return receipt;
     } catch (err) {
-      setError(err.message || 'Failed to release payment');
+      setError(err.message || 'Failed to assign task');
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [getContract]);
+
+  const publishTask = useCallback(async (taskId) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const contract = await getContract();
+      const tx = await contract.publishTask(taskId);
+      const receipt = await tx.wait();
+
+      if (receipt.status !== 1) {
+        throw new Error('Transaction failed');
+      }
+
+      return receipt;
+    } catch (err) {
+      setError(err.message || 'Failed to publish task');
       throw err;
     } finally {
       setIsLoading(false);
@@ -167,7 +189,8 @@ export function useTask() {
     getAllTasks,
     applyForTask,
     submitWork,
-    releasePayment,
+    assignTask,
+    publishTask,
     isLoading,
     error,
   };

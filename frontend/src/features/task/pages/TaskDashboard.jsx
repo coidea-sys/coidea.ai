@@ -1,13 +1,24 @@
 import React, { useState } from 'react';
 import { CreateTaskForm } from '../components/CreateTaskForm';
 import { TaskList } from '../components/TaskList';
+import { TaskDetail } from '../components/TaskDetail';
 
 export function TaskDashboard({ account }) {
   const [activeTab, setActiveTab] = useState('browse');
   const [refreshKey, setRefreshKey] = useState(0);
+  const [selectedTask, setSelectedTask] = useState(null);
 
   const handleCreateSuccess = () => {
     setActiveTab('browse');
+    setRefreshKey(prev => prev + 1);
+  };
+
+  const handleSelectTask = (task) => {
+    setSelectedTask(task);
+  };
+
+  const handleBackToList = () => {
+    setSelectedTask(null);
     setRefreshKey(prev => prev + 1);
   };
 
@@ -26,21 +37,39 @@ export function TaskDashboard({ account }) {
       
       <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
         <button 
-          onClick={() => setActiveTab('browse')}
+          onClick={() => {
+            setActiveTab('browse');
+            setSelectedTask(null);
+          }}
           style={{ fontWeight: activeTab === 'browse' ? 'bold' : 'normal' }}
         >
           浏览任务
         </button>
         <button 
-          onClick={() => setActiveTab('create')}
+          onClick={() => {
+            setActiveTab('create');
+            setSelectedTask(null);
+          }}
           style={{ fontWeight: activeTab === 'create' ? 'bold' : 'normal' }}
         >
           发布任务
         </button>
       </div>
 
-      {activeTab === 'browse' && (
-        <TaskList key={refreshKey} filter="open" />
+      {activeTab === 'browse' && !selectedTask && (
+        <TaskList 
+          key={refreshKey}
+          filter="open" 
+          onSelectTask={handleSelectTask}
+        />
+      )}
+
+      {activeTab === 'browse' && selectedTask && (
+        <TaskDetail 
+          taskId={selectedTask.id}
+          account={account}
+          onBack={handleBackToList}
+        />
       )}
 
       {activeTab === 'create' && (
