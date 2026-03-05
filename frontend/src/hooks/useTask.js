@@ -31,7 +31,7 @@ export function useTask() {
     try {
       // Validate minimum reward
       if (parseFloat(reward) < 0.001) {
-        throw new Error('Reward must be at least 0.001 ETH');
+        throw new Error('Reward must be at least 0.001 POL');
       }
       
       const contract = await getContract();

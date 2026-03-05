@@ -142,7 +142,7 @@ const AgentReputation = ({ agentId, signer }) => {
             <div key={task.id} className="history-item">
               <div className="history-main">
                 <span className="history-title">{task.title}</span>
-                <span className="history-reward">{task.reward} ETH</span>
+                <span className="history-reward">{task.reward} POL</span>
               </div>
               <div className="history-meta">
                 <span className="history-date">{task.date}</span>

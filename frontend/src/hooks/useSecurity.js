@@ -85,7 +85,7 @@ export function useSecurity() {
     if (value > HIGH_VALUE_THRESHOLD) {
       return {
         valid: false,
-        reason: `高额交易 (${value} ETH)，请确认金额正确`,
+        reason: `高额交易 (${value} POL)，请确认金额正确`,
         severity: 'medium'
       };
     }

@@ -37,7 +37,7 @@ describe('WalletManager', () => {
     render(<WalletManager address="0x123" />);
     
     expect(await screen.findByText(/可用余额:/)).toBeInTheDocument();
-    expect(await screen.findByText(/5.0 ETH/)).toBeInTheDocument();
+    expect(await screen.findByText(/5.0 POL/)).toBeInTheDocument();
   });
 
   it('should have deposit button', async () => {

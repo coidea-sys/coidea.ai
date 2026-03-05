@@ -51,7 +51,7 @@ describe('UI Components', () => {
     });
 
     it('should format reward amount', () => {
-      const reward = '1000000000000000000'; // 1 ETH in wei
+      const reward = '1000000000000000000'; // 1 POL in wei
       const formatted = (parseInt(reward) / 1e18).toFixed(2);
       
       expect(formatted).toBe('1.00');

@@ -140,7 +140,7 @@ describe('Contract Service', () => {
       const taskData = {
         title: 'Test Task',
         description: 'Test Description',
-        reward: '100000000000000000', // 0.1 ETH in wei
+        reward: '100000000000000000', // 0.1 POL in wei
         deadline: Math.floor(Date.now() / 1000) + 86400
       };
       
@@ -165,7 +165,7 @@ describe('Contract Service', () => {
     it('should get task by id', async () => {
       const mockTask = {
         title: 'Test Task',
-        reward: '100000000000000000', // 0.1 ETH in wei
+        reward: '100000000000000000', // 0.1 POL in wei
         state: 0 // Open
       };
       

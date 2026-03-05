@@ -128,7 +128,7 @@ function AgentLiabilityStatus({ agentAddress, requiredAmount }) {
         <span className="status-icon">❌</span>
         <div>
           <div>责任能力不足</div>
-          <small>需要 {requiredAmount} ETH，当前仅 {status.maxLiability} ETH</small>
+          <small>需要 {requiredAmount} POL，当前仅 {status.maxLiability} POL</small>
         </div>
       </div>
     );
@@ -139,7 +139,7 @@ function AgentLiabilityStatus({ agentAddress, requiredAmount }) {
       <span className="status-icon">✅</span>
       <div>
         <div>可承担责任</div>
-        <small>{status.type} 模式 | 最大 {status.maxLiability} ETH | 已质押 {status.staked} ETH</small>
+        <small>{status.type} 模式 | 最大 {status.maxLiability} POL | 已质押 {status.staked} POL</small>
       </div>
     </div>
   );

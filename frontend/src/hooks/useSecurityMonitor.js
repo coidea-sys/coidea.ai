@@ -4,9 +4,9 @@ import { getContractAddress } from '../config/network';
 
 // Risk thresholds
 const RISK_THRESHOLDS = {
-  low: 0.1,      // 0.1 ETH
-  medium: 1.0,   // 1 ETH
-  high: 10.0,    // 10 ETH
+  low: 0.1,      // 0.1 POL
+  medium: 1.0,   // 1 POL
+  high: 10.0,    // 10 POL
 };
 
 // Known contract addresses

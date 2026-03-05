@@ -197,7 +197,7 @@ const MultiAgentCollaboration = ({ taskId, primaryAgent, socket }) => {
                 <div className="subtask-header">
                   <span className="status-icon">{getStatusIcon(subtask.status)}</span>
                   <span className="subtask-title">{subtask.title}</span>
-                  <span className="subtask-reward">{subtask.reward} ETH</span>
+                  <span className="subtask-reward">{subtask.reward} POL</span>
                 </div>
                 
                 <p className="subtask-desc">{subtask.description}</p>

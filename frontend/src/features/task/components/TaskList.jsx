@@ -56,7 +56,7 @@ export function TaskList({ onSelectTask, filter = 'all' }) {
             }}
           >
             <h4>{task.title}</h4>
-            <div>奖励: {task.reward} ETH</div>
+            <div>奖励: {task.reward} POL</div>
             <div>状态: {TASK_STATES[task.state] || '未知'}</div>
             <div style={{ fontSize: '12px', color: '#666' }}>
               发布者: {task.publisher?.slice(0, 6)}...{task.publisher?.slice(-4)}

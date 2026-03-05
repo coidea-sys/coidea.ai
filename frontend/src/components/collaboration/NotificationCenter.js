@@ -35,7 +35,7 @@ const NotificationCenter = ({ socket, userId }) => {
         type: 'task',
         subtype: 'completed',
         title: 'Task Completed',
-        message: `Task #${data.taskId} completed! Reward: ${data.reward} ETH`,
+        message: `Task #${data.taskId} completed! Reward: ${data.reward} POL`,
         data
       });
     });

@@ -18,17 +18,17 @@ export function WalletManager() {
       <div className="wallet-stats">
         <div className="stat">
           <label>Available Balance</label>
-          <span>{profile.totalEarned} ETH</span>
+          <span>{profile.totalEarned} POL</span>
         </div>
         
         <div className="stat">
           <label>Total Spent</label>
-          <span>{profile.totalSpent} ETH</span>
+          <span>{profile.totalSpent} POL</span>
         </div>
         
         <div className="stat">
           <label>Total Earned</label>
-          <span>{profile.totalEarned} ETH</span>
+          <span>{profile.totalEarned} POL</span>
         </div>
         
         <div className="stat">

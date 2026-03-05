@@ -86,7 +86,7 @@ export function TaskApplications({ taskId, isPublisher, onAssigned }) {
                   {app.applicant.slice(0, 6)}...{app.applicant.slice(-4)}
                 </div>
                 <div style={{ fontSize: '14px', color: '#666', marginTop: '4px' }}>
-                  报价: {app.proposedPrice} ETH
+                  报价: {app.proposedPrice} POL
                 </div>
                 {app.message && (
                   <div style={{ fontSize: '13px', color: '#888', marginTop: '4px' }}>

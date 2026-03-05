@@ -210,7 +210,7 @@ function CreateTaskModal({ isOpen, onClose, onCreate }) {
                   />
                   <span className="currency">ETH</span>
                 </div>
-                <small>最低 0.001 ETH，建议根据任务复杂度设置</small>
+                <small>最低 0.001 POL，建议根据任务复杂度设置</small>
               </div>
 
               <div className="reward-preview">
@@ -218,16 +218,16 @@ function CreateTaskModal({ isOpen, onClose, onCreate }) {
                 <div className="fee-breakdown">
                   <div className="fee-item">
                     <span>任务奖励</span>
-                    <span>{formData.reward || '0'} ETH</span>
+                    <span>{formData.reward || '0'} POL</span>
                   </div>
                   <div className="fee-item">
                     <span>平台手续费 (2.5%)</span>
-                    <span>{(parseFloat(formData.reward || 0) * 0.025).toFixed(4)} ETH</span>
+                    <span>{(parseFloat(formData.reward || 0) * 0.025).toFixed(4)} POL</span>
                   </div>
                   {formData.liabilityModel !== 'Standard' && (
                     <div className="fee-item highlight">
                       <span>责任质押（可退还）</span>
-                      <span>{formData.liabilityAmount || '0'} ETH</span>
+                      <span>{formData.liabilityAmount || '0'} POL</span>
                     </div>
                   )}
                   <div className="fee-item total">
@@ -235,7 +235,7 @@ function CreateTaskModal({ isOpen, onClose, onCreate }) {
                     <span>
                       {(parseFloat(formData.reward || 0) * 1.025 + 
                         (formData.liabilityModel !== 'Standard' ? parseFloat(formData.liabilityAmount || 0) : 0)
-                      ).toFixed(4)} ETH
+                      ).toFixed(4)} POL
                     </span>
                   </div>
                 </div>

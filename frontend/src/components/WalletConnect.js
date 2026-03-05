@@ -115,8 +115,8 @@ function WalletConnect({ onConnect }) {
           chainId: '0x7A69',
           chainName: 'Hardhat Local',
           nativeCurrency: {
-            name: 'ETH',
-            symbol: 'ETH',
+            name: 'POL',
+            symbol: 'POL',
             decimals: 18
           },
           rpcUrls: ['http://127.0.0.1:8545'],

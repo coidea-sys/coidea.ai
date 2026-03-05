@@ -70,7 +70,7 @@ export function TaskDetail({ taskId, account, onBack }) {
       <p>{task.description}</p>
 
       <div style={{ display: 'grid', gap: '8px', marginBottom: '20px' }}>
-        <div><strong>奖励:</strong> {task.reward} ETH</div>
+        <div><strong>奖励:</strong> {task.reward} POL</div>
         <div><strong>状态:</strong> {TASK_STATES[task.state] || '未知'}</div>
         <div><strong>发布者:</strong> {task.publisher}</div>
         {task.worker && <div><strong>执行者:</strong> {task.worker}</div>}

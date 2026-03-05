@@ -46,7 +46,7 @@ export function RegisterForm({ onSuccess }) {
       </div>
 
       <div className="fee-notice">
-        Registration fee: 0.001 ETH
+        Registration fee: 0.001 POL
       </div>
 
       {error && <div className="error">{error}</div>}

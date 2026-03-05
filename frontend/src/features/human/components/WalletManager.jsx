@@ -54,11 +54,11 @@ export function WalletManager({ address }) {
       <h3>钱包管理</h3>
       
       <div style={{ marginBottom: '20px' }}>
-        <div>可用余额: {balance.available} ETH</div>
-        <div>锁定中: {balance.locked} ETH</div>
-        <div>已投资: {balance.invested} ETH</div>
-        <div>总存入: {balance.totalDeposited} ETH</div>
-        <div>总提取: {balance.totalWithdrawn} ETH</div>
+        <div>可用余额: {balance.available} POL</div>
+        <div>锁定中: {balance.locked} POL</div>
+        <div>已投资: {balance.invested} POL</div>
+        <div>总存入: {balance.totalDeposited} POL</div>
+        <div>总提取: {balance.totalWithdrawn} POL</div>
       </div>
 
       {error && (

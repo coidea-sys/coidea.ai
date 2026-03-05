@@ -43,7 +43,7 @@ export function TaskCard({ task, onClick }) {
       <h3 className="task-title">{title}</h3>
       <p className="task-description">{description}</p>
       <div className="task-footer">
-        <span className="task-reward">💰 {formatReward(reward)} ETH</span>
+        <span className="task-reward">💰 {formatReward(reward)} POL</span>
         {deadline && (
           <span className="task-deadline">⏰ {formatDeadline(deadline)}</span>
         )}
